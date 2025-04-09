@@ -1,0 +1,212 @@
+/* 基础样式设置 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f5f7fa;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* 头部样式 */
+header {
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    color: white;
+    text-align: center;
+    padding: 2rem 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+header p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+/* 主要内容区域 */
+main {
+    flex: 1;
+    padding: 2rem;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+}
+
+/* 上传区域样式 */
+.upload-area {
+    border: 2px dashed #2575fc;
+    border-radius: 10px;
+    padding: 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.upload-area:hover, .upload-area.dragover {
+    background-color: rgba(37, 117, 252, 0.05);
+    border-color: #6a11cb;
+}
+
+.upload-icon {
+    font-size: 3rem;
+    color: #2575fc;
+    margin-bottom: 1rem;
+}
+
+.upload-area h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.file-input-label {
+    display: inline-block;
+    background-color: #2575fc;
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    margin: 1rem 0;
+    transition: background-color 0.3s ease;
+}
+
+.file-input-label:hover {
+    background-color: #1b5fd7;
+}
+
+.file-info {
+    margin-top: 1rem;
+    color: #666;
+}
+
+/* 按钮样式 */
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.btn {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.primary-btn {
+    background-color: #2575fc;
+    color: white;
+}
+
+.primary-btn:hover:not(:disabled) {
+    background-color: #1b5fd7;
+}
+
+.secondary-btn {
+    background-color: #6a11cb;
+    color: white;
+}
+
+.secondary-btn:hover:not(:disabled) {
+    background-color: #5a0daf;
+}
+
+/* 转换状态区域 */
+.conversion-status {
+    margin-top: 2rem;
+}
+
+#status-message {
+    text-align: center;
+    margin-bottom: 1rem;
+    min-height: 24px;
+    color: #666;
+}
+
+.progress-bar-container {
+    height: 10px;
+    background-color: #e6e6e6;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0;
+    background: linear-gradient(to right, #6a11cb, #2575fc);
+    transition: width 0.3s ease;
+}
+
+/* 页脚样式 */
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 1.5rem;
+    margin-top: auto;
+}
+
+footer a {
+    color: #2575fc;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 2rem;
+    }
+    
+    header p {
+        font-size: 1rem;
+    }
+    
+    .container {
+        padding: 1.5rem;
+    }
+    
+    .upload-area {
+        padding: 1.5rem;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .btn {
+        width: 100%;
+    }
+} 

@@ -6,6 +6,9 @@ const convertBtn = document.getElementById('convert-btn');
 const downloadBtn = document.getElementById('download-btn');
 const statusMessage = document.getElementById('status-message');
 const progressBar = document.getElementById('progress-bar');
+const fileInputLabel = document.querySelector('.file-input-label');
+const languageBtn = document.querySelector('.language-btn');
+const languageDropdown = document.querySelector('.language-dropdown');
 
 // 存储上传的文件和转换后的JSON
 let uploadedFile = null;
@@ -35,22 +38,49 @@ function init() {
     // 处理文件选择
     fileInput.addEventListener('change', handleFileSelect, false);
     
-    // 点击上传区域触发文件选择
-    dropArea.addEventListener('click', () => {
-        fileInput.click();
+    // 点击上传区域触发文件选择（但要避免点击文件选择按钮时的重复触发）
+    dropArea.addEventListener('click', (e) => {
+        // 如果点击的是文件选择按钮或其子元素，则不再触发fileInput.click()
+        if (!e.target.closest('.file-input-label')) {
+            fileInput.click();
+        }
     });
     
     // 添加按钮事件
     convertBtn.addEventListener('click', convertMidi);
     downloadBtn.addEventListener('click', downloadJson);
     
+    // 语言选择器交互处理
+    languageBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        languageDropdown.classList.toggle('show');
+    });
+    
+    // 点击语言选项
+    document.querySelectorAll('.language-option').forEach(option => {
+        option.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (typeof setLanguage === 'function') {
+                setLanguage(this.getAttribute('data-lang'));
+            }
+            languageDropdown.classList.remove('show');
+        });
+    });
+    
+    // 点击页面其他地方关闭下拉菜单
+    document.addEventListener('click', function(e) {
+        if (!languageBtn.contains(e.target) && !languageDropdown.contains(e.target)) {
+            languageDropdown.classList.remove('show');
+        }
+    });
+    
     // 预加载midi-json-parser库
     if (typeof loadMidiParser === 'function') {
-        statusMessage.textContent = '正在加载midi-json-parser库...';
+        updateStatusMessage('loading');
         loadMidiParser()
             .then(() => {
                 midiParserLoaded = true;
-                statusMessage.textContent = 'midi-json-parser库加载成功，可以开始转换MIDI文件';
+                updateStatusMessage('loadSuccess');
                 statusMessage.style.color = '#27ae60';
                 setTimeout(() => {
                     if (!uploadedFile) {
@@ -59,8 +89,8 @@ function init() {
                 }, 3000);
             })
             .catch(error => {
-                console.error('加载midi-json-parser库失败:', error);
-                statusMessage.textContent = '加载midi-json-parser库失败，请刷新页面重试';
+                console.error('Failed to load midi-json-parser library:', error);
+                updateStatusMessage('loadError');
                 statusMessage.style.color = '#e74c3c';
             });
     }
@@ -107,14 +137,21 @@ function handleFiles(files) {
     
     // 检查文件类型
     if (!file.name.toLowerCase().endsWith('.mid') && !file.name.toLowerCase().endsWith('.midi')) {
-        statusMessage.textContent = '错误：请选择MIDI文件（.mid或.midi）';
+        updateStatusMessage('fileError');
         statusMessage.style.color = '#e74c3c';
         return;
     }
     
     // 更新UI
     uploadedFile = file;
-    fileInfo.textContent = `已选择：${file.name} (${formatFileSize(file.size)})`;
+    
+    // 国际化文件信息显示
+    if (translations && translations.fileSelected) {
+        fileInfo.textContent = translations.fileSelected + file.name + ' (' + formatFileSize(file.size) + ')';
+    } else {
+        fileInfo.textContent = `Selected: ${file.name} (${formatFileSize(file.size)})`;
+    }
+    
     convertBtn.disabled = false;
     downloadBtn.disabled = true;
     statusMessage.textContent = '';
@@ -122,6 +159,17 @@ function handleFiles(files) {
     
     // 清除之前的JSON数据
     convertedJson = null;
+}
+
+// 更新状态消息
+function updateStatusMessage(key, param) {
+    if (translations && translations[key]) {
+        let message = translations[key];
+        if (param) {
+            message += param;
+        }
+        statusMessage.textContent = message;
+    }
 }
 
 // 格式化文件大小
@@ -135,6 +183,191 @@ function formatFileSize(bytes) {
     }
 }
 
+// 尝试解析MIDI ArrayBuffer
+function parseMidiBuffer(arrayBuffer) {
+    // 检查不同的可能API格式
+    if (typeof midiJsonParser !== 'undefined') {
+        // 原始CDN中的API格式
+        if (typeof midiJsonParser.parseArrayBuffer === 'function') {
+            console.log("使用midiJsonParser.parseArrayBuffer");
+            return midiJsonParser.parseArrayBuffer(arrayBuffer);
+        }
+        
+        // 检查其他可能的API格式
+        if (typeof midiJsonParser.parse === 'function') {
+            console.log("使用midiJsonParser.parse");
+            return midiJsonParser.parse(arrayBuffer);
+        }
+    }
+    
+    // 检查全局midi-json-parser可能的名称
+    const possibleNames = ['midiJsonParser', 'MidiJsonParser', 'midiJsonParserModule', 'MidiParser'];
+    
+    for (const name of possibleNames) {
+        if (typeof window[name] !== 'undefined') {
+            console.log(`检测到全局对象: ${name}`);
+            
+            // 检查各种可能的方法名
+            const possibleMethods = ['parseArrayBuffer', 'parse', 'parseMidi', 'decodeMidi'];
+            
+            for (const method of possibleMethods) {
+                if (typeof window[name][method] === 'function') {
+                    console.log(`使用 ${name}.${method}`);
+                    return window[name][method](arrayBuffer);
+                }
+            }
+        }
+    }
+    
+    // 如果加载了MIDI, 尝试直接加载完整库
+    const scriptEl = document.createElement('script');
+    // 直接嵌入简单的MIDI解析器作为备用方案
+    scriptEl.textContent = `
+    // 简单的MIDI解析器作为备用方案
+    window.midiJsonParser = {
+        parseArrayBuffer: function(buffer) {
+            return new Promise((resolve, reject) => {
+                try {
+                    // 创建DataView以读取二进制数据
+                    const view = new DataView(buffer);
+                    
+                    // 解析MIDI头部
+                    const header = {
+                        format: view.getUint16(8),
+                        numTracks: view.getUint16(10),
+                        ticksPerBeat: view.getUint16(12)
+                    };
+                    
+                    // 创建MIDI JSON对象
+                    const midiJson = {
+                        header: header,
+                        tracks: []
+                    };
+                    
+                    console.log("使用备用MIDI解析器，简化的结果将被返回");
+                    
+                    // 解析每个轨道（简化处理）
+                    let offset = 14; // 开始于头部之后
+                    
+                    for (let i = 0; i < header.numTracks; i++) {
+                        // 检查轨道头
+                        if (view.getUint32(offset) !== 0x4D54726B) { // "MTrk"
+                            throw new Error("无效的MIDI文件格式");
+                        }
+                        
+                        const trackLength = view.getUint32(offset + 4);
+                        offset += 8; // 跳过轨道头
+                        
+                        // 提取一些基本事件（非常简化）
+                        const trackEnd = offset + trackLength;
+                        const track = [];
+                        
+                        while (offset < trackEnd) {
+                            // 简单解析事件（注意:这是非常简化的）
+                            let deltaTime = 0;
+                            let byte = view.getUint8(offset++);
+                            
+                            // 解析可变长度的deltaTime
+                            while (byte & 0x80) {
+                                deltaTime = (deltaTime << 7) | (byte & 0x7F);
+                                byte = view.getUint8(offset++);
+                            }
+                            deltaTime = (deltaTime << 7) | byte;
+                            
+                            // 读取事件类型
+                            const eventType = view.getUint8(offset++);
+                            
+                            // 解析事件（仅处理基本音符事件，非常简化）
+                            if ((eventType & 0xF0) === 0x90) { // Note On
+                                const channel = eventType & 0x0F;
+                                const noteNumber = view.getUint8(offset++);
+                                const velocity = view.getUint8(offset++);
+                                
+                                track.push({
+                                    deltaTime: deltaTime,
+                                    type: 'noteOn',
+                                    channel: channel,
+                                    noteNumber: noteNumber,
+                                    velocity: velocity
+                                });
+                            } 
+                            else if ((eventType & 0xF0) === 0x80) { // Note Off
+                                const channel = eventType & 0x0F;
+                                const noteNumber = view.getUint8(offset++);
+                                const velocity = view.getUint8(offset++);
+                                
+                                track.push({
+                                    deltaTime: deltaTime,
+                                    type: 'noteOff',
+                                    channel: channel,
+                                    noteNumber: noteNumber,
+                                    velocity: velocity
+                                });
+                            }
+                            else if (eventType === 0xFF) { // Meta Event
+                                const metaType = view.getUint8(offset++);
+                                const length = view.getUint8(offset++);
+                                
+                                // 处理一些基本的meta事件
+                                if (metaType === 0x51) { // Tempo
+                                    const microsecondsPerQuarter = (view.getUint8(offset) << 16) | 
+                                                                  (view.getUint8(offset + 1) << 8) | 
+                                                                  view.getUint8(offset + 2);
+                                    track.push({
+                                        deltaTime: deltaTime,
+                                        type: 'setTempo',
+                                        microsecondsPerQuarter: microsecondsPerQuarter
+                                    });
+                                }
+                                else if (metaType === 0x58) { // Time Signature
+                                    track.push({
+                                        deltaTime: deltaTime,
+                                        type: 'timeSignature',
+                                        numerator: view.getUint8(offset),
+                                        denominator: Math.pow(2, view.getUint8(offset + 1)),
+                                        metronome: view.getUint8(offset + 2),
+                                        thirtyseconds: view.getUint8(offset + 3)
+                                    });
+                                }
+                                
+                                offset += length; // 跳过数据
+                            }
+                            else {
+                                // 跳过其他事件（非常简化）
+                                if ((eventType & 0x80) === 0) {
+                                    // 运行状态 - 使用前一个命令
+                                    offset += 1;
+                                }
+                                else if ((eventType & 0xF0) >= 0xC0 && (eventType & 0xF0) <= 0xDF) {
+                                    // 1字节参数的事件
+                                    offset += 1;
+                                }
+                                else {
+                                    // 2字节参数的事件
+                                    offset += 2;
+                                }
+                            }
+                        }
+                        
+                        midiJson.tracks.push(track);
+                    }
+                    
+                    resolve(midiJson);
+                }
+                catch (error) {
+                    console.error("MIDI解析错误:", error);
+                    reject(error);
+                }
+            });
+        }
+    };
+    `;
+    document.head.appendChild(scriptEl);
+    
+    console.log("使用内置简易MIDI解析器");
+    return window.midiJsonParser.parseArrayBuffer(arrayBuffer);
+}
+
 // 转换MIDI文件
 async function convertMidi() {
     if (!uploadedFile) {
@@ -143,7 +376,7 @@ async function convertMidi() {
     
     try {
         // 更新状态
-        statusMessage.textContent = '正在转换MIDI文件...';
+        updateStatusMessage('converting');
         statusMessage.style.color = '#666';
         progressBar.style.width = '30%';
         
@@ -158,17 +391,19 @@ async function convertMidi() {
         
         // 确保midi-json-parser可用
         if (!midiParserLoaded && typeof loadMidiParser === 'function') {
-            statusMessage.textContent = '正在加载midi-json-parser库...';
+            updateStatusMessage('loading');
             await loadMidiParser();
             midiParserLoaded = true;
         }
         
-        if (typeof midiJsonParser === 'undefined') {
-            throw new Error('midi-json-parser库未加载，请检查网络连接或刷新页面重试');
+        if (typeof midiJsonParser === 'undefined' && 
+            typeof window.MidiJsonParser === 'undefined' && 
+            typeof window.MidiParser === 'undefined') {
+            throw new Error('midi-json-parser library not loaded or interface does not match');
         }
         
-        // 转换MIDI为JSON
-        const midiJson = await midiJsonParser.parseArrayBuffer(arrayBuffer);
+        // 转换MIDI为JSON - 使用自适应方法
+        const midiJson = await parseMidiBuffer(arrayBuffer);
         
         // 转换为Tone.js友好的格式
         const toneJson = convertToToneFormat(midiJson);
@@ -176,7 +411,7 @@ async function convertMidi() {
         
         // 更新UI
         progressBar.style.width = '100%';
-        statusMessage.textContent = '转换成功！可以下载JSON文件了。';
+        updateStatusMessage('convertSuccess');
         statusMessage.style.color = '#27ae60';
         downloadBtn.disabled = false;
         
@@ -185,8 +420,8 @@ async function convertMidi() {
         }, 1000);
         
     } catch (error) {
-        console.error('转换错误:', error);
-        statusMessage.textContent = `错误：${error.message}`;
+        console.error('Conversion error:', error);
+        updateStatusMessage('convertError', error.message);
         statusMessage.style.color = '#e74c3c';
         progressBar.style.width = '0';
         convertBtn.disabled = false;

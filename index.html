@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MIDI转JSON工具</title>
+    <title>MIDI to JSON Converter</title>
     <link rel="stylesheet" href="css/style.css">
     <!-- Font Awesome 图标库 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -16,15 +16,15 @@
                 const script = document.createElement('script');
                 script.src = "https://unpkg.com/midi-json-parser@4.0.4/build/es5/bundle.min.js";
                 script.onload = () => {
-                    console.log("midi-json-parser成功从CDN加载");
+                    console.log("midi-json-parser successfully loaded from CDN");
                     resolve();
                 };
                 script.onerror = () => {
-                    console.warn("无法从CDN加载midi-json-parser，尝试加载备用库");
+                    console.warn("Failed to load midi-json-parser from CDN, trying backup library");
                     // 如果CDN加载失败，通知用户
                     const statusMessage = document.getElementById('status-message');
                     if (statusMessage) {
-                        statusMessage.textContent = "正在尝试加载备用midi-json-parser库...";
+                        statusMessage.textContent = "Trying to load backup midi-json-parser library...";
                         statusMessage.style.color = '#666';
                     }
                     
@@ -32,12 +32,12 @@
                     const backupScript = document.createElement('script');
                     backupScript.src = "https://cdn.jsdelivr.net/npm/midi-json-parser@4.0.4/build/es5/bundle.min.js";
                     backupScript.onload = () => {
-                        console.log("midi-json-parser成功从备用CDN加载");
+                        console.log("midi-json-parser successfully loaded from backup CDN");
                         resolve();
                     };
                     backupScript.onerror = () => {
-                        console.error("无法从备用CDN加载midi-json-parser库");
-                        reject(new Error("无法加载midi-json-parser库，请使用本地服务器运行此应用"));
+                        console.error("Failed to load midi-json-parser from backup CDN");
+                        reject(new Error("Failed to load midi-json-parser library, please run this app with a local server"));
                     };
                     document.head.appendChild(backupScript);
                 };
@@ -48,8 +48,32 @@
 </head>
 <body>
     <header>
-        <h1>MIDI转JSON转换工具</h1>
-        <p>简单易用的MIDI到Tone.js JSON格式转换器</p>
+        <div class="language-selector">
+            <button class="language-btn">
+                <i class="fas fa-globe"></i>
+                <span id="current-language">English</span>
+                <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="language-dropdown">
+                <div class="language-option active" data-lang="en">
+                    <span class="language-name">English</span>
+                </div>
+                <div class="language-option" data-lang="zh">
+                    <span class="language-name">中文</span>
+                </div>
+                <div class="language-option" data-lang="ja">
+                    <span class="language-name">日本語</span>
+                </div>
+                <div class="language-option" data-lang="es">
+                    <span class="language-name">Español</span>
+                </div>
+                <div class="language-option" data-lang="de">
+                    <span class="language-name">Deutsch</span>
+                </div>
+            </div>
+        </div>
+        <h1 data-i18n="title">MIDI to JSON Converter</h1>
+        <p data-i18n="subtitle">Simple MIDI to Tone.js JSON format converter</p>
     </header>
 
     <main>
@@ -58,16 +82,16 @@
                 <div class="upload-icon">
                     <i class="fas fa-file-upload"></i>
                 </div>
-                <h3>拖放MIDI文件到这里</h3>
-                <p>或者</p>
-                <label for="file-input" class="file-input-label">选择MIDI文件</label>
+                <h3 data-i18n="dropZoneTitle">Drop MIDI files here</h3>
+                <p data-i18n="dropZoneOr">or</p>
+                <label for="file-input" class="file-input-label" data-i18n="selectFile">Select MIDI File</label>
                 <input type="file" id="file-input" accept=".mid,.midi" hidden>
-                <p class="file-info" id="file-info">未选择文件</p>
+                <p class="file-info" id="file-info" data-i18n="noFileSelected">No file selected</p>
             </div>
 
             <div class="action-buttons">
-                <button id="convert-btn" class="btn primary-btn" disabled>转换MIDI</button>
-                <button id="download-btn" class="btn secondary-btn" disabled>下载JSON</button>
+                <button id="convert-btn" class="btn primary-btn" disabled data-i18n="convertBtn">Convert MIDI</button>
+                <button id="download-btn" class="btn secondary-btn" disabled data-i18n="downloadBtn">Download JSON</button>
             </div>
 
             <div class="conversion-status">
@@ -80,10 +104,12 @@
     </main>
 
     <footer>
-        <p>基于 <a href="https://github.com/chrisguttandin/midi-json-parser" target="_blank">midi-json-parser</a> 开源库构建</p>
-        <p>&copy; 2023 MIDI转JSON工具</p>
+        <p data-i18n="footerText">Built with <a href="https://github.com/chrisguttandin/midi-json-parser" target="_blank">midi-json-parser</a> library</p>
+        <p>&copy; 2023 MIDI to JSON Converter</p>
     </footer>
 
+    <script src="js/i18n/en.js"></script>
+    <script src="js/i18n.js"></script>
     <script src="js/script.js"></script>
 </body>
 </html> 

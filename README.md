@@ -8,6 +8,7 @@
 - 将MIDI文件转换为Tone.js兼容的JSON格式
 - 支持转换后的JSON文件下载
 - 在浏览器中直接处理，无需后端服务器
+- 支持多语言界面（英文、中文、日语、西班牙语、德语）
 
 ## 如何使用
 
@@ -16,12 +17,29 @@
 3. 等待转换完成
 4. 点击"下载JSON"按钮保存转换后的文件
 
+### 切换语言
+
+网站默认使用英语界面，您可以通过以下步骤切换到其他语言：
+
+1. 点击页面右上角的语言选择按钮
+2. 从下拉菜单中选择您想要的语言
+3. 界面将自动切换为所选语言
+
+当前支持的语言：
+- 英语 (English)
+- 中文
+- 日语 (日本語)
+- 西班牙语 (Español)
+- 德语 (Deutsch)
+
 ## 技术栈
 
 本项目使用：
 - HTML5 和 CSS3 构建用户界面
 - JavaScript 实现转换功能
 - [midi-json-parser](https://github.com/chrisguttandin/midi-json-parser) 库进行MIDI解析
+- 基于localStorage的语言偏好保存
+- 模块化多语言支持系统
 - GitHub Pages 托管网站
 - Cloudflare 提供CDN和HTTPS支持
 
@@ -64,6 +82,14 @@ Access to fetch at 'https://unpkg.com/...' from origin 'null' has been blocked b
 1. **使用本地Web服务器**运行项目（推荐）
 2. **安装浏览器扩展**来禁用CORS（不推荐，仅用于开发）
 3. **使用在线托管版本**，访问GitHub Pages上托管的版本
+
+### 语言切换问题
+
+如果语言切换不起作用：
+
+1. **检查浏览器LocalStorage**：确保没有禁用LocalStorage
+2. **清除浏览器缓存和Cookie**：这可能会解决某些保存的设置问题
+3. **检查控制台错误**：查看浏览器开发者工具中的控制台，可能会显示相关错误信息
 
 ## 贡献
 

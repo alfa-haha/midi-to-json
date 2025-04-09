@@ -237,6 +237,120 @@ main {
     transition: width 0.3s ease;
 }
 
+/* 批量处理区域样式 */
+.batch-status {
+    margin-top: 2rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    display: none; /* 默认隐藏，有文件时显示 */
+}
+
+.batch-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: #f5f7fa;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.batch-header h3 {
+    margin: 0;
+    color: #333;
+}
+
+#batch-progress {
+    font-weight: bold;
+    color: #2575fc;
+}
+
+.file-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.file-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.file-item:last-child {
+    border-bottom: none;
+}
+
+.file-name {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: 1rem;
+}
+
+.file-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.status-icon {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.status-pending {
+    color: #999;
+}
+
+.status-processing {
+    color: #2575fc;
+}
+
+.status-success {
+    color: #27ae60;
+}
+
+.status-error {
+    color: #e74c3c;
+}
+
+.file-item .download-btn {
+    opacity: 0.5;
+    cursor: not-allowed;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
+}
+
+.file-item .download-btn.enabled {
+    opacity: 1;
+    cursor: pointer;
+}
+
+.file-item .download-btn.enabled:hover {
+    background-color: #1b5fd7;
+}
+
+.retry-btn {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0.3rem 0.6rem;
+    margin-left: 0.5rem;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+.retry-btn:hover {
+    background-color: #c0392b;
+}
+
 /* 页脚样式 */
 footer {
     background-color: #333;
@@ -281,4 +395,20 @@ footer a:hover {
     .btn {
         width: 100%;
     }
+}
+
+/* 添加文件限制提示样式 */
+.file-limit-info {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 0.5rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.file-limit-info i {
+    color: #2575fc;
+    font-size: 0.9rem;
 } 

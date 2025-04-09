@@ -10,11 +10,14 @@ window.de = {
     "dropZoneTitle": "MIDI-Dateien hier ablegen",
     "dropZoneOr": "oder",
     "selectFile": "MIDI-Datei auswählen",
+    "selectFiles": "MIDI-Dateien auswählen",
+    "fileLimitInfo": "Für beste Leistung, beschränken Sie sich auf 20 Dateien (max. 100MB insgesamt)",
     "noFileSelected": "Keine Datei ausgewählt",
     
     // Buttons
-    "convertBtn": "MIDI konvertieren",
+    "convertBtn": "Alle MIDI-Dateien konvertieren",
     "downloadBtn": "JSON herunterladen",
+    "downloadAllBtn": "Alle als ZIP herunterladen",
     
     // Status messages
     "loading": "Lade midi-json-parser Bibliothek...",
@@ -26,6 +29,19 @@ window.de = {
     "convertError": "Fehler: ",
     "fileError": "Fehler: Bitte wählen Sie eine MIDI-Datei (.mid oder .midi)",
     "fileSelected": "Ausgewählt: ",
+    "filesSelected": "Ausgewählt: ",
+    "fileCount": " Dateien",
+    
+    // Batch processing
+    "batchProcessing": "Stapelverarbeitung",
+    "waitingToProcess": "Warten",
+    "processing": "Verarbeitung...",
+    "processingComplete": "Verarbeitung abgeschlossen",
+    "processingFailed": "Fehlgeschlagen",
+    "retryBtn": "Wiederholen",
+    "downloadFileBtn": "Herunterladen",
+    "preparingZip": "ZIP-Datei wird vorbereitet...",
+    "zipReady": "ZIP-Datei zum Download bereit",
     
     // Footer
     "footerText": "Erstellt mit der <a href=\"https://github.com/chrisguttandin/midi-json-parser\" target=\"_blank\">midi-json-parser</a> Bibliothek"

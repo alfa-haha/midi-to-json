@@ -7,6 +7,10 @@
     <link rel="stylesheet" href="css/style.css">
     <!-- Font Awesome 图标库 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- JSZip 库 - 用于批量文件下载 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <!-- FileSaver.js 库 - 用于保存文件 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <!-- midi-json-parser 库 -->
     <script>
         // 定义一个函数来加载midi-json-parser库
@@ -84,14 +88,15 @@
                 </div>
                 <h3 data-i18n="dropZoneTitle">Drop MIDI files here</h3>
                 <p data-i18n="dropZoneOr">or</p>
-                <label for="file-input" class="file-input-label" data-i18n="selectFile">Select MIDI File</label>
-                <input type="file" id="file-input" accept=".mid,.midi" hidden>
-                <p class="file-info" id="file-info" data-i18n="noFileSelected">No file selected</p>
+                <label for="file-input" class="file-input-label" data-i18n="selectFiles">Select MIDI Files</label>
+                <input type="file" id="file-input" accept=".mid,.midi" multiple hidden>
+                <p class="file-limit-info" data-i18n="fileLimitInfo"><i class="fas fa-info-circle"></i> For best performance, limit to 20 files (max 100MB total)</p>
+                <p class="file-info" id="file-info" data-i18n="noFileSelected">No files selected</p>
             </div>
 
             <div class="action-buttons">
                 <button id="convert-btn" class="btn primary-btn" disabled data-i18n="convertBtn">Convert MIDI</button>
-                <button id="download-btn" class="btn secondary-btn" disabled data-i18n="downloadBtn">Download JSON</button>
+                <button id="download-btn" class="btn secondary-btn" disabled data-i18n="downloadAllBtn">Download All as ZIP</button>
             </div>
 
             <div class="conversion-status">
@@ -100,12 +105,22 @@
                     <div id="progress-bar" class="progress-bar"></div>
                 </div>
             </div>
+
+            <div id="batch-status" class="batch-status">
+                <div class="batch-header">
+                    <h3 data-i18n="batchProcessing">Batch Processing</h3>
+                    <div id="batch-progress">
+                        <span id="processed-count">0</span>/<span id="total-count">0</span>
+                    </div>
+                </div>
+                <div id="file-list" class="file-list"></div>
+            </div>
         </div>
     </main>
 
     <footer>
         <p data-i18n="footerText">Built with <a href="https://github.com/chrisguttandin/midi-json-parser" target="_blank">midi-json-parser</a> library</p>
-        <p>&copy; 2023 MIDI to JSON Converter</p>
+        <p>&copy; 2025 MIDI to JSON Converter</p>
     </footer>
 
     <script src="js/i18n/en.js"></script>

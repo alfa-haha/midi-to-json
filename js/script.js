@@ -920,4 +920,28 @@ function downloadJson() {
 }
 
 // 页面加载完成后初始化
-document.addEventListener('DOMContentLoaded', init); 
+document.addEventListener('DOMContentLoaded', init);
+
+// 添加手风琴功能
+document.addEventListener('DOMContentLoaded', function() {
+    // 获取所有手风琴项
+    const accordionItems = document.querySelectorAll('.accordion-item');
+    
+    // 为每个手风琴项添加点击事件
+    accordionItems.forEach(item => {
+        const header = item.querySelector('.accordion-header');
+        
+        header.addEventListener('click', () => {
+            // 切换当前项的active状态
+            item.classList.toggle('active');
+            
+            // 如果您希望一次只打开一个项目（可选）
+            // 取消其他项目的active状态
+            accordionItems.forEach(otherItem => {
+                if (otherItem !== item && otherItem.classList.contains('active')) {
+                    otherItem.classList.remove('active');
+                }
+            });
+        });
+    });
+}); 

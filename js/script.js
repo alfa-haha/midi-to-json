@@ -944,4 +944,55 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     });
+});
+
+// 添加语言选择器的功能扩展 - 为footer的语言选择器也添加同样的功能
+document.addEventListener('DOMContentLoaded', function() {
+    const footerLanguageBtn = document.querySelector('.footer-language-btn');
+    const footerLanguageDropdown = footerLanguageBtn?.parentElement.querySelector('.language-dropdown');
+    const footerCurrentLanguage = document.getElementById('footer-current-language');
+
+    // 为footer的语言选择按钮添加点击事件
+    if (footerLanguageBtn) {
+        footerLanguageBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            footerLanguageDropdown.classList.toggle('show');
+        });
+    }
+
+    // 为footer中的语言选项添加点击事件
+    if (footerLanguageDropdown) {
+        const footerLanguageOptions = footerLanguageDropdown.querySelectorAll('.language-option');
+        
+        footerLanguageOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                const lang = this.getAttribute('data-lang');
+                const languageName = this.querySelector('.language-name').textContent;
+                
+                // 更新当前语言显示
+                footerCurrentLanguage.textContent = languageName;
+                
+                // 移除所有选项的active类
+                footerLanguageOptions.forEach(opt => opt.classList.remove('active'));
+                
+                // 为当前选项添加active类
+                this.classList.add('active');
+                
+                // 切换语言 - 与顶部语言选择器共享同一功能
+                changeLanguage(lang);
+                
+                // 隐藏下拉菜单
+                footerLanguageDropdown.classList.remove('show');
+            });
+        });
+    }
+
+    // 点击页面其他地方关闭footer的语言下拉菜单
+    document.addEventListener('click', function(e) {
+        if (footerLanguageDropdown && footerLanguageDropdown.classList.contains('show')) {
+            if (!footerLanguageDropdown.contains(e.target) && e.target !== footerLanguageBtn) {
+                footerLanguageDropdown.classList.remove('show');
+            }
+        }
+    });
 }); 

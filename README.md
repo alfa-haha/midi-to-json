@@ -144,4 +144,14 @@ Access to fetch at 'https://unpkg.com/...' from origin 'null' has been blocked b
 
 ## 贡献
 
-欢迎提交问题和改进建议！ 
+欢迎提交问题和改进建议！
+
+## Blog Section
+
+The website now includes a blog section with a blog aggregation page that showcases articles about MIDI to JSON conversion. The blog page lists three articles:
+
+1. **MIDI to JSON Conversion Guide** - A comprehensive guide on converting MIDI files to JSON format
+2. **Web Music Application Development** - Learn how to build web music applications using JSON-converted MIDI files
+3. **Innovative Application Cases** - Explore creative ways developers are using MIDI to JSON conversion
+
+The blog aggregation page can be accessed from the main navigation in the header and also from the footer's Quick Links section. 

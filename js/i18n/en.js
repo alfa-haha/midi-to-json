@@ -9,8 +9,39 @@ window.en = {
     // Navigation
     "nav": {
         "howItWorks": "How It Works",
-        "faq": "FAQ"
+        "faq": "FAQ",
+        "terms": "Terms & Conditions"
     },
+    
+    // Terms and Conditions Page
+    "termsTitle": "Terms and Conditions",
+    "termsSubtitle": "Please read these terms carefully before using our MidiEasy platform.",
+    "termsIntro": "By accessing and using the MidiEasy.com platform (\"Service\"), you agree to comply with the following terms and conditions.",
+    "termsModification": "The Service maintains the right to modify these terms periodically without prior notification.",
+    "termsViolation": "Violation of any terms outlined below will lead to Account termination.",
+    "prohibitedActivitiesTitle": "Prohibited Activities",
+    "accountManagementTitle": "Account Management",
+    "serviceGuaranteesTitle": "Service Guarantees",
+    "liabilityLimitationsTitle": "Liability Limitations",
+    "legalJurisdictionTitle": "Legal Jurisdiction",
+    "contactInfoTitle": "Contact Information",
+    
+    // Privacy Policy Page
+    "privacyTitle": "Privacy Policy",
+    "privacySubtitle": "We care about your privacy and the security of your data. This privacy policy explains how we collect, use, and protect your information.",
+    "privacyScopeTitle": "Scope",
+    "privacyScope": "This Privacy Policy covers information collected through your use of our Website.",
+    "informationCollectedTitle": "Information We Collect",
+    "technicalInfoTitle": "Technical Information",
+    "technicalInfo": "MidiEasy collects minimal data beyond account and payment information. However, third-party services we utilize may collect necessary information within legal limits, such as IP address, browser details, webpage type, request time/date, and cookies.",
+    "otherSourcesTitle": "Information from Other Sources",
+    "otherSources": "We may access information from third-party services, such as your Google email address when using \"Sign in with Google.\" Access to such information follows authorization procedures set by that service. By connecting with a third-party service, you authorize us to access and store your email address provided by that service and use it according to this Privacy Policy.",
+    "informationUseTitle": "How We Use Your Information",
+    "informationSharingTitle": "Information Sharing",
+    "informationSharing": "We employ third-party companies to process information based on our instructions and in compliance with this Privacy Policy. For example: We share your IP address, Billing information, and Contact information with our payment processors.",
+    "dataRetentionTitle": "Data Retention",
+    "dataRetention": "We keep your account information while your account remains active and for a reasonable period afterward in case you reactivate. We retain certain information as necessary to comply with legal obligations, resolve disputes, enforce agreements, support operations, and improve our Services.",
+    "contactUsTitle": "Contact Us",
     
     // Features section
     "whyChooseTitle": "Why Choose MidiEasy",

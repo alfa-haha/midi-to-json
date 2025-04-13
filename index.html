@@ -16,7 +16,7 @@
     <title>MIDI to JSON Converter Online | Transform Musical Files Free</title>
     <link rel="stylesheet" href="css/style.css">
     <!-- Font Awesome 图标库 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <!-- JSZip 库 - 用于批量文件下载 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- FileSaver.js 库 - 用于保存文件 -->
@@ -109,9 +109,9 @@
     <header>
         <div class="language-selector">
             <button class="language-btn">
-                <i class="fas fa-globe"></i>
+                <i class="fa-solid fa-globe"></i>
                 <span id="current-language">English</span>
-                <i class="fas fa-chevron-down"></i>
+                <i class="fa-solid fa-chevron-down"></i>
             </button>
             <div class="language-dropdown">
                 <div class="language-option active" data-lang="en">
@@ -135,6 +135,7 @@
         <p data-i18n="subtitle">Professional MIDI to JSON Converter for Tone.js & Web Audio Developers</p>
         <div class="nav-links">
             <a href="#how-it-works" class="nav-link" data-i18n="nav.howItWorks">How to Use</a>
+            <a href="blog/index.html" class="nav-link" data-i18n="nav.blog">Blog</a>
             <a href="#faq" class="nav-link" data-i18n="nav.faq">FAQ</a>
         </div>
     </header>
@@ -348,9 +349,9 @@
     <footer>
         <div class="footer-container">
             <div class="footer-section">
-                <h3>MIDI to JSON Converter</h3>
+                <h3>About MIDI to JSON Converter</h3>
                 <p>We present an online service to convert MIDI files to JSON format for web audio applications.</p>
-                <p><i class="fas fa-envelope"></i> support@midieasy.com</p>
+                <p><i class="fa-solid fa-envelope"></i> <a href="mailto:support@midieasy.com" class="email-link">support@midieasy.com</a></p>
             </div>
             <div class="footer-section">
                 <h3>Company</h3>
@@ -361,27 +362,23 @@
                 </ul>
             </div>
             <div class="footer-section">
-                <h3>Useful Links</h3>
+                <h3>Quick Links</h3>
                 <ul>
-                    <li><a href="#">Contact Us</a></li>
-                    <li><a href="#">Terms & Conditions</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="mailto:support@midieasy.com?subject=Contact%20from%20MIDI%20to%20JSON%20Converter" class="email-link">Contact Us</a></li>
+                    <li><a href="terms.html">Terms of Service</a></li>
+                    <li><a href="privacy-policy.html">Privacy Policy</a></li>
                 </ul>
             </div>
             <div class="footer-section">
                 <h3>Follow Us</h3>
                 <div class="social-links">
-                    <a href="https://twitter.com/midieasy" target="_blank" class="social-link">
-                        <i class="fab fa-twitter"></i>
-                        <span>Twitter</span>
+                    <a href="https://x.com/midieasy" target="_blank" class="social-link">
+                        <i class="fa-brands fa-x-twitter"></i>
+                        <span>X</span>
                     </a>
                     <a href="https://facebook.com/midieasy" target="_blank" class="social-link">
-                        <i class="fab fa-facebook-f"></i>
+                        <i class="fa-brands fa-facebook-f"></i>
                         <span>Facebook</span>
-                    </a>
-                    <a href="https://linkedin.com/company/midieasy" target="_blank" class="social-link">
-                        <i class="fab fa-linkedin-in"></i>
-                        <span>LinkedIn</span>
                     </a>
                 </div>
             </div>
@@ -395,22 +392,26 @@
     <script src="js/i18n/en.js"></script>
     <script src="js/i18n.js"></script>
     <script src="js/script.js"></script>
+    <script src="js/common.js"></script>
     <script>
         // 平滑滚动锚点链接
         document.querySelectorAll('.nav-link').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
-                e.preventDefault();
                 const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop,
-                        behavior: 'smooth'
-                    });
+                // 如果是页内链接才执行平滑滚动
+                if (targetId.startsWith('#')) {
+                    e.preventDefault();
+                    const targetElement = document.querySelector(targetId);
                     
-                    // 更新URL但不刷新页面，提升SEO
-                    history.pushState(null, null, targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop,
+                            behavior: 'smooth'
+                        });
+                        
+                        // 更新URL但不刷新页面，提升SEO
+                        history.pushState(null, null, targetId);
+                    }
                 }
             });
         });

@@ -136,12 +136,31 @@ function applyTranslations() {
  * 设置语言选择器的点击事件
  */
 function setupLanguageSelector() {
+    // 设置语言选项点击事件
     document.querySelectorAll('.language-option').forEach(option => {
         option.addEventListener('click', function() {
             const lang = this.getAttribute('data-lang');
             changeLanguage(lang);
         });
     });
+    
+    // 设置语言按钮点击事件（打开下拉菜单）
+    const languageBtn = document.querySelector('.language-btn');
+    const languageDropdown = document.querySelector('.language-dropdown');
+    
+    if (languageBtn && languageDropdown) {
+        languageBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            languageDropdown.classList.toggle('show');
+        });
+        
+        // 点击页面其他地方关闭下拉菜单
+        document.addEventListener('click', function(e) {
+            if (!languageBtn.contains(e.target) && !languageDropdown.contains(e.target)) {
+                languageDropdown.classList.remove('show');
+            }
+        });
+    }
 }
 
 /**

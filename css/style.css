@@ -371,20 +371,18 @@ footer a:hover {
 
 /* 新的footer样式 */
 .footer-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    padding: 2rem;
+    display: grid;
+    grid-template-columns: 1.4fr 0.8fr 0.9fr 0.9fr; /* 设置4个分栏的比例 */
+    gap: 40px; /* 统一的分栏间距 */
+    padding: 2rem 2rem 2rem 10rem; /* 增加左内边距到4rem */;
     background-color: #333;
     color: white;
-    text-align: left;
 }
 
 .footer-section {
-    flex: 1;
-    min-width: 200px;
-    margin: 0 10px 20px;
     text-align: left;
+    min-width: initial; /* 移除最小宽度限制 */
+    margin: 0; /* 移除margin，因为gap已经处理了间距 */
 }
 
 .footer-section h3 {
@@ -473,22 +471,34 @@ footer a:hover {
 /* 响应式调整 */
 @media (max-width: 768px) {
     .footer-container {
-        flex-direction: column;
-        align-items: center;
+        display: grid;
+        grid-template-columns: 1fr; /* 在移动端改为单列布局 */
+        gap: 20px; /* 减小间距 */
+        padding: 2rem; /* 移除过大的左内边距 */
     }
     
     .footer-section {
         width: 100%;
-        margin-bottom: 30px;
+        margin-bottom: 20px;
+        text-align: center; /* 在移动端居中显示 */
     }
     
     .footer-bottom {
         flex-direction: column;
         text-align: center;
+        padding: 15px 1rem; /* 减小内边距 */
     }
     
     .social-icons {
         margin-top: 15px;
+        justify-content: center;
+    }
+    
+    .social-links {
+        align-items: center;
+    }
+    
+    .social-link {
         justify-content: center;
     }
 }
@@ -1013,33 +1023,43 @@ footer a:hover {
 .social-links {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    margin-top: 10px;
+    gap: 15px; /* 增加间距 */
+    margin-top: 15px;
 }
 
 .social-link {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px; /* 增加图标和文本间距 */
     color: #75a9ff;
     text-decoration: none;
     transition: color 0.3s ease;
+    font-weight: 500; /* 添加一些字重 */
 }
 
 .social-link:hover {
     color: #2575fc;
     text-decoration: none;
+    transform: translateX(2px); /* 添加悬停效果 */
 }
 
 .social-link i {
     font-size: 1.2rem;
-    width: 20px;
+    width: 24px; /* 增加宽度保证对齐 */
     text-align: center;
+}
+
+/* X图标特殊样式 */
+.fa-x-twitter {
+    font-weight: 700; /* 使X图标更加粗体 */
 }
 
 /* 响应式调整 */
 @media (max-width: 768px) {
     .social-links {
         align-items: center;
+        flex-direction: row; /* 在移动端横向排列 */
+        justify-content: center;
+        gap: 30px; /* 横向间距更大 */
     }
 } 

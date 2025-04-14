@@ -37,9 +37,6 @@ function initI18n() {
         // 应用翻译
         applyTranslations();
     }
-    
-    // 设置语言选择器
-    setupLanguageSelector();
 }
 
 /**
@@ -119,6 +116,19 @@ function applyTranslations() {
         languageDisplay.textContent = languageNames[currentLanguage] || 'English';
     }
     
+    // 更新footer的语言显示
+    const footerLanguageDisplay = document.getElementById('footer-current-language');
+    if (footerLanguageDisplay) {
+        const languageNames = {
+            'en': 'English',
+            'zh': '中文',
+            'ja': '日本語',
+            'es': 'Español',
+            'de': 'Deutsch'
+        };
+        footerLanguageDisplay.textContent = languageNames[currentLanguage] || 'English';
+    }
+    
     // 更新语言选择器的active状态
     document.querySelectorAll('.language-option').forEach(option => {
         if (option.getAttribute('data-lang') === currentLanguage) {
@@ -130,37 +140,6 @@ function applyTranslations() {
     
     // 更新HTML的lang属性
     document.documentElement.lang = currentLanguage;
-}
-
-/**
- * 设置语言选择器的点击事件
- */
-function setupLanguageSelector() {
-    // 设置语言选项点击事件
-    document.querySelectorAll('.language-option').forEach(option => {
-        option.addEventListener('click', function() {
-            const lang = this.getAttribute('data-lang');
-            changeLanguage(lang);
-        });
-    });
-    
-    // 设置语言按钮点击事件（打开下拉菜单）
-    const languageBtn = document.querySelector('.language-btn');
-    const languageDropdown = document.querySelector('.language-dropdown');
-    
-    if (languageBtn && languageDropdown) {
-        languageBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            languageDropdown.classList.toggle('show');
-        });
-        
-        // 点击页面其他地方关闭下拉菜单
-        document.addEventListener('click', function(e) {
-            if (!languageBtn.contains(e.target) && !languageDropdown.contains(e.target)) {
-                languageDropdown.classList.remove('show');
-            }
-        });
-    }
 }
 
 /**

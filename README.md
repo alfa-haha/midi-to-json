@@ -154,4 +154,38 @@ The website now includes a blog section with a blog aggregation page that showca
 2. **Web Music Application Development** - Learn how to build web music applications using JSON-converted MIDI files
 3. **Innovative Application Cases** - Explore creative ways developers are using MIDI to JSON conversion
 
-The blog aggregation page can be accessed from the main navigation in the header and also from the footer's Quick Links section. 
+The blog aggregation page can be accessed from the main navigation in the header and also from the footer's Quick Links section.
+
+## SEO Optimization for Multilingual Support
+
+To improve search engine optimization and ensure proper indexing of our multilingual content, we've implemented the following best practices:
+
+### URL Structure
+- Each language has its own dedicated URL path, following Google's recommended pattern:
+  - English: `/en/page-name`
+  - Chinese: `/zh/page-name`
+  - Japanese: `/ja/page-name` 
+  - Spanish: `/es/page-name`
+  - German: `/de/page-name`
+
+### Hreflang Implementation
+- All pages include proper `hreflang` tags in the `<head>` section, helping search engines understand relationships between translated pages
+- We use `x-default` hreflang tags to indicate the default language version (English)
+
+### Canonical URLs
+- Every page has a canonical URL tag to prevent duplicate content issues
+- This ensures search engines know which URL is the primary version for indexing
+
+### Redirects
+- 301 redirects handle old URL patterns, ensuring users and search engines are directed to the correct language-specific URL
+- The `.htaccess` file contains rules for automatically redirecting users based on URL structure
+
+### Language Switching
+- The language switcher updates both the UI language and redirects to the appropriate language URL
+- The `i18n.js` file handles detection of language from URL and localStorage preferences
+
+### XML Sitemap
+- A comprehensive XML sitemap (`sitemap.xml`) includes all language versions of each page
+- Each URL entry includes hreflang annotations matching the on-page implementation
+
+This implementation ensures our website follows Google's guidelines for multilingual SEO, improving our visibility in search results across different languages and regions. 

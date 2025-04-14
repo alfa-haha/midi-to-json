@@ -1,0 +1,37 @@
+# SEO URL Standardization
+# Redirect non-language URLs to language-specific URLs
+
+# Default language is English
+RewriteEngine On
+RewriteBase /
+
+# If the URL does not start with a language code, redirect to /en/...
+RewriteCond %{REQUEST_URI} !^/(en|zh|ja|es|de)/ [NC]
+RewriteCond %{REQUEST_URI} !^/css/ [NC]
+RewriteCond %{REQUEST_URI} !^/js/ [NC]
+RewriteCond %{REQUEST_URI} !^/images/ [NC]
+RewriteCond %{REQUEST_URI} !^/robots.txt [NC]
+RewriteCond %{REQUEST_URI} !^/sitemap.xml [NC]
+RewriteCond %{REQUEST_URI} !^/.htaccess [NC]
+
+# Root URL to English homepage
+RewriteRule ^$ /en/ [R=301,L]
+
+# Blog root to English blog
+RewriteRule ^blog$ /en/blog/ [R=301,L]
+RewriteRule ^blog/$ /en/blog/ [R=301,L]
+RewriteRule ^blog/(.*) /en/blog/$1 [R=301,L]
+
+# Terms page
+RewriteRule ^terms.html$ /en/terms.html [R=301,L]
+
+# Privacy policy page
+RewriteRule ^privacy-policy.html$ /en/privacy-policy.html [R=301,L]
+
+# Add trailing slash to directories (canonical URLs)
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^(.*[^/])$ $1/ [R=301,L]
+
+# Remove trailing slash from files
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)/$ $1 [R=301,L] 

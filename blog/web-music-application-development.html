@@ -538,33 +538,6 @@ midiJSON.tracks.forEach(track => {
     <script src="../js/i18n/en.js"></script>
     <script src="../js/i18n.js"></script>
     <script src="common.js"></script>
-    <script>
-        // 语言切换功能
-        document.querySelector('.language-btn').addEventListener('click', function() {
-            document.querySelector('.language-dropdown').classList.toggle('show');
-        });
-
-        document.querySelectorAll('.language-option').forEach(option => {
-            option.addEventListener('click', function() {
-                const lang = this.dataset.lang;
-                // 调用i18n.js中的changeLanguage函数来实际切换语言
-                if (typeof window.setLanguage === 'function') {
-                    window.setLanguage(lang);
-                }
-                // UI更新
-                document.querySelector('.language-option.active').classList.remove('active');
-                this.classList.add('active');
-                document.getElementById('current-language').textContent = this.querySelector('.language-name').textContent;
-                document.querySelector('.language-dropdown').classList.remove('show');
-            });
-        });
-
-        // 点击页面其他地方关闭语言选择下拉框
-        document.addEventListener('click', function(event) {
-            if (!event.target.closest('.language-selector')) {
-                document.querySelector('.language-dropdown').classList.remove('show');
-            }
-        });
-    </script>
+    <script src="../js/language-switcher.js"></script>
 </body>
 </html> 

@@ -4,6 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Transform your musical files for free with our online MIDI to JSON converter. Perfect for Tone.js & Web Audio developers. Fast, secure, and easy to use.">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://midieasy.com/en/" />
+    
+    <!-- hreflang tags for different languages -->
+    <link rel="alternate" hreflang="en" href="https://midieasy.com/en/" />
+    <link rel="alternate" hreflang="zh" href="https://midieasy.com/zh/" />
+    <link rel="alternate" hreflang="ja" href="https://midieasy.com/ja/" />
+    <link rel="alternate" hreflang="es" href="https://midieasy.com/es/" />
+    <link rel="alternate" hreflang="de" href="https://midieasy.com/de/" />
+    <link rel="alternate" hreflang="x-default" href="https://midieasy.com/en/" />
+    
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-EHWXKWKDW5"></script>
     <script>
@@ -14,7 +26,7 @@
       gtag('config', 'G-EHWXKWKDW5');
     </script>
     <title>MIDI to JSON Converter Online | Transform Musical Files Free</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
     <!-- Font Awesome 图标库 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <!-- JSZip 库 - 用于批量文件下载 -->
@@ -59,11 +71,6 @@
             });
         }
     </script>
-    <!-- 国际化 -->
-    <script src="js/i18n/en.js"></script>
-    <script src="js/i18n.js"></script>
-    <!-- 统一语言切换器 -->
-    <script src="js/language-switcher.js"></script>
     <style>
         /* 导航链接样式 */
         .nav-links {
@@ -119,19 +126,19 @@
                 <i class="fa-solid fa-chevron-down"></i>
             </button>
             <div class="language-dropdown">
-                <div class="language-option active" data-lang="en">
+                <div class="language-option active" data-lang="en" data-url="/en/">
                     <span class="language-name">English</span>
                 </div>
-                <div class="language-option" data-lang="zh">
+                <div class="language-option" data-lang="zh" data-url="/zh/">
                     <span class="language-name">中文</span>
                 </div>
-                <div class="language-option" data-lang="ja">
+                <div class="language-option" data-lang="ja" data-url="/ja/">
                     <span class="language-name">日本語</span>
                 </div>
-                <div class="language-option" data-lang="es">
+                <div class="language-option" data-lang="es" data-url="/es/">
                     <span class="language-name">Español</span>
                 </div>
-                <div class="language-option" data-lang="de">
+                <div class="language-option" data-lang="de" data-url="/de/">
                     <span class="language-name">Deutsch</span>
                 </div>
             </div>
@@ -140,7 +147,7 @@
         <p data-i18n="subtitle">Professional MIDI to JSON Converter for Tone.js & Web Audio Developers</p>
         <div class="nav-links">
             <a href="#how-it-works" class="nav-link" data-i18n="nav.howItWorks">How to Use</a>
-            <a href="blog/index.html" class="nav-link" data-i18n="nav.blog">Blog</a>
+            <a href="/en/blog/" class="nav-link" data-i18n="nav.blog">Blog</a>
             <a href="#faq" class="nav-link" data-i18n="nav.faq">FAQ</a>
         </div>
     </header>
@@ -361,17 +368,17 @@
             <div class="footer-section">
                 <h3>Company</h3>
                 <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">Blog</a></li>
-                    <li><a href="#">FAQ's</a></li>
+                    <li><a href="/en/">Home</a></li>
+                    <li><a href="/en/blog/">Blog</a></li>
+                    <li><a href="#faq">FAQ's</a></li>
                 </ul>
             </div>
             <div class="footer-section">
                 <h3>Quick Links</h3>
                 <ul>
                     <li><a href="mailto:support@midieasy.com?subject=Contact%20from%20MIDI%20to%20JSON%20Converter" class="email-link">Contact Us</a></li>
-                    <li><a href="terms.html">Terms of Service</a></li>
-                    <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                    <li><a href="/en/terms.html">Terms of Service</a></li>
+                    <li><a href="/en/privacy-policy.html">Privacy Policy</a></li>
                 </ul>
             </div>
             <div class="footer-section">
@@ -394,8 +401,29 @@
         </div>
     </footer>
 
-    <script src="js/script.js"></script>
+    <script src="../js/i18n/en.js"></script>
+    <script src="../js/i18n.js"></script>
+    <script src="../js/script.js"></script>
+    <script src="../js/common.js"></script>
     <script>
+        // Enhanced language switching with URL redirection
+        document.querySelectorAll('.language-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const lang = this.getAttribute('data-lang');
+                const targetUrl = this.getAttribute('data-url');
+                
+                if (lang && targetUrl) {
+                    // First, change the language in the current page
+                    if (typeof window.setLanguage === 'function') {
+                        window.setLanguage(lang);
+                    }
+                    
+                    // Then redirect to the corresponding URL
+                    window.location.href = targetUrl;
+                }
+            });
+        });
+        
         // 平滑滚动锚点链接
         document.querySelectorAll('.nav-link').forEach(anchor => {
             anchor.addEventListener('click', function(e) {

@@ -291,8 +291,29 @@
     <script src="js/i18n/en.js"></script>
     <script src="js/i18n.js"></script>
     <script src="js/common.js"></script>
+    <script src="js/language-switcher.js"></script>
     <script>
         // 平滑滚动锚点链接
+        document.querySelectorAll('.nav-link').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const targetId = this.getAttribute('href');
+                // 如果是页内链接才执行平滑滚动
+                if (targetId.startsWith('#')) {
+                    e.preventDefault();
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop,
+                            behavior: 'smooth'
+                        });
+                        
+                        // 更新URL但不刷新页面，提升SEO
+                        history.pushState(null, null, targetId);
+                    }
+                }
+            });
+        });
     </script>
 </body>
 </html> 

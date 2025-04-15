@@ -1062,4 +1062,171 @@ footer a:hover {
         justify-content: center;
         gap: 30px; /* 横向间距更大 */
     }
+}
+
+/* Recent Blogs Section 样式 */
+.recent-blogs-section {
+    background-color: #f7f9ff;
+    padding: 4rem 0;
+    margin-bottom: 0;
+}
+
+.recent-blogs-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background-color: transparent;
+    box-shadow: none;
+}
+
+.recent-blogs-row {
+    display: flex;
+    gap: 2rem;
+    margin-top: 3rem;
+    justify-content: space-between;
+}
+
+.blog-post-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    max-width: calc(33.333% - 1.5rem);
+}
+
+.blog-post-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.blog-post-image {
+    height: 180px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.blog-post-image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.3));
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.blog-post-content {
+    padding: 1.5rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.blog-post-title {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    color: #333;
+    line-height: 1.4;
+}
+
+.blog-post-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+}
+
+.blog-post-date {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.blog-post-link {
+    text-decoration: none;
+    color: #2575fc;
+    font-weight: bold;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    transition: color 0.3s ease;
+}
+
+.blog-post-link i {
+    margin-left: 0.5rem;
+    transition: transform 0.3s ease;
+    font-size: 0.8rem;
+}
+
+.blog-post-link:hover {
+    color: #6a11cb;
+}
+
+.blog-post-link:hover i {
+    transform: translateX(3px);
+}
+
+.view-all-blogs {
+    text-align: center;
+    margin-top: 3rem;
+}
+
+.view-all-link {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    color: #2575fc;
+    font-weight: bold;
+    padding: 0.8rem 1.5rem;
+    border: 2px solid #2575fc;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+}
+
+.view-all-link:hover {
+    background-color: #2575fc;
+    color: white;
+}
+
+.view-all-link i {
+    margin-left: 0.5rem;
+    transition: transform 0.3s ease;
+}
+
+.view-all-link:hover i {
+    transform: translateX(3px);
+}
+
+/* 响应式设计 - 为Recent Blogs部分添加 */
+@media (max-width: 992px) {
+    .recent-blogs-row {
+        flex-wrap: wrap;
+    }
+    
+    .blog-post-card {
+        max-width: calc(50% - 1rem);
+        flex: 0 0 calc(50% - 1rem);
+    }
+}
+
+@media (max-width: 768px) {
+    .recent-blogs-section {
+        padding: 3rem 1rem;
+    }
+    
+    .recent-blogs-row {
+        flex-direction: column;
+        gap: 2rem;
+    }
+    
+    .blog-post-card {
+        max-width: 100%;
+        flex: 0 0 100%;
+    }
 } 

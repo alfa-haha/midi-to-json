@@ -1,0 +1,74 @@
+/**
+ * 博客文章图片样式
+ * 包含开篇图片的响应式和懒加载相关样式
+ */
+
+.blog-header-image {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin: 1.5rem 0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: block;
+}
+
+.blog-header-image:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* 懒加载样式 */
+.lazy-loading {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    background: #f8f9fa;
+    min-height: 200px;
+    position: relative;
+}
+
+.lazy-loading::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 50px;
+    height: 50px;
+    margin: -25px 0 0 -25px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #2575fc;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.lazy-loaded {
+    opacity: 1;
+}
+
+/* 图片容器样式 */
+.blog-image-container {
+    position: relative;
+    overflow: hidden;
+    margin: 2rem 0;
+}
+
+/* 响应式适配 */
+@media (max-width: 768px) {
+    .blog-header-image {
+        margin: 1rem 0;
+        border-radius: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .blog-header-image {
+        margin: 0.5rem 0;
+        border-radius: 6px;
+    }
+} 

@@ -1229,4 +1229,17 @@ footer a:hover {
         max-width: 100%;
         flex: 0 0 100%;
     }
-} 
+} /* 网站
+标题样式（非H1） */
+.site-title {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    color: white;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .site-title {
+        font-size: 2rem;
+    }
+}

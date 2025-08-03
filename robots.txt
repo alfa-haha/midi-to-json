@@ -1,0 +1,19 @@
+User-agent: *
+Allow: /
+
+# Disallow admin and private directories
+Disallow: /.git/
+Disallow: /.vscode/
+Disallow: /node_modules/
+
+# Allow important resources
+Allow: /css/
+Allow: /js/
+Allow: /images/
+Allow: /img/
+
+# Sitemap location
+Sitemap: https://midieasy.com/sitemap.xml
+
+# Crawl delay (optional, adjust as needed)
+Crawl-delay: 1

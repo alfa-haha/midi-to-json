@@ -1,0 +1,23 @@
+<header>
+  <div class="header-content">
+    <h1 class="site-title">{{ titleOverride or "MidiEasy" }}</h1>
+
+    <div class="nav-links">
+      <a href="{{ tools[0].paths[lang] }}" class="nav-link">MIDI → JSON</a>
+      <a href="{{ tools[1].paths[lang] }}" class="nav-link">MIDI → CSV</a>
+      <a href="{{ tools[2].paths[lang] }}" class="nav-link">MIDI Inspector</a>
+      <a href="{{ '/pro/' if lang == 'en' else '/' + lang + '/pro/' }}" class="nav-link">Pro</a>
+      <a href="/blog/index.html" class="nav-link">Blog</a>
+    </div>
+
+    <div class="language-selector" style="margin-top: 1rem;">
+      <div class="language-dropdown show" style="position: static; display: inline-flex; gap: 0.5rem; background: transparent; box-shadow: none;">
+        {% for l in site.languages %}
+          <a class="language-option {{ 'active' if l.code == lang else '' }}" href="{{ alts[l.code] }}">
+            <span class="language-name">{{ l.label }}</span>
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</header>

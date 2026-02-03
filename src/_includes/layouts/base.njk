@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="{{ lang | default('en') }}">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {% if meta and meta.description %}<meta name="description" content="{{ meta.description }}" />{% endif %}
+
+    {% if canonical %}
+      <link rel="canonical" href="{{ canonical }}" />
+    {% elseif alts and alts[lang] %}
+      <link rel="canonical" href="{{ site.baseUrl + alts[lang] }}" />
+    {% endif %}
+
+    {% if hreflangs %}
+      {% for item in hreflangs %}
+        <link rel="alternate" hreflang="{{ item.lang }}" href="{{ item.href }}" />
+      {% endfor %}
+    {% elseif alts %}
+      {% if alts.en %}<link rel="alternate" hreflang="en" href="{{ site.baseUrl + alts.en }}" />{% endif %}
+      {% if alts.zh %}<link rel="alternate" hreflang="zh" href="{{ site.baseUrl + alts.zh }}" />{% endif %}
+      {% if alts.de %}<link rel="alternate" hreflang="de" href="{{ site.baseUrl + alts.de }}" />{% endif %}
+      {% if alts.en %}<link rel="alternate" hreflang="x-default" href="{{ site.baseUrl + alts.en }}" />{% endif %}
+    {% endif %}
+
+    <title>{{ meta.title if meta and meta.title else "MidiEasy" }}</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    {% if headExtra %}{{ headExtra | safe }}{% endif %}
+  </head>
+  <body>
+    {% include "components/header.njk" %}
+    <main>
+      {{ content | safe }}
+    </main>
+    {% include "components/footer.njk" %}
+    <script src="/js/pro.js"></script>
+    {% if bodyScripts %}{{ bodyScripts | safe }}{% endif %}
+  </body>
+</html>

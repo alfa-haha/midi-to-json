@@ -1,0 +1,16 @@
+{
+  "name": "midieasy-site",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "build": "eleventy",
+    "dev": "eleventy --serve --watch",
+    "clean": "rm -rf _site"
+  },
+  "dependencies": {
+    "@vercel/kv": "^3.0.0"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^3.0.0"
+  }
+}

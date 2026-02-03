@@ -1,0 +1,24 @@
+<footer>
+  <div class="footer-container">
+    <div class="footer-section">
+      <h3>Company</h3>
+      <ul>
+        <li><a href="{{ tools[0].paths[lang] }}">Home</a></li>
+        <li><a href="/blog/index.html">Blog</a></li>
+        <li><a href="{{ '/pro/' if lang == 'en' else '/' + lang + '/pro/' }}">Pro</a></li>
+      </ul>
+    </div>
+    <div class="footer-section">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="mailto:{{ site.supportEmail }}" class="email-link">Contact Support</a></li>
+        <li><a href="/terms.html">Terms of Service</a></li>
+        <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2026 MidiEasy</p>
+  </div>
+  <script src="/js/common.js"></script>
+</footer>

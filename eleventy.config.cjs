@@ -1,21 +1,10 @@
 module.exports = function (eleventyConfig) {
-  // Keep existing static site files as-is (SEO rules/content unchanged), while Eleventy generates new pages.
-  eleventyConfig.addPassthroughCopy("css");
-  eleventyConfig.addPassthroughCopy("js");
-  eleventyConfig.addPassthroughCopy("images");
-  eleventyConfig.addPassthroughCopy("img");
-  eleventyConfig.addPassthroughCopy("blog");
-  eleventyConfig.addPassthroughCopy("en");
-  eleventyConfig.addPassthroughCopy("zh");
-  eleventyConfig.addPassthroughCopy("de");
-  eleventyConfig.addPassthroughCopy("ja");
+  // Eleventy only generates the new multi-tool/pro pages under `src/`.
+  // The legacy site is copied into `_site/` by `scripts/build.mjs` to keep SEO rules/content unchanged.
 
-  eleventyConfig.addPassthroughCopy("index.html");
-  eleventyConfig.addPassthroughCopy("terms.html");
-  eleventyConfig.addPassthroughCopy("privacy-policy.html");
-  eleventyConfig.addPassthroughCopy("robots.txt");
-  eleventyConfig.addPassthroughCopy("sitemap.xml");
-  eleventyConfig.addPassthroughCopy(".htaccess");
+  eleventyConfig.addPassthroughCopy({ "src/static/js/pro.js": "js/pro.js" });
+  eleventyConfig.addPassthroughCopy({ "src/static/js/midi-to-csv.bundle.js": "js/midi-to-csv.bundle.js" });
+  eleventyConfig.addPassthroughCopy({ "src/static/js/midi-inspector.bundle.js": "js/midi-inspector.bundle.js" });
 
   return {
     dir: {
@@ -26,6 +15,6 @@ module.exports = function (eleventyConfig) {
     },
     markdownTemplateEngine: "njk",
     htmlTemplateEngine: "njk",
-    templateFormats: ["njk", "md"]
+    templateFormats: ["njk", "md", "11ty.js"]
   };
 };

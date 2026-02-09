@@ -1,0 +1,115 @@
+{# Expected inputs:
+  - toolTitle
+  - toolSubtitle
+#}
+
+{% if toolTitle %}<h2>{{ toolTitle }}</h2>{% endif %}
+{% if toolSubtitle %}<p style="color:#666;">{{ toolSubtitle }}</p>{% endif %}
+
+<div class="upload-area" id="inspector-drop-area" role="button" tabindex="0" aria-label="Select a MIDI file">
+  <div class="upload-icon">
+    <i class="fas fa-file-audio"></i>
+  </div>
+  <h3>Drop a MIDI file here</h3>
+  <p>or</p>
+  <label for="inspector-file-input" class="file-input-label">Select MIDI file</label>
+  <input type="file" id="inspector-file-input" hidden accept=".mid,.midi,audio/midi,audio/x-midi" />
+  <p class="file-info" id="inspector-file-info">No file selected</p>
+  <p class="file-info" id="inspector-error" style="display:none; color:#e74c3c; font-weight:600;"></p>
+  <p class="file-info" id="inspector-status" style="color:#666;"></p>
+</div>
+
+<div class="action-buttons">
+  <button class="btn primary-btn" id="inspector-inspect-btn" disabled><i class="fas fa-magnifying-glass"></i> Inspect</button>
+  <button class="btn secondary-btn" id="inspector-clear-btn" disabled><i class="fas fa-broom"></i> Clear</button>
+</div>
+
+<div id="inspector-summary" class="inspector-summary" style="display:none;"></div>
+
+<div id="inspector-filters" class="inspector-filters" style="display:none;">
+  <div class="inspector-filters__row">
+    <div class="inspector-field">
+      <label class="inspector-label" for="filter-track">Track</label>
+      <select id="filter-track" multiple size="4" class="inspector-select"></select>
+      <div class="inspector-hint">Tip: Cmd/Ctrl click for multi-select.</div>
+    </div>
+    <div class="inspector-field">
+      <label class="inspector-label" for="filter-channel">Channel</label>
+      <select id="filter-channel" multiple size="4" class="inspector-select"></select>
+    </div>
+    <div class="inspector-field">
+      <label class="inspector-label">Pitch</label>
+      <div class="inspector-inline">
+        <input id="filter-pitch-min" class="inspector-input" type="number" min="0" max="127" placeholder="min" />
+        <input id="filter-pitch-max" class="inspector-input" type="number" min="0" max="127" placeholder="max" />
+      </div>
+    </div>
+  </div>
+
+  <div class="inspector-filters__row">
+    <div class="inspector-field">
+      <label class="inspector-label">Tick range (Pro)</label>
+      <div class="inspector-inline">
+        <input id="filter-tick-start" class="inspector-input" type="number" min="0" placeholder="start tick" disabled />
+        <input id="filter-tick-end" class="inspector-input" type="number" min="0" placeholder="end tick" disabled />
+      </div>
+      <div class="inspector-hint" id="inspector-pro-hint-1"></div>
+    </div>
+    <div class="inspector-field">
+      <label class="inspector-label">Flags (Pro)</label>
+      <div class="inspector-checks">
+        <label class="inspector-check"><input type="checkbox" id="flag-overlap" disabled /> overlap</label>
+        <label class="inspector-check"><input type="checkbox" id="flag-dangling" disabled /> dangling</label>
+        <label class="inspector-check"><input type="checkbox" id="flag-velocity0" disabled /> velocity0_noteoff</label>
+      </div>
+      <div class="inspector-hint" id="inspector-pro-hint-2"></div>
+    </div>
+    <div class="inspector-field">
+      <label class="inspector-label">Reset</label>
+      <button class="btn btn-sm" id="inspector-reset-filters-btn" type="button">Reset filters</button>
+    </div>
+  </div>
+</div>
+
+<div class="inspector-tabs" id="inspector-tabs" style="display:none;">
+  <div class="inspector-tabbar" role="tablist" aria-label="Inspector tabs">
+    <button class="btn btn-sm inspector-tab is-active" type="button" data-tab="events" role="tab" aria-selected="true">Events</button>
+    <button class="btn btn-sm inspector-tab" type="button" data-tab="tracks" role="tab" aria-selected="false">Tracks</button>
+    <button class="btn btn-sm inspector-tab" type="button" data-tab="notes" role="tab" aria-selected="false">Notes</button>
+  </div>
+
+  <section class="inspector-panel" id="tab-events" role="tabpanel">
+    <div class="inspector-panel__toolbar">
+      <div class="inspector-checks">
+        <label class="inspector-check"><input type="checkbox" id="events-show-notes" /> Show noteOn/noteOff (may be large)</label>
+        <label class="inspector-check"><input type="checkbox" id="events-cc64-only" checked /> CC64 only</label>
+      </div>
+      <div class="inspector-checks" id="events-type-filter"></div>
+    </div>
+    <div class="inspector-table-wrap" id="events-table"></div>
+    <div class="inspector-pagination" id="events-pagination"></div>
+  </section>
+
+  <section class="inspector-panel" id="tab-tracks" role="tabpanel" style="display:none;">
+    <div class="inspector-table-wrap" id="tracks-table"></div>
+  </section>
+
+  <section class="inspector-panel" id="tab-notes" role="tabpanel" style="display:none;">
+    <div class="inspector-table-wrap" id="notes-table"></div>
+    <div class="inspector-pagination" id="notes-pagination"></div>
+  </section>
+</div>
+
+<div class="inspector-export" id="inspector-export" style="display:none;">
+  <div class="inspector-export__left">
+    <div style="font-weight:700;">Export</div>
+    <div style="color:#666; font-size:0.95rem;">Export what you see (Pro). Ticks are the source of truth.</div>
+  </div>
+  <div class="inspector-export__right">
+    <button class="btn btn-sm" id="export-report-btn" type="button"><i class="fas fa-file-code"></i> report.json</button>
+    <button class="btn btn-sm" id="export-notes-btn" type="button"><i class="fas fa-file-csv"></i> notes.csv</button>
+    <button class="btn btn-sm" id="export-events-btn" type="button" disabled><i class="fas fa-file-lines"></i> events.json (Pro)</button>
+  </div>
+  <div class="inspector-export__meta" id="inspector-export-meta"></div>
+</div>
+

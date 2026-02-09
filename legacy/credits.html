@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Credits and open-source licenses used by MidiEasy.">
+    <title>Credits | MidiEasy</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        header {
+            padding: 3rem 1rem;
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 2.5rem;
+            margin-top: 1.5rem;
+            margin-left: auto;
+            margin-right: auto;
+            width: fit-content;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-weight: 600;
+            position: relative;
+            padding: 0.5rem 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: white;
+        }
+
+        .nav-link::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: white;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .credits-section {
+            background-color: white;
+            padding: 4rem 0;
+            margin-bottom: 0;
+        }
+
+        .credits-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: transparent;
+            box-shadow: none;
+        }
+
+        .credits-content {
+            margin-top: 1.5rem;
+            line-height: 1.8;
+            color: #555;
+        }
+
+        .credits-content h2 {
+            color: #333;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            font-size: 1.6rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .credits-content h2:after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            border-radius: 2px;
+        }
+
+        .credits-content ul {
+            padding-left: 1.5rem;
+        }
+
+        .credits-content li {
+            margin-bottom: 0.8rem;
+        }
+
+        .credits-content a {
+            color: #2575fc;
+            text-decoration: none;
+        }
+
+        .credits-content a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .credits-section {
+                padding: 2rem 1rem;
+            }
+
+            .nav-links {
+                gap: 0.5rem;
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="language-selector">
+            <button class="language-btn">
+                <i class="fa-solid fa-globe"></i>
+                <span id="current-language">English</span>
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <div class="language-dropdown">
+                <div class="language-option active" data-lang="en">
+                    <span class="language-name">English</span>
+                </div>
+                <div class="language-option" data-lang="zh">
+                    <span class="language-name">中文</span>
+                </div>
+                <div class="language-option" data-lang="ja">
+                    <span class="language-name">日本語</span>
+                </div>
+                <div class="language-option" data-lang="es">
+                    <span class="language-name">Español</span>
+                </div>
+                <div class="language-option" data-lang="de">
+                    <span class="language-name">Deutsch</span>
+                </div>
+            </div>
+        </div>
+
+        <h1>Credits</h1>
+        <p>Open-source libraries and licenses used by MidiEasy</p>
+        <div class="nav-links">
+            <a href="/" class="nav-link">MIDI → JSON</a>
+            <a href="/midi-to-csv/" class="nav-link">MIDI → CSV</a>
+            <a href="/midi-inspector/" class="nav-link">MIDI Inspector</a>
+            <a href="/pro/" class="nav-link">Pro</a>
+            <a href="/blog/index.html" class="nav-link">Blog</a>
+        </div>
+    </header>
+
+    <section class="credits-section">
+        <div class="container credits-container">
+            <h2 class="section-title">Credits</h2>
+            <p class="section-subtitle">We’re grateful to the open-source community.</p>
+
+            <div class="credits-content">
+                <h2>MIDI Parsing</h2>
+                <ul>
+                    <li><strong>midi-json-parser</strong> — MIT License. <a href="https://github.com/chrisguttandin/midi-json-parser" target="_blank" rel="noopener">Source</a></li>
+                </ul>
+
+                <h2>Downloads</h2>
+                <ul>
+                    <li><strong>JSZip</strong> — (MIT OR GPL-3.0-or-later). <a href="https://github.com/Stuk/jszip" target="_blank" rel="noopener">Source</a></li>
+                    <li><strong>FileSaver.js</strong> — MIT License. <a href="https://github.com/eligrey/FileSaver.js" target="_blank" rel="noopener">Source</a></li>
+                </ul>
+
+                <h2>Icons</h2>
+                <ul>
+                    <li><strong>Font Awesome Free</strong> — (CC-BY-4.0 AND OFL-1.1 AND MIT). <a href="https://fontawesome.com" target="_blank" rel="noopener">Source</a></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>About MidiEasy</h3>
+                <p>MidiEasy is a collection of fast, privacy-friendly MIDI tools for creators and developers. Convert, inspect, and validate MIDI files — right in your browser.</p>
+                <p>All processing happens locally on your device.</p>
+                <p><i class="fa-solid fa-envelope"></i> <a href="mailto:support@midieasy.com" class="email-link">support@midieasy.com</a></p>
+            </div>
+            <div class="footer-section">
+                <h3>Company</h3>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/blog/index.html">Blog</a></li>
+                    <li><a href="/pro/">Pro</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>MIDI Tools</h3>
+                <ul>
+                    <li><a href="/">MIDI to JSON</a></li>
+                    <li><a href="/midi-to-csv/">MIDI to CSV</a></li>
+                    <li><a href="/midi-inspector/">MIDI Inspector</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="mailto:support@midieasy.com?subject=Contact%20from%20MidiEasy" class="email-link">Contact Us</a></li>
+                    <li><a href="/terms.html">Terms of Service</a></li>
+                    <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+                    <li><a href="/credits.html">Credits</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>Powered by open-source MIDI parsers. &copy; 2026 MidiEasy. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/i18n/en.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/language-switcher.js"></script>
+    <script src="js/common.js"></script>
+</body>
+</html>

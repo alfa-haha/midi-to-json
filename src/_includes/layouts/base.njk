@@ -27,7 +27,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     {% if headExtra %}{{ headExtra | safe }}{% endif %}
   </head>
-  <body>
+  <body{% if toolId %} data-tool="{{ toolId }}"{% endif %}>
     {% include "components/header.njk" %}
     <main>
       {{ content | safe }}

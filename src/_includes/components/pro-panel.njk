@@ -1,22 +1,12 @@
-<section id="pro-panel" class="converter-container" style="margin-top: 2rem;">
-  <div style="display:flex; align-items:center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
-    <h2 style="margin:0;">Lifetime Pro ($9.9)</h2>
-    <span data-pro-badge style="padding: 0.25rem 0.6rem; border-radius: 999px; background: #f1f1f1; color: #333;">Free</span>
-  </div>
+{% include "snippets/pro-panel.html" %}
 
-  <p style="margin-top: 0.5rem;">Applies to all converters. No upload. Files never leave your device.</p>
-
-  <div style="display:flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1rem;">
-    <a data-pro-buy class="btn primary-btn" href="{{ site.stripePaymentUrl }}" target="_blank" rel="noopener">Buy Lifetime</a>
-  </div>
-
-  <div style="margin-top: 1.25rem;">
-    <label style="display:block; font-weight: 600; margin-bottom: 0.25rem;">Activate with your email</label>
-    <div style="display:flex; gap: 0.5rem; flex-wrap: wrap;">
-      <input data-pro-email type="email" placeholder="you@example.com" style="padding: 0.6rem 0.8rem; min-width: 260px; border: 1px solid #ddd; border-radius: 8px;" />
-      <button data-pro-activate class="btn secondary-btn">Activate</button>
-    </div>
-    <p data-pro-status style="margin-top: 0.5rem; color: #666;">Activate Pro to unlock features.</p>
-    <div data-pro-error style="display:none; margin-top: 0.5rem; color: #b00020;"></div>
-  </div>
-</section>
+{# Tool pages: embed the exact panel copy inline so "On this page" renders even if pro-copy.json fetch fails. #}
+{% if toolId and proCopy and proCopy.toolById and proCopy.toolById[toolId] %}
+  {% set panelCfg = (proCopy.panel[lang] if proCopy.panel and proCopy.panel[lang] else proCopy.panel.en) %}
+  {% set globalItems = (proCopy.globalBenefits[lang] if proCopy.globalBenefits and proCopy.globalBenefits[lang] else proCopy.globalBenefits.en) %}
+  {% set tool = proCopy.toolById[toolId] %}
+  {% set toolItems = (tool.proBenefits[lang] if tool.proBenefits and tool.proBenefits[lang] else tool.proBenefits.en) %}
+  <script type="application/json" id="midieasy-pro-panel-copy">
+    {{ { toolId: toolId, lang: lang, panel: panelCfg, globalBenefits: globalItems, toolBenefits: toolItems } | dump | safe }}
+  </script>
+{% endif %}

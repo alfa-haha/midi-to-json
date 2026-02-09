@@ -4,18 +4,276 @@ layout: "layouts/base.njk"
 lang: zh
 titleOverride: "Pro"
 meta:
-  title: "Lifetime Pro ($9.9) | MidiEasy"
-  description: "Unlock Pro features across all converters. Email whitelist + 2 devices. Files never leave your device."
+  title: "MidiEasy Pro（$9.90 终身）"
+  description: "一次购买，全站所有 MidiEasy 工具解锁 Pro。本地处理，无需上传；用付款邮箱激活；最多 2 台设备。"
 alts:
   en: "/pro/"
   zh: "/zh/pro/"
   de: "/de/pro/"
+headExtra: |
+  <style>
+    .pro-page > .container { margin-top: 1.5rem; }
+    .pro-page > .container:first-child { margin-top: 0; }
+
+    .pro-hero {
+      border: 1px solid rgba(37, 117, 252, 0.18);
+      background: radial-gradient(1200px 500px at 0% 0%, rgba(106, 17, 203, 0.12), transparent 60%),
+                  radial-gradient(900px 400px at 100% 0%, rgba(37, 117, 252, 0.14), transparent 55%),
+                  #fff;
+    }
+    .pro-hero h1 { font-size: 2.1rem; line-height: 1.15; letter-spacing: -0.02em; }
+    .pro-hero__sub { margin-top: 0.75rem; color: #333; font-size: 1.05rem; }
+    .pro-hero__ctas { margin-top: 1.1rem; display: flex; gap: 0.9rem; align-items: center; flex-wrap: wrap; }
+    .pro-hero__secondary { color: #1b5fd7; text-decoration: none; font-weight: 700; }
+    .pro-hero__secondary:hover { text-decoration: underline; }
+    .pro-trustbar {
+      margin-top: 1rem;
+      font-size: 0.92rem;
+      color: #555;
+      display: flex;
+      gap: 0.7rem;
+      flex-wrap: wrap;
+    }
+    .pro-trustbar__dot { opacity: 0.7; }
+
+    .pro-table-wrap { margin-top: 0.9rem; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .pro-table { width: 100%; border-collapse: collapse; min-width: 680px; }
+    .pro-table th, .pro-table td { border: 1px solid #eee; padding: 0.75rem; text-align: left; vertical-align: top; }
+    .pro-table th { background: #fafafa; font-weight: 900; }
+
+    .pro-how-steps { margin-top: 1rem; display: grid; gap: 0.85rem; }
+    .pro-stepbox { border: 1px solid #eee; border-radius: 12px; padding: 1rem; background: #fafafa; }
+    .pro-stepbox__title { font-weight: 900; }
+    .pro-stepbox__desc { margin-top: 0.35rem; color: #444; }
+    .pro-stepbox__hint { margin-top: 0.5rem; color: #666; font-size: 0.95rem; }
+
+    #includes .always-grid {
+      margin-top: 0.9rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0.9rem;
+    }
+    #includes .always-card {
+      border: 1px solid #eee;
+      border-radius: 14px;
+      padding: 0.95rem 1rem;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      align-items: center;
+      text-align: center;
+    }
+    #includes .always-card--highlight {
+      border-color: rgba(37, 117, 252, 0.22);
+      background: linear-gradient(135deg, rgba(106, 17, 203, 0.06), rgba(37, 117, 252, 0.06));
+    }
+    #includes .always-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(27, 95, 215, 0.08);
+      color: #1b5fd7;
+      flex: 0 0 38px;
+    }
+    #includes .always-title { font-weight: 900; color: #222; }
+    #includes .always-desc { margin-top: 0.25rem; color: #555; }
+    #includes .always-badges { margin-top: 0.55rem; display: flex; gap: 0.45rem; flex-wrap: wrap; justify-content: center; }
+    #includes .always-badge { font-size: 0.88rem; color: #444; background: #fafafa; border: 1px solid #eee; border-radius: 999px; padding: 0.18rem 0.5rem; }
+
+    .pro-activate {
+      border: 1px solid #eee;
+      background: #fff;
+    }
+    .pro-activate p { margin-top: 0.5rem; color: #444; }
+    .pro-activate__actions { margin-top: 0.9rem; display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .pro-activate__hint { margin-top: 0.65rem; color: #666; font-size: 0.95rem; }
+    .pro-activate-inline__label { display:block; font-weight: 700; margin-top: 0.75rem; }
+    .pro-activate-inline__row { margin-top: 0.5rem; display:flex; gap: 0.5rem; flex-wrap: wrap; }
+    .pro-activate-inline__row input { padding: 0.65rem 0.8rem; flex: 1 1 260px; min-width: 0; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; }
+    .pro-next-actions .btn { padding: 0.45rem 0.65rem; font-size: 0.95rem; }
+
+    .faq { margin-top: 0.9rem; display: grid; gap: 0.6rem; }
+    .faq details { border: 1px solid #eee; border-radius: 12px; background: #fff; padding: 0.85rem 0.95rem; }
+    .faq summary { cursor: pointer; font-weight: 900; }
+    .faq p { margin-top: 0.5rem; color: #444; }
+
+    .pro-footer-cta {
+      text-align: center;
+      border: 1px solid rgba(106, 17, 203, 0.18);
+      background: linear-gradient(135deg, rgba(106, 17, 203, 0.06), rgba(37, 117, 252, 0.06));
+    }
+    .pro-footer-cta h2 { font-size: 1.5rem; }
+    .pro-footer-cta p { margin-top: 0.5rem; color: #444; }
+    .pro-footer-cta .btn { margin-top: 0.9rem; }
+  </style>
 ---
-<section class="container" style="padding: 2rem 0;">
-  <div class="converter-container">
-    <h2>Lifetime Pro — $9.9</h2>
-    <p>(Placeholder English copy — replace with Chinese later.)</p>
+<div class="pro-page">
+  <section class="container pro-hero">
+    <h1>全站 Pro — $9.90 终身</h1>
+    <p class="pro-hero__sub">
+      <strong>一次购买，全站所有 MidiEasy 工具解锁 Pro。</strong><br />
+      本地处理，无需上传；用付款邮箱激活；最多 2 台设备。
+    </p>
+
+    <div class="pro-hero__ctas">
+      <a class="btn primary-btn" href="https://buy.stripe.com/dRmfZgeSMboZdxKcomgYU00" target="_blank" rel="noopener">购买 Pro（终身）— $9.90</a>
+      <a class="pro-hero__secondary" href="#activate">已购买？<span>用邮箱激活 →</span></a>
+    </div>
+
+    <div class="pro-trustbar" aria-label="Trust indicators">
+      <span>文件只在本地处理</span>
+      <span class="pro-trustbar__dot">•</span>
+      <span>最多 2 台设备</span>
+      <span class="pro-trustbar__dot">•</span>
+      <span>用付款邮箱验证</span>
+    </div>
+  </section>
+
+  <section class="container" id="tools">
+    <h2>每个工具的 Pro 升级</h2>
+    <p style="color:#555; margin-top:0.5rem;">Pro 是全站通行证：激活后，所有工具页面都会生效。</p>
+
+    <div class="pro-table-wrap" role="region" aria-label="Pro upgrades by tool">
+      <table class="pro-table">
+        <thead>
+          <tr>
+            <th>工具</th>
+            <th>Pro 升级内容</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for t in proCopy.tools %}
+            {% set toolLabel = t.name[lang] if t.name and t.name[lang] else t.name.en %}
+            {% set items = t.proBenefits[lang] if t.proBenefits and t.proBenefits[lang] else t.proBenefits.en %}
+            <tr>
+              <td><a href="{{ t.paths[lang] }}" style="font-weight:900; color:#1b5fd7; text-decoration:none;">{{ toolLabel }}</a></td>
+              <td>
+                <ul style="margin:0; padding-left:1.15rem; color:#444;">
+                  {% for b in items %}
+                    <li><strong>{{ b.strong }}</strong>{% if b.detail %} <span style="color:#666;">{{ b.detail }}</span>{% endif %}</li>
+                  {% endfor %}
+                </ul>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="container" id="includes">
+    <h2>通用权益（任意页面都成立）</h2>
+    {% set gb = proCopy.globalBenefits[lang] if proCopy.globalBenefits and proCopy.globalBenefits[lang] else proCopy.globalBenefits.en %}
+    <div class="always-grid" role="list">
+      <div class="always-card always-card--highlight" role="listitem">
+        <div class="always-icon" aria-hidden="true"><i class="fa-solid fa-globe"></i></div>
+        <div>
+          <div class="always-title">全站通行证</div>
+          <div class="always-desc"><strong>{{ gb[0].strong }}</strong></div>
+          <div class="always-badges" aria-label="Included benefits">
+            <span class="always-badge">全站所有工具</span>
+            <span class="always-badge">一次购买</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="always-card" role="listitem">
+        <div class="always-icon" aria-hidden="true"><i class="fa-solid fa-shield-halved"></i></div>
+        <div>
+          <div class="always-title">隐私优先</div>
+          <div class="always-desc"><strong>{{ gb[1].strong }}</strong>{% if gb[1].detail %} <span style="color:#666;">{{ gb[1].detail }}</span>{% endif %}</div>
+          <div class="always-badges" aria-label="Included benefits">
+            <span class="always-badge">本地处理</span>
+            <span class="always-badge">无需上传</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="always-card" role="listitem">
+        <div class="always-icon" aria-hidden="true"><i class="fa-solid fa-key"></i></div>
+        <div>
+          <div class="always-title">激活与设备</div>
+          <div class="always-desc">
+            <strong>{{ gb[2].strong }}</strong>{% if gb[2].detail %} <span style="color:#666;">{{ gb[2].detail }}</span>{% endif %}<br />
+            <strong>{{ gb[3].strong }}</strong>
+          </div>
+          <div class="always-badges" aria-label="Included benefits">
+            <span class="always-badge">无需账号</span>
+            <span class="always-badge">最多 2 台设备</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container" id="how">
+    <h2>如何使用（30 秒）</h2>
+    <div class="pro-how-steps">
+      <div class="pro-stepbox">
+        <div class="pro-stepbox__title">1) 购买</div>
+        <div class="pro-stepbox__desc">点击“购买 Pro”，完成付款。</div>
+      </div>
+      <div class="pro-stepbox">
+        <div class="pro-stepbox__title">2) 激活</div>
+        <div class="pro-stepbox__desc">打开任意工具页，在 Pro 面板里用<strong>同一个付款邮箱</strong>激活。</div>
+      </div>
+      <div class="pro-stepbox">
+        <div class="pro-stepbox__title">3) 完成</div>
+        <div class="pro-stepbox__desc">本设备解锁 Pro（最多 2 台设备）。</div>
+        <div class="pro-stepbox__hint">提示：如果你用的是 Apple Pay / Google Pay，请以 Stripe 回执上显示的邮箱为准。</div>
+      </div>
+    </div>
+  </section>
+
+<section class="container pro-activate" id="activate">
+  <h3 style="margin:0;">激活（已购买）</h3>
+  <p style="margin-top:0.5rem; color:#444;">粘贴 Stripe 回执上显示的<strong>同一个邮箱</strong>，即可在本设备解锁 Pro（最多 2 台设备）。</p>
+
+  <div id="pro-activate-inline">
+    <label class="pro-activate-inline__label">付款邮箱</label>
+    <div class="pro-activate-inline__row">
+      <input data-pro-email type="email" inputmode="email" autocomplete="email" placeholder="you@example.com" />
+      <button data-pro-activate class="btn primary-btn" type="button">Activate Pro</button>
+    </div>
+    <div class="pro-activate__hint">提示：如果你用的是 Apple Pay / Google Pay，请以 Stripe 回执上显示的邮箱为准。</div>
+    <p data-pro-status style="margin-top:0.5rem; color:#666; display:none;"></p>
+    <p data-pro-activated-as style="display:none; margin-top: 0.25rem; color: #666;"></p>
+    <div data-pro-email-hint style="display:none; margin-top: 0.5rem; color: #b00020;"></div>
+    <div data-pro-error style="display:none; margin-top: 0.5rem; color: #b00020;"></div>
+  </div>
+
+  <div class="pro-activate__actions pro-next-actions" aria-label="Next step">
+    <a class="btn btn-sm secondary-btn" href="/zh/midi-inspector/">MIDI Inspector →</a>
+    <a class="btn btn-sm secondary-btn" href="/zh/midi-to-csv/">MIDI → CSV →</a>
+    <a class="btn btn-sm secondary-btn" href="/zh/">MIDI → JSON →</a>
   </div>
 </section>
 
-{% include "components/pro-panel.njk" %}
+  <section class="container" id="faq">
+    <h2>常见问题</h2>
+    <div class="faq">
+      <details>
+        <summary>你们会上传我的 MIDI 文件吗？</summary>
+        <p>不会。转换发生在浏览器本地；我们只会验证你的 Pro 付款邮箱。</p>
+      </details>
+      <details>
+        <summary>为什么要用邮箱激活？</summary>
+        <p>为了保持轻量：无需注册账号、无需密码、没有后台。</p>
+      </details>
+      <details>
+        <summary>可以在多台设备上使用吗？</summary>
+        <p>可以，最多 2 台设备。需要重置？发邮件到 <a href="mailto:support@midieasy.com">support@midieasy.com</a>。</p>
+      </details>
+    </div>
+  </section>
+
+  <section class="container pro-footer-cta">
+    <h2>准备升级？</h2>
+    <p>一次购买，全站所有 MidiEasy 工具解锁 Pro。</p>
+    <a class="btn primary-btn" href="https://buy.stripe.com/dRmfZgeSMboZdxKcomgYU00" target="_blank" rel="noopener">购买 Pro（终身）— $9.90</a>
+  </section>
+</div>

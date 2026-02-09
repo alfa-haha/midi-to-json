@@ -4,18 +4,276 @@ layout: "layouts/base.njk"
 lang: de
 titleOverride: "Pro"
 meta:
-  title: "Lifetime Pro ($9.9) | MidiEasy"
-  description: "Unlock Pro features across all converters. Email whitelist + 2 devices. Files never leave your device."
+  title: "MidiEasy Pro ($9.90 Lifetime)"
+  description: "One purchase unlocks Pro across all MidiEasy tools. Local processing. No uploads. No account needed."
 alts:
   en: "/pro/"
   zh: "/zh/pro/"
   de: "/de/pro/"
+headExtra: |
+  <style>
+    .pro-page > .container { margin-top: 1.5rem; }
+    .pro-page > .container:first-child { margin-top: 0; }
+
+    .pro-hero {
+      border: 1px solid rgba(37, 117, 252, 0.18);
+      background: radial-gradient(1200px 500px at 0% 0%, rgba(106, 17, 203, 0.12), transparent 60%),
+                  radial-gradient(900px 400px at 100% 0%, rgba(37, 117, 252, 0.14), transparent 55%),
+                  #fff;
+    }
+    .pro-hero h1 { font-size: 2.1rem; line-height: 1.15; letter-spacing: -0.02em; }
+    .pro-hero__sub { margin-top: 0.75rem; color: #333; font-size: 1.05rem; }
+    .pro-hero__ctas { margin-top: 1.1rem; display: flex; gap: 0.9rem; align-items: center; flex-wrap: wrap; }
+    .pro-hero__secondary { color: #1b5fd7; text-decoration: none; font-weight: 700; }
+    .pro-hero__secondary:hover { text-decoration: underline; }
+    .pro-trustbar {
+      margin-top: 1rem;
+      font-size: 0.92rem;
+      color: #555;
+      display: flex;
+      gap: 0.7rem;
+      flex-wrap: wrap;
+    }
+    .pro-trustbar__dot { opacity: 0.7; }
+
+    .pro-table-wrap { margin-top: 0.9rem; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .pro-table { width: 100%; border-collapse: collapse; min-width: 680px; }
+    .pro-table th, .pro-table td { border: 1px solid #eee; padding: 0.75rem; text-align: left; vertical-align: top; }
+    .pro-table th { background: #fafafa; font-weight: 900; }
+
+    .pro-how-steps { margin-top: 1rem; display: grid; gap: 0.85rem; }
+    .pro-stepbox { border: 1px solid #eee; border-radius: 12px; padding: 1rem; background: #fafafa; }
+    .pro-stepbox__title { font-weight: 900; }
+    .pro-stepbox__desc { margin-top: 0.35rem; color: #444; }
+    .pro-stepbox__hint { margin-top: 0.5rem; color: #666; font-size: 0.95rem; }
+
+    #includes .always-grid {
+      margin-top: 0.9rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0.9rem;
+    }
+    #includes .always-card {
+      border: 1px solid #eee;
+      border-radius: 14px;
+      padding: 0.95rem 1rem;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      align-items: center;
+      text-align: center;
+    }
+    #includes .always-card--highlight {
+      border-color: rgba(37, 117, 252, 0.22);
+      background: linear-gradient(135deg, rgba(106, 17, 203, 0.06), rgba(37, 117, 252, 0.06));
+    }
+    #includes .always-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(27, 95, 215, 0.08);
+      color: #1b5fd7;
+      flex: 0 0 38px;
+    }
+    #includes .always-title { font-weight: 900; color: #222; }
+    #includes .always-desc { margin-top: 0.25rem; color: #555; }
+    #includes .always-badges { margin-top: 0.55rem; display: flex; gap: 0.45rem; flex-wrap: wrap; justify-content: center; }
+    #includes .always-badge { font-size: 0.88rem; color: #444; background: #fafafa; border: 1px solid #eee; border-radius: 999px; padding: 0.18rem 0.5rem; }
+
+    .pro-activate {
+      border: 1px solid #eee;
+      background: #fff;
+    }
+    .pro-activate p { margin-top: 0.5rem; color: #444; }
+    .pro-activate__actions { margin-top: 0.9rem; display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .pro-activate__hint { margin-top: 0.65rem; color: #666; font-size: 0.95rem; }
+    .pro-activate-inline__label { display:block; font-weight: 700; margin-top: 0.75rem; }
+    .pro-activate-inline__row { margin-top: 0.5rem; display:flex; gap: 0.5rem; flex-wrap: wrap; }
+    .pro-activate-inline__row input { padding: 0.65rem 0.8rem; flex: 1 1 260px; min-width: 0; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; }
+    .pro-next-actions .btn { padding: 0.45rem 0.65rem; font-size: 0.95rem; }
+
+    .faq { margin-top: 0.9rem; display: grid; gap: 0.6rem; }
+    .faq details { border: 1px solid #eee; border-radius: 12px; background: #fff; padding: 0.85rem 0.95rem; }
+    .faq summary { cursor: pointer; font-weight: 900; }
+    .faq p { margin-top: 0.5rem; color: #444; }
+
+    .pro-footer-cta {
+      text-align: center;
+      border: 1px solid rgba(106, 17, 203, 0.18);
+      background: linear-gradient(135deg, rgba(106, 17, 203, 0.06), rgba(37, 117, 252, 0.06));
+    }
+    .pro-footer-cta h2 { font-size: 1.5rem; }
+    .pro-footer-cta p { margin-top: 0.5rem; color: #444; }
+    .pro-footer-cta .btn { margin-top: 0.9rem; }
+  </style>
 ---
-<section class="container" style="padding: 2rem 0;">
-  <div class="converter-container">
-    <h2>Lifetime Pro — $9.9</h2>
-    <p>(Placeholder English copy — replace with German later.)</p>
+<div class="pro-page">
+  <section class="container pro-hero">
+    <h1>Site-wide Pro — $9.90 Lifetime</h1>
+    <p class="pro-hero__sub">
+      <strong>One purchase unlocks Pro across all MidiEasy tools.</strong><br />
+      Local processing. No uploads. Activate with checkout email. Up to 2 devices.
+    </p>
+
+    <div class="pro-hero__ctas">
+      <a class="btn primary-btn" href="https://buy.stripe.com/dRmfZgeSMboZdxKcomgYU00" target="_blank" rel="noopener">Buy Pro (Lifetime) — $9.90</a>
+      <a class="pro-hero__secondary" href="#activate">Already purchased? <span>Activate with email →</span></a>
+    </div>
+
+    <div class="pro-trustbar" aria-label="Trust indicators">
+      <span>Files stay on your device</span>
+      <span class="pro-trustbar__dot">•</span>
+      <span>Works on up to 2 devices</span>
+      <span class="pro-trustbar__dot">•</span>
+      <span>Verified by checkout email</span>
+    </div>
+  </section>
+
+  <section class="container" id="tools">
+    <h2>Pro upgrades every tool</h2>
+    <p style="color:#555; margin-top:0.5rem;">Pro is a site-wide upgrade: once activated, Pro works on every tool page.</p>
+
+    <div class="pro-table-wrap" role="region" aria-label="Pro upgrades by tool">
+      <table class="pro-table">
+        <thead>
+          <tr>
+            <th>Tool</th>
+            <th>Pro upgrades</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for t in proCopy.tools %}
+            {% set toolLabel = t.name[lang] if t.name and t.name[lang] else t.name.en %}
+            {% set items = t.proBenefits[lang] if t.proBenefits and t.proBenefits[lang] else t.proBenefits.en %}
+            <tr>
+              <td><a href="{{ t.paths[lang] }}" style="font-weight:900; color:#1b5fd7; text-decoration:none;">{{ toolLabel }}</a></td>
+              <td>
+                <ul style="margin:0; padding-left:1.15rem; color:#444;">
+                  {% for b in items %}
+                    <li><strong>{{ b.strong }}</strong>{% if b.detail %} <span style="color:#666;">{{ b.detail }}</span>{% endif %}</li>
+                  {% endfor %}
+                </ul>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="container" id="includes">
+    <h2>Always included</h2>
+    {% set gb = proCopy.globalBenefits[lang] if proCopy.globalBenefits and proCopy.globalBenefits[lang] else proCopy.globalBenefits.en %}
+    <div class="always-grid" role="list">
+      <div class="always-card always-card--highlight" role="listitem">
+        <div class="always-icon" aria-hidden="true"><i class="fa-solid fa-globe"></i></div>
+        <div>
+          <div class="always-title">Site-wide Pro</div>
+          <div class="always-desc"><strong>{{ gb[0].strong }}</strong></div>
+          <div class="always-badges" aria-label="Included benefits">
+            <span class="always-badge">All tools</span>
+            <span class="always-badge">Pay once</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="always-card" role="listitem">
+        <div class="always-icon" aria-hidden="true"><i class="fa-solid fa-shield-halved"></i></div>
+        <div>
+          <div class="always-title">Privacy-first</div>
+          <div class="always-desc"><strong>{{ gb[1].strong }}</strong>{% if gb[1].detail %} <span style="color:#666;">{{ gb[1].detail }}</span>{% endif %}</div>
+          <div class="always-badges" aria-label="Included benefits">
+            <span class="always-badge">Local</span>
+            <span class="always-badge">No uploads</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="always-card" role="listitem">
+        <div class="always-icon" aria-hidden="true"><i class="fa-solid fa-key"></i></div>
+        <div>
+          <div class="always-title">Activation &amp; devices</div>
+          <div class="always-desc">
+            <strong>{{ gb[2].strong }}</strong>{% if gb[2].detail %} <span style="color:#666;">{{ gb[2].detail }}</span>{% endif %}<br />
+            <strong>{{ gb[3].strong }}</strong>
+          </div>
+          <div class="always-badges" aria-label="Included benefits">
+            <span class="always-badge">No account</span>
+            <span class="always-badge">Up to 2 devices</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container" id="how">
+    <h2>How it works (30 seconds)</h2>
+    <div class="pro-how-steps">
+      <div class="pro-stepbox">
+        <div class="pro-stepbox__title">1) Buy</div>
+        <div class="pro-stepbox__desc">Click “Buy Pro” and complete checkout.</div>
+      </div>
+      <div class="pro-stepbox">
+        <div class="pro-stepbox__title">2) Activate</div>
+        <div class="pro-stepbox__desc">Open any tool page and activate with <strong>the same email</strong> used at checkout.</div>
+      </div>
+      <div class="pro-stepbox">
+        <div class="pro-stepbox__title">3) Done</div>
+        <div class="pro-stepbox__desc">Pro is unlocked on this device (up to 2 devices).</div>
+        <div class="pro-stepbox__hint">Tip: If you used Apple Pay / Google Pay, check the email shown on your Stripe receipt.</div>
+      </div>
+    </div>
+  </section>
+
+<section class="container pro-activate" id="activate">
+  <h3 style="margin:0;">Activate (already purchased)</h3>
+  <p style="margin-top:0.5rem; color:#444;">Paste the <strong>same email</strong> shown on your Stripe receipt to unlock Pro on this device (up to 2 devices).</p>
+
+  <div id="pro-activate-inline">
+    <label class="pro-activate-inline__label">Email used at checkout</label>
+    <div class="pro-activate-inline__row">
+      <input data-pro-email type="email" inputmode="email" autocomplete="email" placeholder="you@example.com" />
+      <button data-pro-activate class="btn primary-btn" type="button">Activate Pro</button>
+    </div>
+    <div class="pro-activate__hint">Tip: If you used Apple Pay / Google Pay, check the email shown on your Stripe receipt.</div>
+    <p data-pro-status style="margin-top:0.5rem; color:#666; display:none;"></p>
+    <p data-pro-activated-as style="display:none; margin-top: 0.25rem; color: #666;"></p>
+    <div data-pro-email-hint style="display:none; margin-top: 0.5rem; color: #b00020;"></div>
+    <div data-pro-error style="display:none; margin-top: 0.5rem; color: #b00020;"></div>
+  </div>
+
+  <div class="pro-activate__actions pro-next-actions" aria-label="Next step">
+    <a class="btn btn-sm secondary-btn" href="/de/midi-inspector/">MIDI Inspector →</a>
+    <a class="btn btn-sm secondary-btn" href="/de/midi-to-csv/">MIDI → CSV →</a>
+    <a class="btn btn-sm secondary-btn" href="/de/">MIDI → JSON →</a>
   </div>
 </section>
 
-{% include "components/pro-panel.njk" %}
+  <section class="container" id="faq">
+    <h2>FAQ</h2>
+    <div class="faq">
+      <details>
+        <summary>Do you upload my MIDI files?</summary>
+        <p>No. Conversion happens locally in your browser. We only verify your Pro email.</p>
+      </details>
+      <details>
+        <summary>Why activation by email?</summary>
+        <p>It keeps Pro lightweight: no accounts, no passwords, no dashboard.</p>
+      </details>
+      <details>
+        <summary>Can I use Pro on multiple devices?</summary>
+        <p>Yes — up to 2 devices. Need a reset? Email support at <a href="mailto:support@midieasy.com">support@midieasy.com</a>.</p>
+      </details>
+    </div>
+  </section>
+
+  <section class="container pro-footer-cta">
+    <h2>Ready to upgrade?</h2>
+    <p>Pay once, unlock Pro across all MidiEasy tools.</p>
+    <a class="btn primary-btn" href="https://buy.stripe.com/dRmfZgeSMboZdxKcomgYU00" target="_blank" rel="noopener">Buy Pro (Lifetime) — $9.90</a>
+  </section>
+</div>

@@ -2,18 +2,34 @@
 permalink: "midi-to-csv/index.html"
 layout: "layouts/base.njk"
 lang: en
-titleOverride: "MIDI → CSV"
+toolId: midi-to-csv
+titleOverride: "MIDI to CSV Converter"
+titleSubtitle: "Professional Note-Level MIDI to CSV Converter for Music Data Analysis"
 meta:
   title: "MIDI to CSV Converter | MidiEasy"
-  description: "Convert MIDI files to CSV format for analysis and tooling. MVP page (converter UI coming soon)."
+  description: "Convert MIDI files to note-level CSV in your browser. Local processing. No uploads."
+bodyScripts: |
+  <script src="/js/midi-to-csv.bundle.js" defer></script>
 alts:
   en: "/midi-to-csv/"
   zh: "/zh/midi-to-csv/"
   de: "/de/midi-to-csv/"
 ---
-<section class="container" style="padding: 2rem 0;">
-  {% set toolTitle = "MIDI → CSV Converter (MVP)" %}
-  {% include "components/tool-placeholder.njk" %}
+<section class="container">
+  {% set toolTitle = "" %}
+  {% set toolSubtitle = "" %}
+  {% set copy = {
+    dropTitle: "Drop MIDI files here",
+    dropOr: "or",
+    selectFiles: "Select MIDI files",
+    limitInfo: "Free: up to 20 files (max 100MB total). Pro: higher limits (soft cap applies).",
+    convert: "Convert",
+    downloadZip: "Download ZIP",
+    downloadReport: "Download report.json (Pro)",
+    clear: "Clear results",
+    retryAllFailed: "Retry all failed (Pro)"
+  } %}
+  {% include "components/tool-midi-to-csv.njk" %}
 </section>
 
 {% include "components/pro-panel.njk" %}

@@ -2,18 +2,23 @@
 permalink: "zh/midi-inspector/index.html"
 layout: "layouts/base.njk"
 lang: zh
+toolId: midi-inspector
 titleOverride: "MIDI Inspector"
+titleSubtitle: "Professional MIDI Inspector for Track, Event & Timing Debugging"
 meta:
   title: "MIDI Inspector | MidiEasy"
-  description: "Inspect MIDI metadata (tempo, tracks, instruments) in your browser. MVP page (inspector UI coming soon)."
+  description: "像 DevTools 一样检查 MIDI：事件/轨道/音符/速度变化，并支持导出数据（本地处理）。"
+bodyScripts: |
+  <script src="/js/midi-inspector.bundle.js" defer></script>
 alts:
   en: "/midi-inspector/"
   zh: "/zh/midi-inspector/"
   de: "/de/midi-inspector/"
 ---
-<section class="container" style="padding: 2rem 0;">
-  {% set toolTitle = "MIDI Inspector (MVP)" %}
-  {% include "components/tool-placeholder.njk" %}
+<section class="container">
+  {% set toolTitle = "" %}
+  {% set toolSubtitle = "" %}
+  {% include "components/tool-midi-inspector.njk" %}
 </section>
 
 {% include "components/pro-panel.njk" %}

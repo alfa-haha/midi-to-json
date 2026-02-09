@@ -1,23 +1,42 @@
 <header>
   <div class="header-content">
     <h1 class="site-title">{{ titleOverride or "MidiEasy" }}</h1>
+    {% if titleSubtitle %}
+      <p class="site-subtitle">{{ titleSubtitle }}</p>
+    {% endif %}
+
+    {% set blogHref = "/blog/index.html" %}
+    {% if lang == "zh" %}{% set blogHref = "/zh/blog/" %}{% endif %}
+
+    <div class="language-selector">
+      <button class="language-btn" type="button" aria-haspopup="listbox" aria-expanded="false">
+        <i class="fa-solid fa-globe"></i>
+        {%- set currentLanguageLabel = lang -%}
+        {%- for l in site.languages -%}
+          {%- if l.code == lang -%}{%- set currentLanguageLabel = l.label -%}{%- endif -%}
+        {%- endfor -%}
+        <span id="current-language">{{ currentLanguageLabel }}</span>
+        <i class="fa-solid fa-chevron-down"></i>
+      </button>
+      <div class="language-dropdown" role="listbox">
+        {% if alts %}
+          {% for l in site.languages %}
+            {% if alts[l.code] %}
+              <a class="language-option {{ 'active' if l.code == lang else '' }}" data-lang="{{ l.code }}" href="{{ alts[l.code] }}">
+                <span class="language-name">{{ l.label }}</span>
+              </a>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+      </div>
+    </div>
 
     <div class="nav-links">
       <a href="{{ tools[0].paths[lang] }}" class="nav-link">MIDI → JSON</a>
       <a href="{{ tools[1].paths[lang] }}" class="nav-link">MIDI → CSV</a>
       <a href="{{ tools[2].paths[lang] }}" class="nav-link">MIDI Inspector</a>
       <a href="{{ '/pro/' if lang == 'en' else '/' + lang + '/pro/' }}" class="nav-link">Pro</a>
-      <a href="/blog/index.html" class="nav-link">Blog</a>
-    </div>
-
-    <div class="language-selector" style="margin-top: 1rem;">
-      <div class="language-dropdown show" style="position: static; display: inline-flex; gap: 0.5rem; background: transparent; box-shadow: none;">
-        {% for l in site.languages %}
-          <a class="language-option {{ 'active' if l.code == lang else '' }}" href="{{ alts[l.code] }}">
-            <span class="language-name">{{ l.label }}</span>
-          </a>
-        {% endfor %}
-      </div>
+      <a href="{{ blogHref }}" class="nav-link">Blog</a>
     </div>
   </div>
 </header>

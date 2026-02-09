@@ -2,18 +2,34 @@
 permalink: "zh/midi-to-csv/index.html"
 layout: "layouts/base.njk"
 lang: zh
-titleOverride: "MIDI → CSV"
+toolId: midi-to-csv
+titleOverride: "MIDI to CSV Converter"
+titleSubtitle: "Professional Note-Level MIDI to CSV Converter for Music Data Analysis"
 meta:
   title: "MIDI to CSV Converter | MidiEasy"
-  description: "Convert MIDI files to CSV format for analysis and tooling. MVP page (converter UI coming soon)."
+  description: "在浏览器本地把 MIDI 转成音符级 CSV。无需上传。"
+bodyScripts: |
+  <script src="/js/midi-to-csv.bundle.js" defer></script>
 alts:
   en: "/midi-to-csv/"
   zh: "/zh/midi-to-csv/"
   de: "/de/midi-to-csv/"
 ---
-<section class="container" style="padding: 2rem 0;">
-  {% set toolTitle = "MIDI → CSV Converter (MVP)" %}
-  {% include "components/tool-placeholder.njk" %}
+<section class="container">
+  {% set toolTitle = "" %}
+  {% set toolSubtitle = "" %}
+  {% set copy = {
+    dropTitle: "把 MIDI 文件拖到这里",
+    dropOr: "或",
+    selectFiles: "选择 MIDI 文件",
+    limitInfo: "Free：最多 20 个文件 / 总计 100MB。Pro：更高上限（有软提示）。",
+    convert: "开始转换",
+    downloadZip: "下载 ZIP",
+    downloadReport: "下载 report.json（Pro）",
+    clear: "清空结果",
+    retryAllFailed: "重试全部失败（Pro）"
+  } %}
+  {% include "components/tool-midi-to-csv.njk" %}
 </section>
 
 {% include "components/pro-panel.njk" %}

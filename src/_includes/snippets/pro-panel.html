@@ -1,0 +1,98 @@
+<section id="pro-panel" class="container pro-panel" style="margin-top: 2rem;">
+  <div data-pro-collapsed class="pro-collapsed">
+    <div class="pro-collapsed__content">
+      <div data-pro-collapsed-title class="pro-collapsed__title">Unlock Pro — $9.90 lifetime</div>
+      <div data-pro-collapsed-sub class="pro-collapsed__sub">One purchase unlocks Pro across all MidiEasy tools.</div>
+    </div>
+    <button data-pro-toggle class="btn primary-btn pro-collapsed__btn" type="button">Upgrade</button>
+  </div>
+
+  <div data-pro-expanded class="pro-expanded">
+    <div class="pro-panel__header">
+      <h2 class="pro-panel__title" style="margin:0;">Upgrade to Pro — $9.90 Lifetime</h2>
+      <div class="pro-panel__header-right" style="display:flex; align-items:center; gap: 0.6rem; flex-wrap: wrap;">
+        <span data-pro-badge class="pro-badge">Pro</span>
+        <a data-pro-features-link class="pro-panel__features-link" href="/pro/" style="color:#666; text-decoration: underline; white-space: nowrap;">See all Pro features →</a>
+        <button data-pro-toggle class="pro-panel__hide" type="button" style="border:0; background:transparent; color:#666; text-decoration: underline; cursor:pointer; padding:0; white-space: nowrap;">Hide</button>
+      </div>
+    </div>
+
+    <p data-pro-panel-oneliner class="pro-panel__subtitle" style="margin-top: 0.5rem;">One purchase unlocks Pro across all MidiEasy tools.</p>
+
+    <div class="pro-layout" style="margin-top: 1rem;">
+      <div class="pro-layout__steps">
+        <div class="pro-steps">
+          <h3 style="margin:0 0 0.5rem 0;">How to upgrade</h3>
+          <div style="margin-top: 0.65rem;">
+            <div class="pro-step">
+              <div class="pro-step__title">Step 1 — Buy</div>
+              <div class="pro-step__actions">
+                <a data-pro-buy class="btn primary-btn" href="https://buy.stripe.com/dRmfZgeSMboZdxKcomgYU00" target="_blank" rel="noopener">Buy Pro (Lifetime) — $9.90</a>
+              </div>
+              <p class="pro-step__hint">You’ll receive a Stripe receipt. <strong>Come back here to activate in 5 seconds.</strong></p>
+            </div>
+
+            <div id="activate" class="pro-step" style="margin-top: 1rem;">
+              <div class="pro-step__title">Step 2 — Activate</div>
+              <label class="pro-step__label" style="display:block; font-weight: 600; margin-bottom: 0.25rem;">Checkout email</label>
+              <div class="pro-step__actions" style="display:flex; gap: 0.5rem; flex-wrap: wrap;">
+                <input data-pro-email type="email" inputmode="email" autocomplete="email" placeholder="you@example.com" style="padding: 0.6rem 0.8rem; flex: 1 1 260px; min-width: 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;" />
+                <button data-pro-activate class="btn secondary-btn">Activate Pro</button>
+              </div>
+            <p style="margin-top: 0.5rem; color: #666;">Use the email shown on your Stripe receipt.</p>
+            <p data-pro-status class="pro-status" style="margin-top: 0.5rem; color: #666; display:none;"></p>
+            <p data-pro-activated-as class="pro-activated-as" style="display:none; margin-top: 0.25rem; color: #666;"></p>
+            <div data-pro-email-hint class="pro-email-hint" style="display:none; margin-top: 0.5rem; color: #b00020;"></div>
+            <div data-pro-error class="pro-error" style="display:none; margin-top: 0.5rem; color: #b00020;"></div>
+          </div>
+        </div>
+      </div>
+      </div>
+
+      <div class="pro-layout__why">
+        <h3 style="margin:0 0 0.5rem 0;">Pro Benefits</h3>
+
+        <div
+          data-pro-tool-benefits-wrap
+          style="display:none; margin-top: 0.65rem; border: 1px solid rgba(27, 95, 215, 0.16); background: rgba(27, 95, 215, 0.06); border-radius: 12px; padding: 0.75rem 0.85rem;"
+        >
+          <div data-pro-tool-benefits-title style="font-weight:900;">On this page</div>
+          <ul class="pro-benefits" data-pro-tool-benefits style="margin-top: 0.5rem;"></ul>
+        </div>
+
+        <div style="margin-top: 0.65rem; border: 1px solid #eee; background: #fafafa; border-radius: 12px; padding: 0.75rem 0.85rem;">
+          <div data-pro-global-benefits-title style="font-weight:900;">Also includes</div>
+          <ul class="pro-benefits" data-pro-global-benefits style="margin-top: 0.5rem;">
+            <li><strong>One purchase, unlock Pro across all MidiEasy tools.</strong></li>
+            <li><strong>Local processing.</strong> <span style="color:#666;">No uploads.</span></li>
+            <li><strong>Activate with checkout email.</strong> <span style="color:#666;">No account.</span></li>
+            <li><strong>Up to 2 devices.</strong></li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="pro-panel__faq" style="margin-top: 1.25rem;">
+      <h4 style="margin: 0 0 0.5rem 0;">FAQ</h4>
+      <div style="display:grid; gap: 0.6rem;">
+        <details class="pro-faq" style="border: 1px solid #eee; border-radius: 10px; padding: 0.75rem 0.9rem; background: #fff;">
+          <summary style="cursor: pointer; font-weight: 700; color: #333;">Why do I need to activate after purchase?</summary>
+          <p style="margin: 0.5rem 0 0 0; color:#666;">Activation links your checkout email to this device (up to 2 devices) — no account needed.</p>
+        </details>
+        <details class="pro-faq" style="border: 1px solid #eee; border-radius: 10px; padding: 0.75rem 0.9rem; background: #fff;">
+          <summary style="cursor: pointer; font-weight: 700; color: #333;">Is it safe?</summary>
+          <p style="margin: 0.5rem 0 0 0; color:#666;">Payments are handled by Stripe. We only verify your email for Pro.</p>
+        </details>
+        <details class="pro-faq" style="border: 1px solid #eee; border-radius: 10px; padding: 0.75rem 0.9rem; background: #fff;">
+          <summary style="cursor: pointer; font-weight: 700; color: #333;">Does Pro work on all tools?</summary>
+          <p style="margin: 0.5rem 0 0 0; color:#666;">Yes. Pro is a site-wide upgrade — once activated, it applies across all MidiEasy tools.</p>
+        </details>
+        <details class="pro-faq" style="border: 1px solid #eee; border-radius: 10px; padding: 0.75rem 0.9rem; background: #fff;">
+          <summary style="cursor: pointer; font-weight: 700; color: #333;">I hit the 2-device limit — what now?</summary>
+          <p style="margin: 0.5rem 0 0 0; color:#666;">Email us at support@midieasy.com and we’ll reset your devices.</p>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>

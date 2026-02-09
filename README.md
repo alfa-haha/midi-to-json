@@ -58,19 +58,35 @@
 - [FileSaver.js](https://github.com/eligrey/FileSaver.js/) 库实现文件保存
 - 基于localStorage的语言偏好保存
 - 模块化多语言支持系统
-- GitHub Pages 托管网站
-- Cloudflare 提供CDN和HTTPS支持
+- Vercel（Build Pipeline + Serverless Functions）
+
+## 项目结构说明（Source of Truth）
+
+> 目标：在不破坏现有页面/SEO 规则的前提下，引入可扩展的多工具页架构与 Pro 授权层。
+
+- `legacy/`：**旧静态站源码（主要 Source of Truth）**
+  - 页面与资源原样保留（用于保持既有 URL/SEO 规则不变）
+  - 旧页面内会包含占位符：`<!-- MIDIEASY_PRO_PANEL -->`、`<!-- MIDIEASY_PRO_SCRIPTS -->`，由构建时注入 Pro Panel 与脚本
+- `src/`：**Eleventy 新页面源码（多工具页 /pro 等）**
+  - 通过 Nunjucks/Markdown 模板生成新增页面（不会覆盖旧页面）
+- `scripts/build.mjs`：构建入口
+  - 复制 `legacy/` → `_site/`
+  - 统一注入 Pro Panel（单一来源：`src/_includes/snippets/pro-panel.html`）
+  - 生成德语主页 `/_site/de/index.html`（从 `legacy/en/index.html` 可重复生成，避免手工复制）
+  - 最后运行 Eleventy 生成新增页面到 `_site/`
+- `src/static/js/pro.js`：**Pro 前端脚本单一来源**（构建后输出为 `/_site/js/pro.js`，页面通过 `/js/pro.js` 引用）
+- `_site/`：**构建产物（Vercel Output Directory）**
+  - 禁止手动编辑（每次 `npm run build` 会重新生成）
+- `api/`：Vercel Serverless Functions（Pro 授权接口：`/api/pro/activate`、`/api/pro/verify`）
+- `vercel.json`：Vercel 路由/cleanUrls 配置（保持现状，除非确认需要调整）
 
 ## 本地开发
 
 如果你想在本地运行该项目：
 
-1. 克隆仓库
-2. 使用本地Web服务器运行项目
-   - 可以使用Node.js的http-server: `npm install -g http-server && http-server`
-   - 或Python的内置服务器: `python -m http.server`
-   - 或Visual Studio Code的Live Server扩展
-3. 在浏览器中访问对应的本地URL (如 http://localhost:8080)
+1. 安装依赖：`npm install`
+2. 本地构建：`npm run build`（输出到 `_site/`）
+3. 本地预览：`npm run dev`（会先 build，再启动 Eleventy 本地服务）
 
 > **注意**: 直接在文件系统中打开HTML文件（使用file://协议）可能会遇到CORS限制，导致无法加载外部库。建议使用本地Web服务器运行项目。
 

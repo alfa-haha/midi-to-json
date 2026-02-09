@@ -1,24 +1,22 @@
-<footer>
-  <div class="footer-container">
-    <div class="footer-section">
-      <h3>Company</h3>
-      <ul>
-        <li><a href="{{ tools[0].paths[lang] }}">Home</a></li>
-        <li><a href="/blog/index.html">Blog</a></li>
-        <li><a href="{{ '/pro/' if lang == 'en' else '/' + lang + '/pro/' }}">Pro</a></li>
-      </ul>
-    </div>
-    <div class="footer-section">
-      <h3>Quick Links</h3>
-      <ul>
-        <li><a href="mailto:{{ site.supportEmail }}" class="email-link">Contact Support</a></li>
-        <li><a href="/terms.html">Terms of Service</a></li>
-        <li><a href="/privacy-policy.html">Privacy Policy</a></li>
-      </ul>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <p>&copy; 2026 MidiEasy</p>
-  </div>
-  <script src="/js/common.js"></script>
-</footer>
+{% set homeHref = tools[0].paths[lang] %}
+{% set blogHref = "/blog/index.html" %}
+{% set proHref = "/pro/" if lang == "en" else "/" + lang + "/pro/" %}
+{% set supportMailto = "mailto:" + site.supportEmail %}
+{% set supportContactMailto = "mailto:" + site.supportEmail + "?subject=Contact%20from%20MidiEasy" %}
+
+{% set footerTpl %}{% include "snippets/footer-standard.html" %}{% endset %}
+{{ footerTpl
+  | replace("__SUPPORT_EMAIL__", site.supportEmail)
+  | replace("__SUPPORT_MAILTO__", supportMailto)
+  | replace("__SUPPORT_CONTACT_MAILTO__", supportContactMailto)
+  | replace("__HOME_HREF__", homeHref)
+  | replace("__BLOG_HREF__", blogHref)
+  | replace("__PRO_HREF__", proHref)
+  | replace("__MIDI_JSON_HREF__", tools[0].paths[lang])
+  | replace("__MIDI_CSV_HREF__", tools[1].paths[lang])
+  | replace("__MIDI_INSPECTOR_HREF__", tools[2].paths[lang])
+  | safe
+}}
+
+<script src="/js/common.js"></script>
+<script src="/js/language-switcher.js"></script>

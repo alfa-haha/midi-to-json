@@ -3,14 +3,18 @@
   "private": true,
   "version": "0.1.0",
   "scripts": {
-    "build": "eleventy",
-    "dev": "eleventy --serve --watch",
+    "build:js": "node scripts/build-js.mjs",
+    "build": "node scripts/build.mjs",
+    "dev": "npm run build && eleventy --serve --watch",
     "clean": "rm -rf _site"
   },
   "dependencies": {
+    "jszip": "^3.10.1",
+    "midi-file": "^1.2.4",
     "@vercel/kv": "^3.0.0"
   },
   "devDependencies": {
-    "@11ty/eleventy": "^3.0.0"
+    "@11ty/eleventy": "^3.0.0",
+    "esbuild": "^0.25.0"
   }
 }

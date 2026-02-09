@@ -1,0 +1,51 @@
+{# Expected inputs:
+  - toolTitle
+  - toolSubtitle
+  - copy: { dropTitle, dropOr, selectFiles, limitInfo, convert, downloadZip, downloadReport, clear, retryAllFailed }
+#}
+
+{% if toolTitle %}<h2>{{ toolTitle }}</h2>{% endif %}
+{% if toolSubtitle %}<p style="color:#666;">{{ toolSubtitle }}</p>{% endif %}
+
+<div class="upload-area" id="csv-drop-area" role="button" tabindex="0" aria-label="{{ copy.selectFiles }}">
+  <div class="upload-icon">
+    <i class="fas fa-file-csv"></i>
+  </div>
+  <h3>{{ copy.dropTitle }}</h3>
+  <p>{{ copy.dropOr }}</p>
+  <label for="csv-file-input" class="file-input-label">{{ copy.selectFiles }}</label>
+  <input type="file" id="csv-file-input" multiple hidden accept=".mid,.midi,audio/midi,audio/x-midi" />
+  <p class="file-limit-info" id="csv-limit-info"><i class="fas fa-info-circle"></i> {{ copy.limitInfo }}</p>
+  <p class="file-info" id="csv-file-info">No files selected</p>
+  <p class="file-info" id="csv-limit-error" style="display:none; color:#e74c3c; font-weight:600;"></p>
+</div>
+
+<div class="action-buttons">
+  <button class="btn primary-btn" id="csv-convert-btn" disabled><i class="fas fa-wand-magic-sparkles"></i> {{ copy.convert }}</button>
+  <button class="btn secondary-btn" id="csv-download-zip-btn" disabled><i class="fas fa-file-zipper"></i> {{ copy.downloadZip }}</button>
+</div>
+
+<div class="batch-status" id="csv-batch-status" style="display:none;">
+  <div class="batch-header">
+    <h3>Batch</h3>
+    <div class="batch-right">
+      <div class="batch-meta">
+        <span id="csv-batch-concurrency">Concurrent workers: 1</span>
+        <span class="batch-running" style="margin-left:0.5rem;">Processed <span id="csv-processed-count">0</span>/<span id="csv-total-count">0</span></span>
+      </div>
+      <div class="batch-actions">
+        <button class="btn btn-sm" id="csv-download-report-btn" disabled>{{ copy.downloadReport }}</button>
+        <button class="btn btn-sm" id="csv-retry-all-btn" disabled>{{ copy.retryAllFailed }}</button>
+        <button class="btn btn-sm" id="csv-clear-btn">{{ copy.clear }}</button>
+      </div>
+    </div>
+  </div>
+  <div class="file-list" id="csv-file-list"></div>
+</div>
+
+<div class="conversion-status">
+  <p id="status-message"></p>
+  <div class="progress-bar-container">
+    <div class="progress-bar" id="csv-progress-bar"></div>
+  </div>
+</div>

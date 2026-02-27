@@ -14,6 +14,20 @@ const PRO_SCRIPT_TAG = `<script src="/js/pro.js"></script>`;
 const PRO_PANEL_PLACEHOLDER = "<!-- MIDIEASY_PRO_PANEL -->";
 const PRO_SCRIPT_PLACEHOLDER = "<!-- MIDIEASY_PRO_SCRIPTS -->";
 
+const GTM_CONTAINER_ID = "GTM-K6F6DTVC";
+const GTM_HEAD_SNIPPET = `<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','${GTM_CONTAINER_ID}');</script>
+<!-- End Google Tag Manager -->`;
+
+const GTM_BODY_SNIPPET = `<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=${GTM_CONTAINER_ID}"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->`;
+
 async function listFilesRecursive(dir) {
   const out = [];
   async function walk(d) {
@@ -134,6 +148,21 @@ function replaceFooter(html, newFooterHtml) {
   const end = html.indexOf("</footer>", start);
   if (end === -1) return html;
   return html.slice(0, start) + newFooterHtml + html.slice(end + "</footer>".length);
+}
+
+function injectGtmIntoHtml(html) {
+  if (!html || typeof html !== "string") return html;
+  if (html.includes(GTM_CONTAINER_ID) || html.includes("googletagmanager.com/gtm.js")) return html;
+
+  let out = html;
+
+  // 1) Put the script into <head> as high as possible (right after <head ...>).
+  out = out.replace(/<head(\s[^>]*)?>/i, (m) => `${m}\n    ${GTM_HEAD_SNIPPET}\n`);
+
+  // 2) Put the noscript right after the opening <body ...>.
+  out = out.replace(/<body(\s[^>]*)?>/i, (m) => `${m}\n    ${GTM_BODY_SNIPPET}\n`);
+
+  return out;
 }
 
 async function injectProIntoFile(outFilePath, proPanelHtml) {
@@ -270,6 +299,26 @@ async function rewriteLegacyFooters(outDir, footerTemplate) {
   await walk(outDir);
 }
 
+async function injectGtmIntoOutDir(outDir) {
+  async function walk(dir) {
+    const entries = await fs.readdir(dir, { withFileTypes: true });
+    for (const entry of entries) {
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        await walk(full);
+      } else if (entry.isFile() && entry.name.endsWith(".html")) {
+        const html = await fs.readFile(full, "utf8");
+        const next = injectGtmIntoHtml(html);
+        if (next !== html) {
+          await fs.writeFile(full, next, "utf8");
+        }
+      }
+    }
+  }
+
+  await walk(outDir);
+}
+
 function transformEnHomeToDe(enHtml) {
   let out = enHtml;
   out = out.replace('<html lang="en">', '<html lang="de">');
@@ -384,8 +433,11 @@ async function main() {
   // 3.5) Build browser bundles (midi-to-csv etc) into src/static/js, then let Eleventy passthrough copy them.
   await runBuildJs();
 
-  // 4) Generate new pages (tools/pro) into the same output directory.
-  await runEleventy();
+	// 4) Generate new pages (tools/pro) into the same output directory.
+	await runEleventy();
+
+  // 5) Inject GTM into *all* output HTML (legacy + new pages).
+  await injectGtmIntoOutDir(OUT_DIR);
 }
 
 await main();

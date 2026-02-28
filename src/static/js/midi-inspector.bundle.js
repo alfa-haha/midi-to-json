@@ -1219,6 +1219,10 @@
     }
     return `${n.toFixed(i === 0 ? 0 : 1)}${units[i]}`;
   }
+  function getFileIdentityKey(file) {
+    const lastModified = typeof file.lastModified === "number" ? file.lastModified : 0;
+    return `${file.name}::${file.size}::${lastModified}`;
+  }
   function pitchToName2(pitch) {
     const names = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
     const p = Number(pitch);
@@ -1382,6 +1386,7 @@
     const state = {
       isPro: getIsPro(),
       file: null,
+      fileKey: "",
       bytes: null,
       data: null,
       parsing: false,
@@ -1402,6 +1407,10 @@
         flags: null
       }
     };
+    function isMidiFile(file) {
+      const name = file && file.name ? String(file.name).toLowerCase() : "";
+      return name.endsWith(".mid") || name.endsWith(".midi");
+    }
     function setError(text) {
       if (!errorEl) return;
       if (text) {
@@ -1821,6 +1830,7 @@
     }
     async function loadFile(file) {
       state.file = file || null;
+      state.fileKey = file ? getFileIdentityKey(file) : "";
       state.bytes = null;
       state.data = null;
       state.noteEventsLoaded = false;
@@ -1858,6 +1868,33 @@
     function clearAll() {
       fileInput.value = "";
       loadFile(null);
+    }
+    async function handleIncomingFiles(fileList) {
+      if (state.parsing) {
+        setStatus("Parsing in progress. Please wait for completion.");
+        return;
+      }
+      const allFiles = Array.from(fileList || []);
+      if (!allFiles.length) return;
+      const midiFiles = allFiles.filter((f) => isMidiFile(f));
+      if (!midiFiles.length) {
+        setError("Please select a valid MIDI file (.mid/.midi).");
+        setStatus("");
+        if (fileInput) fileInput.value = "";
+        return;
+      }
+      if (midiFiles.length > 1) {
+        setStatus("MIDI Inspector supports one file only. Using the first file.");
+      }
+      const nextFile = midiFiles[0];
+      const nextKey = getFileIdentityKey(nextFile);
+      if (state.fileKey && state.fileKey === nextKey && state.bytes) {
+        setStatus("This file is already loaded.");
+        if (fileInput) fileInput.value = "";
+        return;
+      }
+      await loadFile(nextFile);
+      if (fileInput) fileInput.value = "";
     }
     async function onInspect() {
       state.activeTab = "events";
@@ -1953,13 +1990,23 @@
       downloadBlob(new Blob([JSON.stringify(out, null, 2)], { type: "application/json" }), "events.json");
     }
     fileInput.addEventListener("change", (e) => {
-      const f = e.target && e.target.files && e.target.files[0] ? e.target.files[0] : null;
-      loadFile(f);
+      const files = e.target && e.target.files ? e.target.files : null;
+      void handleIncomingFiles(files);
     });
-    dropArea.addEventListener("click", () => fileInput.click());
+    dropArea.addEventListener("click", () => {
+      if (state.parsing) {
+        setStatus("Parsing in progress. Please wait for completion.");
+        return;
+      }
+      fileInput.click();
+    });
     dropArea.addEventListener("keydown", (e) => {
       if (e.key === "Enter" || e.key === " ") {
         e.preventDefault();
+        if (state.parsing) {
+          setStatus("Parsing in progress. Please wait for completion.");
+          return;
+        }
         fileInput.click();
       }
     });
@@ -1971,8 +2018,8 @@
     dropArea.addEventListener("drop", (e) => {
       e.preventDefault();
       dropArea.classList.remove("dragover");
-      const f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0] ? e.dataTransfer.files[0] : null;
-      loadFile(f);
+      const files = e.dataTransfer ? e.dataTransfer.files : null;
+      void handleIncomingFiles(files);
     });
     if (inspectBtn) inspectBtn.addEventListener("click", onInspect);
     if (clearBtn) clearBtn.addEventListener("click", clearAll);

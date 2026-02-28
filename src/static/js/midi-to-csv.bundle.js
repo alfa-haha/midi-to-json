@@ -3020,6 +3020,10 @@
   function makeId() {
     return globalThis.crypto && crypto.randomUUID ? crypto.randomUUID() : `job-${Date.now()}-${Math.random()}`;
   }
+  function getFileIdentityKey(file) {
+    const lastModified = typeof file.lastModified === "number" ? file.lastModified : 0;
+    return `${file.name}::${file.size}::${lastModified}`;
+  }
   function basenameNoExt(name) {
     const s = String(name || "file");
     const lastSlash = Math.max(s.lastIndexOf("/"), s.lastIndexOf("\\"));
@@ -3548,6 +3552,81 @@
       failed: 0,
       maxConcurrency: 1
     };
+    function isMidiFile(file) {
+      const name = file && file.name ? String(file.name).toLowerCase() : "";
+      return name.endsWith(".mid") || name.endsWith(".midi");
+    }
+    function buildJob(file) {
+      return {
+        id: makeId(),
+        file,
+        fileName: file.name,
+        fileSize: file.size,
+        status: "waiting",
+        attempt: 0,
+        csvBlob: null,
+        csvByteLength: 0,
+        durationMs: null,
+        notesCount: 0,
+        tracksCount: 0,
+        ppq: null,
+        tempoEventsCount: null,
+        hasTempoChanges: null,
+        hasSustainPedalEvents: null,
+        overlapCount: 0,
+        danglingCount: 0,
+        orphanOffCount: 0,
+        sampleErrors: [],
+        errorCode: "",
+        errorMessage: ""
+      };
+    }
+    function recalcTotalBytes() {
+      state.totalBytes = state.jobs.reduce((sum, j) => sum + (j.fileSize || 0), 0);
+    }
+    function setJobsFromFiles(files) {
+      state.running = false;
+      state.jobs = files.map((f) => buildJob(f));
+      recalcTotalBytes();
+      recomputeSummary();
+    }
+    function appendJobs(files) {
+      state.jobs.push(...files.map((f) => buildJob(f)));
+      recalcTotalBytes();
+      recomputeSummary();
+    }
+    function hasWaitingJobs() {
+      return state.jobs.some((j) => j.status === "waiting");
+    }
+    function hasProcessableJobs() {
+      return state.jobs.some((j) => j.status === "waiting" || j.status === "failed");
+    }
+    function allJobsProcessed() {
+      return state.jobs.length > 0 && state.jobs.every((j) => j.status === "done" || j.status === "failed");
+    }
+    function getSelectionMode() {
+      if (!state.jobs.length) return "overwrite";
+      return hasWaitingJobs() ? "append" : "overwrite";
+    }
+    function resetJobForProcessing(job, { bumpAttempt = false } = {}) {
+      if (bumpAttempt) job.attempt += 1;
+      job.status = "waiting";
+      job.csvBlob = null;
+      job.csvByteLength = 0;
+      job.durationMs = null;
+      job.notesCount = 0;
+      job.tracksCount = 0;
+      job.ppq = null;
+      job.tempoEventsCount = null;
+      job.hasTempoChanges = null;
+      job.hasSustainPedalEvents = null;
+      job.overlapCount = 0;
+      job.danglingCount = 0;
+      job.orphanOffCount = 0;
+      job.sampleErrors = [];
+      job.errorCode = "";
+      job.errorMessage = "";
+    }
     function recomputeSummary() {
       let success = 0;
       let failed = 0;
@@ -3608,9 +3687,7 @@
         status.appendChild(icon);
         status.appendChild(label);
         const actions = document.createElement("div");
-        actions.style.display = "flex";
-        actions.style.alignItems = "center";
-        actions.style.gap = "0.5rem";
+        actions.className = "csv-file-actions";
         const dl = document.createElement("button");
         dl.className = "btn btn-sm primary-btn";
         dl.textContent = "Download";
@@ -3634,10 +3711,7 @@
         actions.appendChild(dl);
         if (job.status === "failed") actions.appendChild(retry);
         const right = document.createElement("div");
-        right.style.display = "flex";
-        right.style.flexDirection = "column";
-        right.style.alignItems = "flex-end";
-        right.style.gap = "0.15rem";
+        right.className = "csv-file-right";
         right.appendChild(status);
         if (job.status === "failed" && job.errorMessage) {
           const err = document.createElement("div");
@@ -3657,42 +3731,16 @@
         fileList.appendChild(item);
       }
     }
-    function resetJobs(files) {
-      state.running = false;
-      state.jobs = files.map((f) => ({
-        id: makeId(),
-        file: f,
-        fileName: f.name,
-        fileSize: f.size,
-        status: "waiting",
-        attempt: 0,
-        csvBlob: null,
-        csvByteLength: 0,
-        durationMs: null,
-        notesCount: 0,
-        tracksCount: 0,
-        ppq: null,
-        tempoEventsCount: null,
-        hasTempoChanges: null,
-        hasSustainPedalEvents: null,
-        overlapCount: 0,
-        danglingCount: 0,
-        orphanOffCount: 0,
-        sampleErrors: [],
-        errorCode: "",
-        errorMessage: ""
-      }));
-      state.totalBytes = files.reduce((sum, f) => sum + (f.size || 0), 0);
-      recomputeSummary();
-    }
-    function validateLimits(files) {
+    function validateLimits(files, { totalBytes } = {}) {
       if (!limitError) return { ok: true };
       limitError.style.display = "none";
       limitError.textContent = "";
-      if (!files.length) return { ok: true };
+      const arr = Array.from(files || []);
+      if (!arr.length) return { ok: true };
+      const bytes = Number.isFinite(totalBytes) ? totalBytes : arr.reduce((sum, f) => sum + (f && f.size || 0), 0);
       if (!state.isPro) {
-        if (files.length > HARD_MAX_FILES || state.totalBytes > HARD_MAX_BYTES) {
-          const msg = `Free limit exceeded: ${files.length} files / ${bytesToHuman(state.totalBytes)}. Upgrade to Pro.`;
+        if (arr.length > HARD_MAX_FILES || bytes > HARD_MAX_BYTES) {
+          const msg = `Free limit exceeded: ${arr.length} files / ${bytesToHuman(bytes)}. Upgrade to Pro.`;
           limitError.textContent = msg;
           limitError.style.display = "block";
           return { ok: false, hardBlocked: true };
@@ -3710,9 +3758,10 @@
       if (processedCountEl) processedCountEl.textContent = String(state.processed);
       updateProgressBar(progressBar, state.processed, state.jobs.length);
       if (batchBox) batchBox.style.display = state.jobs.length ? "block" : "none";
-      const limitRes = validateLimits(state.jobs.map((j) => j.file));
-      convertBtn.disabled = state.running || !state.jobs.length;
-      zipBtn.disabled = state.running || state.success === 0;
+      const files = state.jobs.map((j) => j.file);
+      validateLimits(files, { totalBytes: state.totalBytes });
+      convertBtn.disabled = state.running || !hasProcessableJobs();
+      zipBtn.disabled = state.running || state.success === 0 || !allJobsProcessed();
       if (reportBtn) reportBtn.disabled = !state.isPro || state.running || state.jobs.length === 0;
       if (retryAllBtn) retryAllBtn.disabled = !state.isPro || state.running || !state.jobs.some((j) => j.status === "failed");
     }
@@ -3760,30 +3809,18 @@
         renderList();
       }
     }
-    function resetAllForConvert() {
+    function prepareFailedJobsForConvert() {
+      let changed = false;
       for (const j of state.jobs) {
-        j.status = "waiting";
-        j.csvBlob = null;
-        j.csvByteLength = 0;
-        j.durationMs = null;
-        j.notesCount = 0;
-        j.tracksCount = 0;
-        j.ppq = null;
-        j.tempoEventsCount = null;
-        j.hasTempoChanges = null;
-        j.hasSustainPedalEvents = null;
-        j.overlapCount = 0;
-        j.danglingCount = 0;
-        j.orphanOffCount = 0;
-        j.sampleErrors = [];
-        j.errorCode = "";
-        j.errorMessage = "";
+        if (j.status !== "failed") continue;
+        resetJobForProcessing(j, { bumpAttempt: true });
+        changed = true;
       }
-      recomputeSummary();
+      if (changed) recomputeSummary();
     }
     async function runQueue({ mode } = { mode: "all" }) {
       if (state.running) return;
-      const limitRes = validateLimits(state.jobs.map((j) => j.file));
+      const limitRes = validateLimits(state.jobs.map((j) => j.file), { totalBytes: state.totalBytes });
       if (!limitRes.ok) {
         setStatus(statusEl, limitError ? limitError.textContent : "Limit exceeded", { color: "#e74c3c" });
         expandProPanel();
@@ -3797,9 +3834,14 @@
           sessionStorage.setItem(key, "1");
         }
       }
-      if (mode === "all") resetAllForConvert();
+      if (mode === "all") prepareFailedJobsForConvert();
       const pending = state.jobs.filter((j) => j.status === "waiting");
-      if (!pending.length) return;
+      if (!pending.length) {
+        if (mode === "all") {
+          setStatus(statusEl, "All files are already converted.", { color: "#666" });
+        }
+        return;
+      }
       state.running = true;
       applyProToUi();
       updateTopUi();
@@ -3845,13 +3887,7 @@
     function retryJob(jobId) {
       const job = state.jobs.find((j) => j.id === jobId);
       if (!job) return;
-      job.attempt += 1;
-      job.status = "waiting";
-      job.csvBlob = null;
-      job.csvByteLength = 0;
-      job.errorCode = "";
-      job.errorMessage = "";
-      job.sampleErrors = [];
+      resetJobForProcessing(job, { bumpAttempt: true });
       updateTopUi();
       renderList();
       void runQueue({ mode: "pending" });
@@ -3864,13 +3900,7 @@
       const failed = state.jobs.filter((j) => j.status === "failed");
       if (!failed.length) return;
       for (const j of failed) {
-        j.attempt += 1;
-        j.status = "waiting";
-        j.csvBlob = null;
-        j.csvByteLength = 0;
-        j.errorCode = "";
-        j.errorMessage = "";
-        j.sampleErrors = [];
+        resetJobForProcessing(j, { bumpAttempt: true });
       }
       updateTopUi();
       renderList();
@@ -3917,15 +3947,53 @@
       setStatus(statusEl, "", {});
     }
     function onFilesSelected(files) {
-      const arr = Array.from(files || []).filter((f) => {
-        const name = f && f.name ? f.name.toLowerCase() : "";
-        return name.endsWith(".mid") || name.endsWith(".midi");
-      });
-      resetJobs(arr);
+      if (state.running) {
+        setStatus(statusEl, "Processing in progress. Please wait for completion.", { color: "#e67e22" });
+        if (fileInput) fileInput.value = "";
+        return;
+      }
+      const incomingMidiFiles = Array.from(files || []).filter((f) => isMidiFile(f));
+      if (!incomingMidiFiles.length) {
+        setStatus(statusEl, "Please select valid MIDI files (.mid/.midi).", { color: "#e74c3c" });
+        if (fileInput) fileInput.value = "";
+        return;
+      }
+      const mode = getSelectionMode();
+      const seedKeys = mode === "append" ? new Set(state.jobs.map((j) => getFileIdentityKey(j.file))) : /* @__PURE__ */ new Set();
+      const uniqueFiles = [];
+      let duplicateCount = 0;
+      for (const file of incomingMidiFiles) {
+        const key = getFileIdentityKey(file);
+        if (seedKeys.has(key)) {
+          duplicateCount += 1;
+          continue;
+        }
+        seedKeys.add(key);
+        uniqueFiles.push(file);
+      }
+      if (!uniqueFiles.length) {
+        setStatus(statusEl, "All selected files are already in the list.", { color: "#e67e22" });
+        if (fileInput) fileInput.value = "";
+        return;
+      }
+      const targetFiles = mode === "append" ? state.jobs.map((j) => j.file).concat(uniqueFiles) : uniqueFiles;
+      const targetBytes = targetFiles.reduce((sum, f) => sum + (f && f.size || 0), 0);
+      const limitRes = validateLimits(targetFiles, { totalBytes: targetBytes });
+      if (!limitRes.ok) {
+        setStatus(statusEl, limitError ? limitError.textContent : "Limit exceeded", { color: "#e74c3c" });
+        if (!state.isPro) expandProPanel();
+        if (fileInput) fileInput.value = "";
+        return;
+      }
+      if (mode === "append") appendJobs(uniqueFiles);
+      else setJobsFromFiles(uniqueFiles);
       applyProToUi();
       renderList();
       updateTopUi();
-      if (!arr.length) setStatus(statusEl, "", {});
+      const action = mode === "append" ? `Added ${uniqueFiles.length} file(s) to current batch.` : `Started a new batch with ${uniqueFiles.length} file(s).`;
+      const dup = duplicateCount > 0 ? ` Skipped ${duplicateCount} duplicate file(s).` : "";
+      setStatus(statusEl, `${action}${dup}`, { color: "#666" });
+      if (fileInput) fileInput.value = "";
     }
     fileInput.addEventListener("change", () => onFilesSelected(fileInput.files));
     convertBtn.addEventListener("click", async () => {

@@ -853,6 +853,31 @@ body > #pro-panel.container {
     gap: 0.5rem;
 }
 
+/* midi-to-csv row spacing: keep status text and action buttons visually separated */
+#csv-file-list .file-item {
+    gap: 0.9rem;
+}
+
+#csv-file-list .csv-file-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.2rem;
+    margin-right: 0.35rem;
+    flex-shrink: 0;
+}
+
+#csv-file-list .csv-file-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+}
+
+#csv-file-list .file-status {
+    white-space: nowrap;
+}
+
 .status-icon {
     width: 20px;
     height: 20px;

@@ -664,6 +664,29 @@ body > #pro-panel.container {
     margin-bottom: 2rem;
 }
 
+.pro-hint-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.85rem 1rem;
+    margin: -1rem 0 1.25rem;
+    border: 1px solid #cfe0ff;
+    border-radius: 10px;
+    background: #f2f7ff;
+}
+
+.pro-hint-banner__text {
+    color: #1f2d3d;
+    font-size: 0.92rem;
+    line-height: 1.45;
+}
+
+.pro-hint-banner__action {
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
 .btn {
     padding: 0.8rem 1.5rem;
     border: none;
@@ -1107,7 +1130,17 @@ footer a:hover {
         flex-direction: column;
         gap: 0.5rem;
     }
-    
+
+    .pro-hint-banner {
+        flex-direction: column;
+        align-items: stretch;
+        margin-top: -0.8rem;
+    }
+
+    .pro-hint-banner__action {
+        width: 100%;
+    }
+
     .btn {
         width: 100%;
     }

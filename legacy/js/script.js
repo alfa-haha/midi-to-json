@@ -2,6 +2,7 @@
 const dropArea = document.getElementById('drop-area');
 const fileInput = document.getElementById('file-input');
 const fileInfo = document.getElementById('file-info');
+const proHintBanner = document.getElementById('pro-hint-banner');
 const convertBtn = document.getElementById('convert-btn');
 const downloadBtn = document.getElementById('download-btn');
 const statusMessage = document.getElementById('status-message');
@@ -221,10 +222,23 @@ function updateProToolInfoUi() {
     }
 }
 
+function updateProHintBanner({ forceHide = false } = {}) {
+    if (!proHintBanner) return;
+    if (forceHide || isProActive()) {
+        proHintBanner.style.display = 'none';
+        return;
+    }
+
+    const count = uploadedFiles.length;
+    const shouldShow = count >= 15 && count <= LIMITS.free.maxFiles;
+    proHintBanner.style.display = shouldShow ? 'flex' : 'none';
+}
+
 function applyProUi() {
     updateLimitInfoUi();
     updateBatchMeta();
     updateProToolInfoUi();
+    updateProHintBanner();
 }
 
 function ensureBatchControls() {
@@ -440,6 +454,7 @@ function handleFiles(files) {
     // Free：硬限制（强制拦截）
     if (!pro) {
         if (targetFiles.length > LIMITS.free.maxFiles || totalBytes > LIMITS.free.maxTotalBytes) {
+            updateProHintBanner({ forceHide: true });
             const msg = t(
                 'freeLimitExceeded',
                 `Free limit exceeded: up to ${LIMITS.free.maxFiles} files / ${bytesToMb(LIMITS.free.maxTotalBytes)}MB total.`
@@ -998,6 +1013,7 @@ function clearResults({ keepSelection, silent } = { keepSelection: false, silent
         convertBtn.disabled = uploadedFiles.length === 0;
         downloadBtn.disabled = true;
         if (!silent) setStatusText('');
+        updateProHintBanner();
         updateActionButtons();
         return;
     }
@@ -1019,6 +1035,7 @@ function clearResults({ keepSelection, silent } = { keepSelection: false, silent
     } else {
         fileInfo.textContent = 'No files selected';
     }
+    updateProHintBanner();
     updateActionButtons();
 }
 

@@ -54,6 +54,89 @@ function formatBytes(bytes) {
     return formatFileSize(bytes);
 }
 
+function getFileIdentityKey(file) {
+    const lastModified = typeof file.lastModified === 'number' ? file.lastModified : 0;
+    return `${file.name}::${file.size}::${lastModified}`;
+}
+
+function filterValidMidiFiles(files) {
+    const validFiles = [];
+    for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const lowerName = file.name.toLowerCase();
+        if (lowerName.endsWith('.mid') || lowerName.endsWith('.midi')) {
+            validFiles.push(file);
+        }
+    }
+    return validFiles;
+}
+
+function dedupeFiles(files, seedKeys) {
+    const keys = seedKeys || new Set();
+    const uniqueFiles = [];
+    let duplicateCount = 0;
+
+    files.forEach((file) => {
+        const key = getFileIdentityKey(file);
+        if (keys.has(key)) {
+            duplicateCount += 1;
+            return;
+        }
+        keys.add(key);
+        uniqueFiles.push(file);
+    });
+
+    return { uniqueFiles, duplicateCount };
+}
+
+function sumFileBytes(files) {
+    return files.reduce((sum, f) => sum + (f && typeof f.size === 'number' ? f.size : 0), 0);
+}
+
+function hasPendingFiles() {
+    return processedFiles.some(item => item === null);
+}
+
+function hasProcessableFiles() {
+    return uploadedFiles.some((_, index) => {
+        const item = processedFiles[index];
+        return item === null || (item && item.error);
+    });
+}
+
+function updateConvertButtonState() {
+    convertBtn.disabled = isProcessing || uploadedFiles.length === 0 || !hasProcessableFiles();
+}
+
+function updateFileInfoText() {
+    if (uploadedFiles.length === 0) {
+        if (translations && translations.noFileSelected) {
+            fileInfo.textContent = translations.noFileSelected;
+        } else {
+            fileInfo.textContent = 'No files selected';
+        }
+        return;
+    }
+
+    const totalBytes = sumFileBytes(uploadedFiles);
+
+    if (translations) {
+        if (uploadedFiles.length === 1) {
+            const single = uploadedFiles[0];
+            fileInfo.textContent = t('fileSelected', 'Selected: ') + single.name + ' (' + formatFileSize(single.size) + ')';
+        } else {
+            const prefix = t('filesSelected', 'Selected: ');
+            const suffix = t('fileCount', ' files');
+            fileInfo.textContent = `${prefix}${uploadedFiles.length}${suffix} (${formatFileSize(totalBytes)} total)`;
+        }
+    } else if (uploadedFiles.length === 1) {
+        const single = uploadedFiles[0];
+        fileInfo.textContent = `Selected: ${single.name} (${formatFileSize(single.size)})`;
+    } else {
+        fileInfo.textContent = `Selected: ${uploadedFiles.length} files (${formatFileSize(totalBytes)} total)`;
+    }
+}
+
 function scrollToProPanel() {
     try {
         window.location.hash = '#pro-panel';
@@ -86,8 +169,9 @@ function updateActionButtons() {
     const hasAnySuccess = processedFiles.some(item => item && !item.error);
     const hasAnyProcessed = processedFiles.some(item => item !== null);
     const hasAnyFailed = processedFiles.some(item => item && item.error);
+    const allProcessed = processedFiles.length > 0 && processedFiles.every(item => item !== null);
 
-    downloadBtn.disabled = isProcessing || !hasAnySuccess;
+    downloadBtn.disabled = isProcessing || !hasAnySuccess || !allProcessed;
 
     const retryAllBtn = document.getElementById('retry-all-failed-btn');
     if (retryAllBtn) retryAllBtn.disabled = isProcessing || !hasAnyFailed;
@@ -97,6 +181,8 @@ function updateActionButtons() {
 
     const reportBtn = document.getElementById('download-report-btn');
     if (reportBtn) reportBtn.disabled = isProcessing || !reportData;
+
+    updateConvertButtonState();
 }
 
 function updateBatchMeta() {
@@ -325,34 +411,35 @@ function handleFileSelect(e) {
 
 // 处理文件
 function handleFiles(files) {
-    // 清空之前的文件和状态
-    clearResults({ keepSelection: false, silent: true });
-    uploadedFiles = [];
-    processedFiles = [];
-    jobs = [];
-    fileList.innerHTML = '';
-    
-    // 过滤非MIDI文件
-    let validFiles = [];
-    for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        if (file.name.toLowerCase().endsWith('.mid') || file.name.toLowerCase().endsWith('.midi')) {
-            validFiles.push(file);
-        }
+    if (isProcessing) {
+        setStatusText(t('uploadBlockedWhileProcessing', 'Conversion in progress. Please wait for completion.'), { color: '#e67e22' });
+        return;
     }
-    
-    if (validFiles.length === 0) {
+
+    const incomingValidFiles = filterValidMidiFiles(files);
+    if (incomingValidFiles.length === 0) {
         updateStatusMessage('fileError');
         statusMessage.style.color = '#e74c3c';
         return;
     }
 
-    const totalBytes = validFiles.reduce((sum, f) => sum + (f && typeof f.size === 'number' ? f.size : 0), 0);
+    const hasExistingSelection = uploadedFiles.length > 0;
+    const mode = hasExistingSelection && hasPendingFiles() ? 'append' : 'overwrite';
+    const seedKeys = mode === 'append' ? new Set(uploadedFiles.map(getFileIdentityKey)) : new Set();
+    const { uniqueFiles, duplicateCount } = dedupeFiles(incomingValidFiles, seedKeys);
+
+    if (uniqueFiles.length === 0) {
+        setStatusText(t('allDuplicatesSkipped', 'All selected files are already in the list.'), { color: '#e67e22' });
+        return;
+    }
+
+    const targetFiles = mode === 'append' ? uploadedFiles.concat(uniqueFiles) : uniqueFiles;
+    const totalBytes = sumFileBytes(targetFiles);
     const pro = isProActive();
 
     // Free：硬限制（强制拦截）
     if (!pro) {
-        if (validFiles.length > LIMITS.free.maxFiles || totalBytes > LIMITS.free.maxTotalBytes) {
+        if (targetFiles.length > LIMITS.free.maxFiles || totalBytes > LIMITS.free.maxTotalBytes) {
             const msg = t(
                 'freeLimitExceeded',
                 `Free limit exceeded: up to ${LIMITS.free.maxFiles} files / ${bytesToMb(LIMITS.free.maxTotalBytes)}MB total.`
@@ -364,32 +451,34 @@ function handleFiles(files) {
             );
             const btn = document.getElementById('upgrade-to-pro-btn');
             if (btn) btn.addEventListener('click', scrollToProPanel);
-            convertBtn.disabled = true;
-            downloadBtn.disabled = true;
-            batchStatus.style.display = 'none';
             return;
         }
     } else {
         // Pro：软上限（保护浏览器体验，不阻断但提示）
-        if (validFiles.length > LIMITS.pro.softMaxFiles || totalBytes > LIMITS.pro.softMaxTotalBytes) {
+        if (targetFiles.length > LIMITS.pro.softMaxFiles || totalBytes > LIMITS.pro.softMaxTotalBytes) {
             const warning = t(
                 'proSoftLimitWarning',
                 'Large batch detected. For best performance, process in smaller batches. Continue anyway?'
             );
-            const detail = `\n\n${validFiles.length} files, ${formatBytes(totalBytes)} total.`;
+            const detail = `\n\n${targetFiles.length} files, ${formatBytes(totalBytes)} total.`;
             const ok = window.confirm(warning + detail);
             if (!ok) {
-                batchStatus.style.display = 'none';
                 return;
             }
         }
     }
-    
-    // 更新UI
-    uploadedFiles = validFiles;
-    processedFiles = new Array(validFiles.length).fill(null);
-    jobs = validFiles.map((file, index) => ({
-        id: `${Date.now()}-${index}`,
+
+    if (mode === 'overwrite') {
+        clearResults({ keepSelection: false, silent: true });
+    }
+
+    const startIndex = uploadedFiles.length;
+    uploadedFiles.push(...uniqueFiles);
+    processedFiles.push(...new Array(uniqueFiles.length).fill(null));
+
+    const now = Date.now();
+    const newJobs = uniqueFiles.map((file, offset) => ({
+        id: `${now}-${startIndex + offset}`,
         file,
         fileName: file.name,
         size: file.size,
@@ -400,46 +489,35 @@ function handleFiles(files) {
         errorCode: '',
         errorMessage: ''
     }));
-    
-    // 国际化文件信息显示
-    if (translations) {
-        if (validFiles.length === 1) {
-            fileInfo.textContent = t('fileSelected', 'Selected: ') + validFiles[0].name + ' (' + formatFileSize(validFiles[0].size) + ')';
-        } else {
-            const prefix = t('filesSelected', 'Selected: ');
-            const suffix = t('fileCount', ' files');
-            fileInfo.textContent = `${prefix}${validFiles.length}${suffix} (${formatFileSize(totalBytes)} total)`;
-        }
-    } else {
-        if (validFiles.length === 1) {
-            fileInfo.textContent = `Selected: ${validFiles[0].name} (${formatFileSize(validFiles[0].size)})`;
-        } else {
-            fileInfo.textContent = `Selected: ${validFiles.length} files (${formatFileSize(totalBytes)} total)`;
-        }
-    }
-    
-    // 显示批量处理区域
-    batchStatus.style.display = 'block';
-    
-    // 更新文件计数
-    processedCount.textContent = '0';
-    totalCount.textContent = validFiles.length.toString();
-    
-    // 创建文件列表项
-    validFiles.forEach((file, index) => {
-        const fileItem = createFileListItem(file, index);
+    jobs.push(...newJobs);
+
+    uniqueFiles.forEach((file, offset) => {
+        const fileItem = createFileListItem(file, startIndex + offset);
         fileList.appendChild(fileItem);
     });
     
-    // 启用转换按钮
-    convertBtn.disabled = false;
-    downloadBtn.disabled = true;
-    setStatusText('');
-    resetProgressUi();
+    // 显示批量处理区域
+    batchStatus.style.display = 'block';
+
+    updateFileInfoText();
+    
+    // 更新文件计数
+    const processedSoFar = processedFiles.filter(item => item !== null).length;
+    processedCount.textContent = processedSoFar.toString();
+    totalCount.textContent = uploadedFiles.length.toString();
+
+    const actionText = mode === 'append'
+        ? t('appendFilesSummary', `Added ${uniqueFiles.length} files to current batch.`)
+        : t('newBatchSummary', `Started a new batch with ${uniqueFiles.length} files.`);
+    const duplicateText = duplicateCount > 0
+        ? ` ${t('duplicatesSkippedSuffix', `Skipped ${duplicateCount} duplicates.`)}`
+        : '';
+    setStatusText(`${actionText}${duplicateText}`, { color: '#666' });
+
     revokeAndClearReport();
     ensureBatchControls();
     applyProUi();
-    updateActionButtons();
+    updateOverallProgress();
 }
 
 // 创建文件列表项
@@ -568,27 +646,51 @@ function formatFileSize(bytes) {
 function startBatchProcessing() {
     if (uploadedFiles.length === 0 || isProcessing) return;
 
-    // 重置处理状态
+    const indicesToProcess = [];
+    uploadedFiles.forEach((_, index) => {
+        const item = processedFiles[index];
+        if (item === null) {
+            indicesToProcess.push(index);
+            return;
+        }
+        if (item && item.error) {
+            processedFiles[index] = null;
+            indicesToProcess.push(index);
+        }
+    });
+
+    if (indicesToProcess.length === 0) {
+        setStatusText(t('allFilesAlreadyConverted', 'All files are already converted.'), { color: '#666' });
+        updateOverallProgress();
+        return;
+    }
+
     currentProcessingIndex = -1;
     revokeAndClearReport();
-    processedFiles = new Array(uploadedFiles.length).fill(null);
-    processedCount.textContent = '0';
-    resetProgressUi();
 
     // 禁用按钮
     convertBtn.disabled = true;
     downloadBtn.disabled = true;
     updateActionButtons();
 
-    // 重置所有文件状态为待处理
-    uploadedFiles.forEach((file, index) => {
+    // 重置待处理项状态
+    indicesToProcess.forEach((index) => {
+        if (jobs[index]) {
+            jobs[index].status = 'waiting';
+            jobs[index].startedAt = 0;
+            jobs[index].endedAt = 0;
+            jobs[index].durationMs = 0;
+            jobs[index].errorCode = '';
+            jobs[index].errorMessage = '';
+        }
         updateFileStatus(index, 'pending');
     });
+    updateOverallProgress();
 
     setStatusText(t('batchStarting', 'Starting conversion…'), { color: '#666' });
 
     // 开始处理队列（Free=串行 / Pro=并发）
-    runQueue(uploadedFiles.map((_, i) => i));
+    runQueue(indicesToProcess);
 }
 
 let queueState = {

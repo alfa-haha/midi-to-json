@@ -36,8 +36,32 @@ const LIMITS = {
     }
 };
 
+window.dataLayer = window.dataLayer || [];
+
 function isProActive() {
     return !!(window.proState && window.proState.isPro);
+}
+
+function maybeFireLimitHint15(count, inRangeOverride) {
+    const inRange = typeof inRangeOverride === 'boolean'
+        ? inRangeOverride
+        : (count >= 15 && count <= 20);
+
+    window.__limitHint15InRange = window.__limitHint15InRange || false;
+
+    if (inRange && !window.__limitHint15InRange) {
+        window.__limitHint15InRange = true;
+        window.dataLayer.push({
+            event: 'limit_hint_15',
+            file_count: count,
+            page_path: window.location.pathname,
+            ts: Date.now()
+        });
+    }
+
+    if (!inRange && window.__limitHint15InRange) {
+        window.__limitHint15InRange = false;
+    }
 }
 
 function t(key, fallback) {
@@ -224,14 +248,11 @@ function updateProToolInfoUi() {
 
 function updateProHintBanner({ forceHide = false } = {}) {
     if (!proHintBanner) return;
-    if (forceHide || isProActive()) {
-        proHintBanner.style.display = 'none';
-        return;
-    }
 
     const count = uploadedFiles.length;
-    const shouldShow = count >= 15 && count <= LIMITS.free.maxFiles;
+    const shouldShow = !forceHide && !isProActive() && count >= 15 && count <= LIMITS.free.maxFiles;
     proHintBanner.style.display = shouldShow ? 'flex' : 'none';
+    maybeFireLimitHint15(count, shouldShow);
 }
 
 function applyProUi() {

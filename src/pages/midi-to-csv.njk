@@ -75,6 +75,24 @@ headExtra: |
     .csv-fields-note code {
       font-size: 0.95em;
     }
+    .csv-fields-link-wrap {
+      margin-top: auto;
+      margin-bottom: 0;
+      padding-top: 0.65rem;
+    }
+    .csv-fields-link {
+      display: inline-flex;
+      align-items: center;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #2f4a8d;
+      text-decoration: none;
+    }
+    .csv-fields-link:hover,
+    .csv-fields-link:focus-visible {
+      color: #1e3a8a;
+      text-decoration: underline;
+    }
 
     .csv-example-head {
       display: flex;
@@ -283,6 +301,14 @@ headExtra: |
         "acceptedAnswer": {
           "@type": "Answer",
           "text": "Pro includes batch retry tools (Retry all failed and per-file retry) to recover failed conversions quickly."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why is track always 1 in my CSV?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Because many MIDI files are single-track. track refers to MIDI track chunks in the file, not necessarily DAW instrument tracks. Use channel to separate parts."
         }
       }
     ]

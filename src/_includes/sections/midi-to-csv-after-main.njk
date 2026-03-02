@@ -19,6 +19,7 @@
           <span><code>velocity</code></span>
         </div>
         <p class="csv-fields-note"><strong>Note:</strong> <code>track</code> is the MIDI track index in the file. Many MIDI files use a single track - use <code>channel</code> to separate parts.</p>
+        <p class="csv-fields-link-wrap"><a class="csv-fields-link" href="/midi-inspector/">Not sure? Check MIDI Inspector &rarr;</a></p>
       </article>
 
       <article class="feature-card csv-card-local">
@@ -218,6 +219,16 @@
         </div>
         <div class="accordion-content">
           <p>Pro includes batch retry tools (<strong>Retry all failed</strong> and per-file retry) to recover failed conversions quickly.</p>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <div class="accordion-header" role="button" tabindex="0" aria-expanded="false">
+          <h3>Why is track always 1 in my CSV?</h3>
+          <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+        </div>
+        <div class="accordion-content">
+          <p>Because many MIDI files are single-track. <code>track</code> refers to MIDI track chunks in the file, not necessarily DAW instrument tracks. Use <code>channel</code> to separate parts.</p>
         </div>
       </div>
     </div>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{{META_DESCRIPTION}}">
+    <title>{{PAGE_TITLE}} | MidiEasy</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/blog-image.css">
+    <link rel="stylesheet" href="../css/blog-article.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+    <!-- Reuse header from existing blog pages -->
+    {{HEADER}}
+
+    <main>
+        <div class="blog-container">
+            <div class="blog-header">
+                <h1 class="blog-title">{{ARTICLE_TITLE}}</h1>
+                <div class="blog-meta">
+                    <span><i class="far fa-calendar"></i> {{DATE}}</span>
+                    <span style="margin-left: 1rem;"><i class="far fa-clock"></i> {{READ_TIME}}</span>
+                </div>
+            </div>
+
+            <div class="blog-content">
+                <div class="blog-image-container">
+                    <img
+                        class="blog-header-image lazy-loading"
+                        data-lazy="true"
+                        data-src="../images/{{HERO_IMAGE_FILE}}"
+                        alt="{{HERO_IMAGE_ALT}}"
+                    >
+                </div>
+
+                {{TABLE_OF_CONTENTS}}
+                {{ARTICLE_BODY_HTML}}
+            </div>
+
+            <div class="blog-navigation">
+                <a href="{{PREV_URL}}" class="nav-link"><i class="fas fa-arrow-left"></i> Previous Article</a>
+                <a href="{{NEXT_URL}}" class="nav-link">Next Article <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Reuse footer from existing blog pages -->
+    {{FOOTER}}
+
+    <script src="../js/i18n/en.js"></script>
+    <script src="../js/i18n.js"></script>
+    <script src="common.js"></script>
+    <script src="../js/language-switcher.js"></script>
+    <script src="../js/lazy-loading.js"></script>
+</body>
+</html>

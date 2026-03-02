@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Convert MIDI to note-level CSV locally in your browser (no uploads). See example output, column meanings, and fixes for common issues&#8212;then analyze in Sheets/Excel or Python.">
+    <title>How to Convert MIDI to CSV (Examples + Common Issues) | MidiEasy</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/blog-image.css">
+    <link rel="stylesheet" href="../css/blog-article.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="language-selector">
+            <button class="language-btn">
+                <i class="fas fa-globe"></i>
+                <span id="current-language">English</span>
+                <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="language-dropdown">
+                <div class="language-option active" data-lang="en">
+                    <span class="language-name">English</span>
+                </div>
+                <div class="language-option" data-lang="zh">
+                    <span class="language-name">中文</span>
+                </div>
+                <div class="language-option" data-lang="ja">
+                    <span class="language-name">日本語</span>
+                </div>
+                <div class="language-option" data-lang="es">
+                    <span class="language-name">Espa&ntilde;ol</span>
+                </div>
+                <div class="language-option" data-lang="de">
+                    <span class="language-name">Deutsch</span>
+                </div>
+            </div>
+        </div>
+        <div class="site-title">MIDI to JSON Converter</div>
+        <p>Professional MIDI to JSON Converter for Tone.js &amp; Web Audio Developers</p>
+        <div class="nav-links">
+            <a href="/" class="nav-link">MIDI &rarr; JSON</a>
+            <a href="/midi-to-csv/" class="nav-link">MIDI &rarr; CSV</a>
+            <a href="/midi-inspector/" class="nav-link">MIDI Inspector</a>
+            <a href="/pro/" class="nav-link">Pro</a>
+            <a href="/blog/index.html" class="nav-link">Blog</a>
+        </div>
+    </header>
+
+    <main>
+        <div class="blog-container">
+            <div class="blog-header">
+                <h1 class="blog-title">How to Convert MIDI to CSV (Examples + Common Issues)</h1>
+                <div class="blog-meta">
+                    <span><i class="far fa-calendar"></i> March 2, 2026</span>
+                    <span style="margin-left: 1rem;"><i class="far fa-clock"></i> 10 min read</span>
+                </div>
+            </div>
+
+            <div class="blog-content">
+                <div class="blog-image-container">
+                    <img
+                        class="blog-header-image lazy-loading"
+                        data-lazy="true"
+                        data-src="../images/Convert MIDI to CSV (Examples + Common Issues).png"
+                        alt="How to Convert MIDI to CSV (Examples + Common Issues)"
+                        width="903"
+                        height="526"
+                    >
+                </div>
+
+                <p>Need to analyze MIDI data in <strong>Excel, Google Sheets</strong>, or <strong>Python</strong>? Converting your MIDI files to a note-level CSV is probably the fastest way to get started. This guide walks you through the exact steps, explains what you'll find in the CSV, and answers the most common "wait, why does this look like that?" questions.</p>
+
+                <p><strong>The good news:</strong> MidiEasy handles MIDI to CSV conversion <strong>right in your browser</strong>&#8212;nothing gets uploaded. Your files never leave your device.</p>
+
+                <blockquote>
+                    <p><strong>Converter:</strong> <code>/midi-to-csv</code><br>
+                    <strong>Inspector (for debugging MIDI structure):</strong> <code>/midi-inspector</code></p>
+                </blockquote>
+
+                <div class="table-of-contents">
+                    <h2>Table of Contents</h2>
+                    <ol>
+                        <li>
+                            <a href="#quick-start-for-sheetsexcel-users"><strong>Quick start for Sheets/Excel users</strong></a>
+                            <ul class="sub-list">
+                                <li><a href="#step-1-open-the-converter">Step 1 &#8212; Open the converter</a></li>
+                                <li><a href="#step-2-upload-your-midi-files">Step 2 &#8212; Upload your MIDI files</a></li>
+                                <li><a href="#step-3-convert-and-download">Step 3 &#8212; Convert and download</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#what-the-csv-actually-looks-like"><strong>What the CSV actually looks like</strong></a>
+                            <ul class="sub-list">
+                                <li><a href="#what-each-column-means">What each column means</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#common-issue-1-why-is-the-track-column-always-1"><strong>Common issue #1: "Why is the track column always 1?"</strong></a></li>
+                        <li>
+                            <a href="#working-with-google-sheets--excel"><strong>Working with Google Sheets / Excel</strong></a>
+                            <ul class="sub-list">
+                                <li><a href="#group-notes-by-channel">Group notes by channel</a></li>
+                                <li><a href="#find-the-loudest-notes">Find the loudest notes</a></li>
+                                <li><a href="#see-which-notes-appear-most-often">See which notes appear most often</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#working-with-python-pandas"><strong>Working with Python (pandas)</strong></a>
+                            <ul class="sub-list">
+                                <li><a href="#load-the-csv">Load the CSV</a></li>
+                                <li><a href="#count-notes-per-channel">Count notes per channel</a></li>
+                                <li><a href="#calculate-total-note-duration-per-channel">Calculate total note duration per channel</a></li>
+                                <li><a href="#see-which-pitches-are-used-most">See which pitches are used most</a></li>
+                                <li><a href="#add-an-end-time-column">Add an end time column</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#common-issue-2-why-are-there-so-many-channels"><strong>Common issue #2: "Why are there so many channels?"</strong></a></li>
+                        <li><a href="#common-issue-3-the-timing-seems-off"><strong>Common issue #3: "The timing seems off"</strong></a></li>
+                        <li><a href="#common-issue-4-some-of-my-files-wont-convert"><strong>Common issue #4: "Some of my files won't convert"</strong></a></li>
+                        <li><a href="#is-pro-worth-it-lifetime-990"><strong>Is Pro worth it? (Lifetime $9.90)</strong></a></li>
+                        <li><a href="#related-tools"><strong>Related tools</strong></a></li>
+                    </ol>
+                </div>
+
+                <hr>
+
+                <h2 id="quick-start-for-sheetsexcel-users">Quick start for Sheets/Excel users</h2>
+
+                <h3 id="step-1-open-the-converter">Step 1 &#8212; Open the converter</h3>
+
+                <p>Head over to: <code>/midi-to-csv</code></p>
+
+                <blockquote>
+                    <p><em>(Insert screenshot: the upload area and Convert/Download buttons.)</em></p>
+                </blockquote>
+
+                <img
+                    class="article-image article-image-wide"
+                    src="../images/midi-to-csv-guide_01_converter-upload.png"
+                    alt="MidiEasy MIDI to CSV converter upload area and convert buttons"
+                    width="845"
+                    height="641"
+                >
+
+                <h3 id="step-2-upload-your-midi-files">Step 2 &#8212; Upload your MIDI files</h3>
+
+                <p>Just drag and drop one or more <code>.mid</code> files, or click <strong>Select MIDI files</strong>.</p>
+
+                <ul>
+                    <li>Free tier: batch conversion supports up to <strong>20 files / 100MB total</strong></li>
+                    <li>Pro: built for larger batches (higher limits + faster processing)</li>
+                </ul>
+
+                <h3 id="step-3-convert-and-download">Step 3 &#8212; Convert and download</h3>
+
+                <p>Hit <strong>Convert</strong>, then download your file(s):</p>
+
+                <ul>
+                    <li><strong>CSV</strong> if you uploaded a single file</li>
+                    <li><strong>ZIP</strong> if you uploaded multiple files</li>
+                </ul>
+
+                <img
+                    class="article-image article-image-medium"
+                    src="../images/midi-to-csv-guide_02_download-csv-zip.png"
+                    alt="Downloading CSV and ZIP results after converting MIDI files"
+                    width="830"
+                    height="544"
+                >
+
+                <p>Open the CSV in <strong>Excel</strong> or <strong>Google Sheets</strong> and you're good to go.</p>
+
+                <hr>
+
+                <h2 id="what-the-csv-actually-looks-like">What the CSV actually looks like</h2>
+
+                <p>MidiEasy gives you <strong>note-level rows</strong>&#8212;one row per note event.</p>
+
+                <p>Here's a simplified example:</p>
+
+                <pre><code class="language-csv">track,channel,pitch,note_name,start_seconds,duration_seconds,velocity
+1,0,60,C4,12.480,0.250,96
+1,0,64,E4,12.480,0.250,92
+1,10,36,C2,12.500,0.125,110</code></pre>
+
+                <img
+                    class="article-image article-image-medium"
+                    src="../images/midi-to-csv-guide_03_example-csv-output.png"
+                    alt="Example MIDI to CSV output showing track, channel, pitch, timing, and velocity columns"
+                    width="798"
+                    height="442"
+                >
+
+                <h3 id="what-each-column-means">What each column means</h3>
+
+                <ul>
+                    <li><strong>track</strong>: The MIDI track index in the file</li>
+                    <li><strong>channel</strong>: The MIDI channel (often used to separate different instruments or parts)</li>
+                    <li><strong>pitch / note_name</strong>: The note pitch (for example, 60 = C4)</li>
+                    <li><strong>start_seconds</strong>: When the note starts (in seconds)</li>
+                    <li><strong>duration_seconds</strong>: How long the note lasts (in seconds)</li>
+                    <li><strong>velocity</strong>: How hard the note is played (ranges from 0&#8211;127)</li>
+                </ul>
+
+                <hr>
+
+                <h2 id="common-issue-1-why-is-the-track-column-always-1">Common issue #1: "Why is the track column always 1?"</h2>
+
+                <p>This is <strong>totally normal</strong> in most cases.</p>
+
+                <p>A lot of MIDI files are <strong>single-track</strong> files (format Type 0, or files that have been exported/merged). When that's the case, all the events live inside one track chunk&#8212;so the <code>track</code> value stays <code>1</code> for every single row.</p>
+
+                <p><strong>What to do:</strong> Focus on the <strong>channel</strong> column instead (and sometimes instrument/program info) to tell different parts apart.</p>
+
+                <img
+                    class="article-image article-image-tall"
+                    src="../images/midi-to-csv-guide_04_midi-inspector-single-track.png"
+                    alt="MIDI Inspector showing a single-track MIDI file where track stays 1 and channels vary"
+                    width="827"
+                    height="965"
+                >
+
+                <p>Want to double-check your MIDI file's structure? Use: <code>/midi-inspector</code></p>
+
+                <hr>
+
+                <h2 id="working-with-google-sheets--excel">Working with Google Sheets / Excel</h2>
+
+                <h3 id="group-notes-by-channel">Group notes by channel</h3>
+
+                <p>Create a <strong>Pivot Table</strong>:</p>
+
+                <ul>
+                    <li>Rows: <code>channel</code></li>
+                    <li>Values: <code>COUNT</code> of rows (or <code>SUM</code> of duration, depending on what you need)</li>
+                </ul>
+
+                <p>This instantly shows you which channels have the most activity.</p>
+
+                <h3 id="find-the-loudest-notes">Find the loudest notes</h3>
+
+                <p>Sort by <code>velocity</code> in descending order, or try:</p>
+
+                <ul>
+                    <li>Filter: <code>velocity &gt; 100</code></li>
+                    <li>Conditional formatting to highlight high-velocity notes</li>
+                </ul>
+
+                <h3 id="see-which-notes-appear-most-often">See which notes appear most often</h3>
+
+                <p>Build a pivot table with:</p>
+
+                <ul>
+                    <li>Rows: <code>note_name</code> (or <code>pitch</code>)</li>
+                    <li>Values: count</li>
+                </ul>
+
+                <p>That gives you a pitch histogram.</p>
+
+                <hr>
+
+                <h2 id="working-with-python-pandas">Working with Python (pandas)</h2>
+
+                <h3 id="load-the-csv">Load the CSV</h3>
+
+                <pre><code class="language-python">import pandas as pd
+
+df = pd.read_csv("your_file.csv")
+df.head()</code></pre>
+
+                <h3 id="count-notes-per-channel">Count notes per channel</h3>
+
+                <pre><code class="language-python">df.groupby("channel").size().sort_values(ascending=False)</code></pre>
+
+                <h3 id="calculate-total-note-duration-per-channel">Calculate total note duration per channel</h3>
+
+                <pre><code class="language-python">df.groupby("channel")["duration_seconds"].sum().sort_values(ascending=False)</code></pre>
+
+                <h3 id="see-which-pitches-are-used-most">See which pitches are used most</h3>
+
+                <pre><code class="language-python">df.groupby("note_name").size().sort_values(ascending=False).head(20)</code></pre>
+
+                <h3 id="add-an-end-time-column">Add an end time column</h3>
+
+                <pre><code class="language-python">df["end_seconds"] = df["start_seconds"] + df["duration_seconds"]</code></pre>
+
+                <hr>
+
+                <h2 id="common-issue-2-why-are-there-so-many-channels">Common issue #2: "Why are there so many channels?"</h2>
+
+                <p>That's expected for MIDI files with multiple parts.</p>
+
+                <p>Here's what you'll typically see:</p>
+
+                <ul>
+                    <li><strong>Channel 10</strong> is <em>usually</em> reserved for drums (though not always&#8212;it's just a common convention)</li>
+                    <li>Other channels represent different instruments or parts</li>
+                </ul>
+
+                <p>If you want to see exactly which programs/instruments are assigned to which channels, check out:<br>
+                <code>/midi-inspector</code></p>
+
+                <hr>
+
+                <h2 id="common-issue-3-the-timing-seems-off">Common issue #3: "The timing seems off"</h2>
+
+                <p>When the timing doesn't match what you expected, it's usually because of:</p>
+
+                <ul>
+                    <li>Tempo changes throughout the song</li>
+                    <li>Time signature changes</li>
+                    <li>An unusual MIDI file structure</li>
+                </ul>
+
+                <p>Here's what you can try:</p>
+
+                <ol>
+                    <li>Check the tempo and time signature in <code>/midi-inspector</code></li>
+                    <li>Make sure your analysis is working in seconds (this CSV uses <code>start_seconds</code> and <code>duration_seconds</code>)</li>
+                    <li>Keep in mind that DAWs often display timing differently (ticks vs. seconds), so there might be a visual mismatch</li>
+                </ol>
+
+                <hr>
+
+                <h2 id="common-issue-4-some-of-my-files-wont-convert">Common issue #4: "Some of my files won't convert"</h2>
+
+                <p>This can happen with:</p>
+
+                <ul>
+                    <li>Corrupted or malformed MIDI files</li>
+                    <li>Files containing unusual or unsupported event types</li>
+                    <li>Edge-case file encodings</li>
+                </ul>
+
+                <p>Try these steps:</p>
+
+                <ul>
+                    <li>Convert files one at a time to figure out which one's causing trouble</li>
+                    <li>Open the problematic file in <code>/midi-inspector</code> to check for quality issues or unknown events</li>
+                </ul>
+
+                <p>If you're doing a lot of batch conversions, Pro includes <strong>retry tools</strong> that help you quickly recover from failed conversions.</p>
+
+                <hr>
+
+                <h2 id="is-pro-worth-it-lifetime-990">Is Pro worth it? (Lifetime $9.90)</h2>
+
+                <p>If you're regularly converting batches of MIDI files, Pro is designed for exactly that:</p>
+
+                <ul>
+                    <li><strong>Higher batch limits:</strong> Free tier caps at <strong>20 files / 100MB</strong>; Pro raises the soft limit to around <strong>200 files / 1GB</strong></li>
+                    <li><strong>Faster processing:</strong> <strong>3 workers</strong> (Pro) vs <strong>1</strong> (Free)</li>
+                    <li><strong>Retry tools:</strong> Easily retry failed conversions, either in batches or file-by-file</li>
+                    <li><strong>report.json export:</strong> Pro lets you download <code>report.json</code> files (and automatically includes them in ZIP downloads)</li>
+                </ul>
+
+                <hr>
+
+                <h2 id="related-tools">Related tools</h2>
+
+                <ul>
+                    <li><a href="/midi-to-csv/">MIDI to CSV</a> &rarr; <code>/midi-to-csv/</code></li>
+                    <li><a href="/midi-inspector/">MIDI Inspector</a> &rarr; <code>/midi-inspector/</code></li>
+                    <li><a href="/">MIDI to JSON</a> &rarr; <code>/</code></li>
+                    <li><a href="/pro/">Pro</a> &rarr; <code>/pro/</code></li>
+                </ul>
+            </div>
+
+            <div class="blog-navigation">
+                <a href="/blog/midi-to-json-conversion-guide.html" class="nav-link"><i class="fas fa-arrow-left"></i> Previous Article</a>
+                <a href="#" class="nav-link">Next Article <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>About MIDI to JSON Converter</h3>
+                <p>We present an online service to convert MIDI files to JSON format for web audio applications.</p>
+                <p><i class="fa-solid fa-envelope"></i> <a href="mailto:support@midieasy.com" class="email-link">support@midieasy.com</a></p>
+            </div>
+            <div class="footer-section">
+                <h3>Company</h3>
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="/blog/index.html">Blog</a></li>
+                    <li><a href="../index.html#faq">FAQ's</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="mailto:support@midieasy.com?subject=Contact%20from%20MIDI%20to%20JSON%20Converter" class="email-link">Contact Us</a></li>
+                    <li><a href="../terms.html">Terms of Service</a></li>
+                    <li><a href="../privacy-policy.html">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Follow Us</h3>
+                <div class="social-links">
+                    <a href="https://x.com/midieasy" target="_blank" class="social-link">
+                        <i class="fa-brands fa-x-twitter"></i>
+                        <span>X</span>
+                    </a>
+                    <a href="https://facebook.com/midieasy" target="_blank" class="social-link">
+                        <i class="fa-brands fa-facebook-f"></i>
+                        <span>Facebook</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>Built with <a href="https://github.com/chrisguttandin/midi-json-parser">midi-json-parser</a> library</p>
+            <p>&copy; 2026 Free MIDI to JSON Converter Online</p>
+        </div>
+    </footer>
+
+    <script src="../js/i18n/en.js"></script>
+    <script src="../js/i18n.js"></script>
+    <script src="common.js"></script>
+    <script src="../js/language-switcher.js"></script>
+    <script src="../js/lazy-loading.js"></script>
+</body>
+</html>

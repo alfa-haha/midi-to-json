@@ -190,6 +190,19 @@
   
   <!-- Blog Articles -->
   <url>
+    <loc>https://midieasy.com/blog/midi-to-csv-examples-common-issues.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://midieasy.com/en/blog/midi-to-csv-examples-common-issues.html"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://midieasy.com/zh/blog/midi-to-csv-examples-common-issues.html"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://midieasy.com/ja/blog/midi-to-csv-examples-common-issues.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://midieasy.com/es/blog/midi-to-csv-examples-common-issues.html"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://midieasy.com/de/blog/midi-to-csv-examples-common-issues.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://midieasy.com/en/blog/midi-to-csv-examples-common-issues.html"/>
+    <lastmod>2026-03-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
     <loc>https://midieasy.com/blog/midi-to-json-conversion-guide.html</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://midieasy.com/en/blog/midi-to-json-conversion-guide.html"/>
     <xhtml:link rel="alternate" hreflang="zh" href="https://midieasy.com/zh/blog/midi-to-json-conversion-guide.html"/>

@@ -8,6 +8,7 @@ window.de = {
     
     // Features section
     "whyChooseTitle": "Warum MidiEasy wählen",
+    "whyChooseSubtitle": "Leistungsstarke Stapelkonvertierung, blitzschnelle Ausgabe und private Verarbeitung direkt im Browser.",
     "featureBatchTitle": "Leistungsstarke Stapelverarbeitung",
     "featureBatchDescription": "Konvertieren Sie mehrere MIDI-Dateien gleichzeitig mit unserer leistungsstarken Stapelverarbeitung. Sparen Sie Stunden mühsamer Arbeit, indem Sie Ihre gesamte Sammlung auf einmal hochladen und MidiEasy alles von kleinen Projekten bis hin zu umfangreichen Bibliotheken verarbeiten lassen.",
     "featureSpeedTitle": "Blitzschnelle Konvertierung",

@@ -14,6 +14,7 @@ window.zh = {
     
     // Features section
     "whyChooseTitle": "为什么选择MidiEasy",
+    "whyChooseSubtitle": "强大批量转换、闪电输出速度、全程浏览器本地处理。",
     "featureBatchTitle": "强大的批量处理能力",
     "featureBatchDescription": "使用我们强大的批处理引擎同时转换多个MIDI文件。一次上传您的整个音乐集合，让MidiEasy处理从小型项目到大型库的所有内容，节省数小时的繁琐工作。",
     "featureSpeedTitle": "闪电般的转换速度",

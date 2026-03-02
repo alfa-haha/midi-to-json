@@ -45,6 +45,7 @@
     <main>
       {{ content | safe }}
     </main>
+    {% if afterMainTemplate %}{% include afterMainTemplate %}{% endif %}
     {% include "components/footer.njk" %}
     <script src="/js/pro.js"></script>
     {% if bodyScripts %}{{ bodyScripts | safe }}{% endif %}

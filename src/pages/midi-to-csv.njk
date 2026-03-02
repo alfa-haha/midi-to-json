@@ -3,19 +3,367 @@ permalink: "midi-to-csv/index.html"
 layout: "layouts/base.njk"
 lang: en
 toolId: midi-to-csv
+afterMainTemplate: "sections/midi-to-csv-after-main.njk"
 titleOverride: "MIDI to CSV Converter"
-titleSubtitle: "Professional Note-Level MIDI to CSV Converter for Music Data Analysis"
+titleSubtitle: "Convert MIDI to note-level CSV for analysis, debugging, and spreadsheets — 100% local in your browser (no uploads)."
 meta:
-  title: "MIDI to CSV Converter | MidiEasy"
-  description: "Convert MIDI files to note-level CSV in your browser. Local processing. No uploads."
+  title: "MIDI to CSV Converter (Local & Free) — Note-Level Export | MidiEasy"
+  description: "Convert MIDI to note-level CSV in your browser (no uploads). Export track, channel, pitch, start time, duration, and velocity. Free batch: up to 20 files / 100MB. Pro unlocks higher limits, 3× faster workers, retry tools, and report.json."
+headExtra: |
+  <style>
+    .csv-compact-subtitle {
+      margin: 0 auto 2rem;
+      max-width: 980px;
+      font-size: 1.05rem;
+    }
+    .csv-feature-privacy-section .features-container {
+      max-width: 1040px;
+    }
+    .csv-feature-privacy-section .features-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-areas:
+        "fields local"
+        "example example";
+      align-items: stretch;
+      gap: 1.25rem;
+    }
+    .csv-feature-privacy-section .csv-card-fields { grid-area: fields; }
+    .csv-feature-privacy-section .csv-card-local { grid-area: local; }
+    .csv-feature-privacy-section .csv-card-example { grid-area: example; }
+
+    .csv-feature-privacy-section .feature-card {
+      text-align: left;
+      padding: 1.5rem;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    .csv-feature-privacy-section .feature-card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 0.7rem;
+    }
+    .csv-feature-privacy-section .feature-card p {
+      color: #555;
+      font-size: 1rem;
+      line-height: 1.65;
+      margin-bottom: 0.65rem;
+    }
+    .csv-feature-privacy-section code {
+      font-size: 0.95em;
+    }
+
+    .csv-fields-chips {
+      margin-top: 0.55rem;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.45rem;
+    }
+    .csv-fields-chips span {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.35rem 0.5rem;
+      border: 1px solid #e5e9f3;
+      border-radius: 8px;
+      background: #fafbff;
+    }
+    .csv-fields-note {
+      margin-top: 0.72rem;
+      color: #6b7280;
+      font-size: 0.9rem;
+      line-height: 1.55;
+    }
+    .csv-fields-note code {
+      font-size: 0.95em;
+    }
+
+    .csv-example-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.8rem;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 0.35rem;
+    }
+    .csv-example-head h3 {
+      margin: 0;
+    }
+    .csv-columns-line {
+      margin: 0.15rem 0 0.5rem;
+      color: #555;
+      font-size: 0.96rem;
+    }
+
+    .csv-example {
+      margin: 0;
+      padding: 0.75rem 0.85rem;
+      border: 1px solid #e6eaf2;
+      border-radius: 8px;
+      background: #fafbff;
+      overflow-x: auto;
+    }
+    .csv-example code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      color: #2f3440;
+      font-size: 0.92rem;
+      line-height: 1.55;
+      white-space: pre;
+    }
+    .csv-grouping-help {
+      margin-top: 0.8rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid rgba(0, 0, 0, 0.08);
+    }
+    .csv-grouping-help h4 {
+      margin: 0;
+      color: #333;
+      font-size: 1.05rem;
+    }
+    .csv-grouping-help p {
+      margin: 0.48rem 0 0;
+      color: #555;
+      font-size: 0.98rem;
+      line-height: 1.55;
+    }
+    .csv-grouping-help ul {
+      margin: 0.52rem 0 0 1.1rem;
+      color: #555;
+      font-size: 0.98rem;
+      line-height: 1.55;
+    }
+    .csv-grouping-help li {
+      margin: 0.28rem 0;
+    }
+
+    .csv-trust-badges {
+      margin-top: 0.7rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .csv-trust-badges span {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.28rem 0.6rem;
+      border: 1px solid #d9e5ff;
+      border-radius: 999px;
+      background: #eef4ff;
+      color: #2f4a8d;
+      font-size: 0.92rem;
+      font-weight: 600;
+    }
+
+    .csv-use-cases {
+      margin-top: 2rem;
+      border-top: 1px solid rgba(0, 0, 0, 0.08);
+      padding-top: 1.2rem;
+    }
+    .csv-use-cases h3 {
+      font-size: 1.2rem;
+      color: #333;
+      margin: 0;
+      text-align: left;
+    }
+    .csv-use-cases-grid {
+      margin-top: 0.85rem;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.65rem 0.8rem;
+    }
+    .csv-use-case {
+      border: 1px solid #e6eaf2;
+      border-radius: 10px;
+      background: #fff;
+      padding: 0.65rem 0.75rem;
+      color: #444;
+      line-height: 1.5;
+      font-size: 0.98rem;
+    }
+    .csv-use-cases-cta {
+      margin-top: 0.9rem;
+      text-align: left;
+    }
+    .csv-use-cases-cta .btn {
+      min-width: 168px;
+    }
+    @media (max-width: 768px) {
+      .csv-feature-privacy-section .features-grid {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "fields"
+          "local"
+          "example";
+      }
+      .csv-fields-chips {
+        grid-template-columns: 1fr;
+      }
+      .csv-use-cases-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .csv-feature-privacy-section {
+      background-color: #f0f4ff;
+    }
+
+    .csv-how-to-section {
+      background-color: #ffffff;
+    }
+
+    .csv-pro-summary-section .section-title {
+      margin-bottom: 1rem;
+    }
+
+    .csv-faq-section {
+      background-color: #ffffff;
+    }
+    .csv-faq-section .accordion {
+      max-width: 840px;
+      margin: 2.2rem auto 0;
+    }
+    .csv-faq-section .accordion-header {
+      user-select: none;
+    }
+  </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is this MIDI to CSV converter free?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Free tier supports batch conversion up to 20 files / 100MB total. Pro removes the hard block and adds heavy-batch tools."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does this converter upload my MIDI files?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. Conversion runs 100% locally in your browser. Your files stay on your device."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What columns are included in the CSV?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "track, channel, pitch, note_name, start_seconds, duration_seconds, velocity."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I convert multiple MIDI files to CSV at once?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Upload multiple files and download results as a ZIP. Free tier has batch limits; Pro supports larger batches."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why is Pro faster?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Pro uses 3 concurrent workers to speed up batch conversion (Free uses 1)."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is report.json?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Pro can export a report.json file for batch runs, and ZIP downloads include it automatically."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What if some files fail to convert?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Pro includes batch retry tools (Retry all failed and per-file retry) to recover failed conversions quickly."
+        }
+      }
+    ]
+  }
+  </script>
 bodyScripts: |
   <script src="/js/midi-to-csv.bundle.js" defer></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const copyBtn = document.getElementById("csv-copy-example-btn");
+      const exampleBlock = document.getElementById("csv-example-block");
+      if (copyBtn && exampleBlock) {
+        const text = exampleBlock.textContent ? String(exampleBlock.textContent).trim() : "";
+        copyBtn.addEventListener("click", async () => {
+          if (!text) return;
+          try {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              await navigator.clipboard.writeText(text);
+            } else {
+              const ta = document.createElement("textarea");
+              ta.value = text;
+              ta.setAttribute("readonly", "");
+              ta.style.position = "absolute";
+              ta.style.left = "-9999px";
+              document.body.appendChild(ta);
+              ta.select();
+              document.execCommand("copy");
+              ta.remove();
+            }
+            const original = copyBtn.textContent;
+            copyBtn.textContent = "Copied";
+            setTimeout(() => {
+              copyBtn.textContent = original || "Copy CSV";
+            }, 1200);
+          } catch {
+            // no-op
+          }
+        });
+      }
+
+      const root = document.getElementById("csv-faq-accordion");
+      if (!root) return;
+
+      const items = Array.from(root.querySelectorAll(".accordion-item"));
+      items.forEach((item) => {
+        const header = item.querySelector(".accordion-header");
+        if (!header) return;
+
+        const syncExpanded = () => {
+          const expanded = item.classList.contains("active");
+          header.setAttribute("aria-expanded", expanded ? "true" : "false");
+        };
+
+        const toggle = () => {
+          const isActive = item.classList.contains("active");
+          items.forEach((other) => {
+            other.classList.remove("active");
+            const otherHeader = other.querySelector(".accordion-header");
+            if (otherHeader) otherHeader.setAttribute("aria-expanded", "false");
+          });
+          if (!isActive) item.classList.add("active");
+          syncExpanded();
+        };
+
+        header.addEventListener("click", toggle);
+        header.addEventListener("keydown", (e) => {
+          if (e.key !== "Enter" && e.key !== " ") return;
+          e.preventDefault();
+          toggle();
+        });
+
+        syncExpanded();
+      });
+    });
+  </script>
 alts:
   en: "/midi-to-csv/"
   zh: "/zh/midi-to-csv/"
   de: "/de/midi-to-csv/"
 ---
-<section class="container">
+<section class="container" id="csv-workspace">
   {% set toolTitle = "" %}
   {% set toolSubtitle = "" %}
   {% set copy = {
@@ -31,5 +379,3 @@ alts:
   } %}
   {% include "components/tool-midi-to-csv.njk" %}
 </section>
-
-{% include "components/pro-panel.njk" %}

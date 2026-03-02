@@ -45,6 +45,7 @@ window.en = {
     
     // Features section
     "whyChooseTitle": "Why Choose MidiEasy",
+    "whyChooseSubtitle": "Powerful batch conversion, lightning-fast output, and private in-browser processing.",
     "featureBatchTitle": "Batch Processing Power",
     "featureBatchDescription": "Convert multiple MIDI files simultaneously with our powerful batch processing engine. Save hours of tedious work by uploading your entire collection at once, letting MidiEasy handle everything from small projects to extensive libraries.",
     "featureSpeedTitle": "Lightning-Fast Conversion",

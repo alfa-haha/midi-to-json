@@ -14,6 +14,7 @@ window.es = {
     
     // Features section
     "whyChooseTitle": "Por qué elegir MidiEasy",
+    "whyChooseSubtitle": "Conversión por lotes potente, salida ultrarrápida y procesamiento privado directamente en tu navegador.",
     "featureBatchTitle": "Potencia de procesamiento por lotes",
     "featureBatchDescription": "Convierte múltiples archivos MIDI simultáneamente con nuestro potente motor de procesamiento por lotes. Ahorra horas de trabajo tedioso cargando toda tu colección a la vez, dejando que MidiEasy maneje todo, desde proyectos pequeños hasta bibliotecas extensas.",
     "featureSpeedTitle": "Conversión ultrarrápida",

@@ -1,0 +1,277 @@
+{% include "components/pro-panel.njk" %}
+
+<section class="features-section csv-feature-privacy-section">
+  <div class="container features-container">
+    <h2 class="section-title">CSV Output & Privacy</h2>
+    <p class="section-subtitle csv-compact-subtitle">Note-level CSV fields + example output. Runs locally in your browser (no uploads).</p>
+
+    <div class="features-grid">
+      <article class="feature-card csv-card-fields">
+        <h3>CSV fields (note-level)</h3>
+        <p>Each row represents a single note event - ready for Sheets/Excel and scripts.</p>
+        <div class="csv-fields-chips">
+          <span><code>track</code></span>
+          <span><code>channel</code></span>
+          <span><code>pitch</code></span>
+          <span><code>note_name</code></span>
+          <span><code>start_seconds</code></span>
+          <span><code>duration_seconds</code></span>
+          <span><code>velocity</code></span>
+        </div>
+        <p class="csv-fields-note"><strong>Note:</strong> <code>track</code> is the MIDI track index in the file. Many MIDI files use a single track - use <code>channel</code> to separate parts.</p>
+      </article>
+
+      <article class="feature-card csv-card-local">
+        <h3>Local processing (no uploads)</h3>
+        <p>Conversion runs entirely in your browser. Your MIDI files never leave your device.</p>
+        <div class="csv-trust-badges">
+          <span>No account required</span>
+          <span>Works offline after load</span>
+          <span>Great for sensitive MIDI data</span>
+        </div>
+      </article>
+
+      <article class="feature-card csv-card-example">
+        <div class="csv-example-head">
+          <h3>Example CSV row</h3>
+          <button type="button" class="btn btn-sm secondary-btn" id="csv-copy-example-btn">Copy CSV</button>
+        </div>
+        <p class="csv-columns-line"><strong>Columns:</strong> track, channel, pitch, note_name, start_seconds, duration_seconds, velocity</p>
+        <pre class="csv-example" id="csv-example-block"><code>track,channel,pitch,note_name,start_seconds,duration_seconds,velocity
+1,13,50,D3,5.18788,0.098682,98
+1,4,60,C4,3.561968,1.799781,78
+1,4,56,G#3,3.561968,1.799781,78
+1,13,53,F3,5.30066,0.098682,54</code></pre>
+        <div class="csv-grouping-help">
+          <h4>How to separate instruments (when track is 1)</h4>
+          <p>Many MIDI files use a single track. In that case, track stays 1 for all rows — group by channel to separate parts.</p>
+          <ul>
+            <li>Sheets/Excel: create a pivot table grouped by channel.</li>
+            <li>pandas: <code>df.groupby('channel')</code></li>
+          </ul>
+          <p><strong>Tip:</strong> channel 10 is commonly used for drums (varies by file).</p>
+        </div>
+      </article>
+    </div>
+
+    <div class="csv-use-cases">
+      <h3>Common use cases</h3>
+      <div class="csv-use-cases-grid">
+        <div class="csv-use-case">Analyze MIDI in Sheets/Excel</div>
+        <div class="csv-use-case">Debug MIDI timing & channels</div>
+        <div class="csv-use-case">Prepare datasets for ML / research</div>
+        <div class="csv-use-case">Batch convert & download ZIP</div>
+      </div>
+      <div class="csv-use-cases-cta">
+        <a class="btn primary-btn btn-sm" href="#csv-workspace">Back to converter</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how-it-works" class="how-it-works-section csv-how-to-section">
+  <div class="container how-it-works-container">
+    <h2 class="section-title">How to Convert MIDI to CSV</h2>
+    <p class="section-subtitle csv-compact-subtitle">Upload MIDI files, convert in seconds, and download CSV (or ZIP for batches).</p>
+
+    <div class="steps-container">
+      <div class="step-row">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h3 class="step-title">Drop MIDI files here</h3>
+          <p class="step-description">Drop MIDI files here (or click <strong>Select MIDI files</strong>).</p>
+        </div>
+      </div>
+
+      <div class="step-row">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h3 class="step-title">Click Convert</h3>
+          <p class="step-description">Click <strong>Convert</strong>, then download CSV (or ZIP for batches).</p>
+        </div>
+      </div>
+
+      <div class="step-row">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h3 class="step-title">Open in Sheets/Excel</h3>
+          <p class="step-description">Open in Sheets/Excel or import into your analysis pipeline.</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="no-registration-note">All conversion runs in your browser. Your MIDI files stay on your device.</p>
+  </div>
+</section>
+
+<section class="perfect-for-section csv-pro-summary-section">
+  <div class="container perfect-for-container">
+    <h2 class="section-title">Pro — $9.90 Lifetime (Heavy Batch Workflows)</h2>
+    <p class="section-subtitle csv-compact-subtitle">Higher limits, 3× faster workers, retry tools, and report.json for large batches.</p>
+
+    <div class="audience-grid">
+      <article class="audience-card">
+        <div class="audience-icon">
+          <i class="fas fa-layer-group"></i>
+        </div>
+        <h3 class="audience-title">Higher batch limits</h3>
+        <p class="audience-description">Higher batch limits: Free up to <strong>20 files / 100MB</strong>; Pro removes the hard block (soft warning around <strong>200 files / 1GB</strong>).</p>
+      </article>
+
+      <article class="audience-card">
+        <div class="audience-icon">
+          <i class="fas fa-bolt"></i>
+        </div>
+        <h3 class="audience-title">Faster conversion</h3>
+        <p class="audience-description">Faster conversion: <strong>3 workers</strong> in Pro vs <strong>1</strong> in Free.</p>
+      </article>
+
+      <article class="audience-card">
+        <div class="audience-icon">
+          <i class="fas fa-rotate-right"></i>
+        </div>
+        <h3 class="audience-title">Retry tools</h3>
+        <p class="audience-description">Retry tools: Retry failed conversions (batch + per-file).</p>
+      </article>
+
+      <article class="audience-card">
+        <div class="audience-icon">
+          <i class="fas fa-file-code"></i>
+        </div>
+        <h3 class="audience-title">Export report.json</h3>
+        <p class="audience-description">Export <code>report.json</code> (and include it automatically in ZIP downloads).</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="faq-section csv-faq-section" id="faq">
+  <div class="container faq-container">
+    <h2 class="section-title">Frequently Asked Questions</h2>
+    <p class="section-subtitle csv-compact-subtitle">Quick answers about CSV fields, local processing, batch limits, and Pro features.</p>
+
+    <div class="accordion" id="csv-faq-accordion">
+      <div class="accordion-item">
+        <div class="accordion-header" role="button" tabindex="0" aria-expanded="false">
+          <h3>Is this MIDI to CSV converter free?</h3>
+          <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+        </div>
+        <div class="accordion-content">
+          <p>Yes. Free tier supports batch conversion up to <strong>20 files / 100MB total</strong>. Pro removes the hard block and adds heavy-batch tools.</p>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <div class="accordion-header" role="button" tabindex="0" aria-expanded="false">
+          <h3>Does this converter upload my MIDI files?</h3>
+          <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+        </div>
+        <div class="accordion-content">
+          <p>No. Conversion runs <strong>100% locally in your browser</strong>. Your files stay on your device.</p>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <div class="accordion-header" role="button" tabindex="0" aria-expanded="false">
+          <h3>What columns are included in the CSV?</h3>
+          <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+        </div>
+        <div class="accordion-content">
+          <p><code>track</code>, <code>channel</code>, <code>pitch</code>, <code>note_name</code>, <code>start_seconds</code>, <code>duration_seconds</code>, <code>velocity</code>.</p>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <div class="accordion-header" role="button" tabindex="0" aria-expanded="false">
+          <h3>Can I convert multiple MIDI files to CSV at once?</h3>
+          <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+        </div>
+        <div class="accordion-content">
+          <p>Yes. Upload multiple files and download results as a ZIP. (Free tier has batch limits; Pro supports larger batches.)</p>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <div class="accordion-header" role="button" tabindex="0" aria-expanded="false">
+          <h3>Why is Pro faster?</h3>
+          <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+        </div>
+        <div class="accordion-content">
+          <p>Pro uses <strong>3 concurrent workers</strong> to speed up batch conversion (Free uses 1).</p>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <div class="accordion-header" role="button" tabindex="0" aria-expanded="false">
+          <h3>What is report.json?</h3>
+          <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+        </div>
+        <div class="accordion-content">
+          <p>Pro can export a <code>report.json</code> file for batch runs, and ZIP downloads include it automatically. It helps you audit results programmatically.</p>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <div class="accordion-header" role="button" tabindex="0" aria-expanded="false">
+          <h3>What if some files fail to convert?</h3>
+          <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+        </div>
+        <div class="accordion-content">
+          <p>Pro includes batch retry tools (<strong>Retry all failed</strong> and per-file retry) to recover failed conversions quickly.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="recent-blogs" class="recent-blogs-section">
+  <div class="container recent-blogs-container">
+    <h2 class="section-title">Latest Guides</h2>
+    <p class="section-subtitle csv-compact-subtitle">Tutorials and examples for converting, inspecting, and working with MIDI data.</p>
+
+    <div class="recent-blogs-row">
+      <div class="blog-post-card">
+        <div class="blog-post-image" style="background-image: url('/images/How to Efficiently Convert MIDI Files to JSON Format Detailed Steps.jpg');">
+          <div class="blog-post-image-overlay"></div>
+        </div>
+        <div class="blog-post-content">
+          <h3 class="blog-post-title">MIDI to JSON Conversion Guide</h3>
+          <div class="blog-post-meta">
+            <p class="blog-post-date">March 15, 2025</p>
+            <a href="/blog/midi-to-json-conversion-guide.html" class="blog-post-link">Read More <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="blog-post-card">
+        <div class="blog-post-image" style="background-image: url('/images/Web Music Application Development Why MIDI-to-JSON Is a Key Technology.jpg');">
+          <div class="blog-post-image-overlay"></div>
+        </div>
+        <div class="blog-post-content">
+          <h3 class="blog-post-title">Web Music Application Development</h3>
+          <div class="blog-post-meta">
+            <p class="blog-post-date">February 28, 2025</p>
+            <a href="/blog/web-music-application-development.html" class="blog-post-link">Read More <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="blog-post-card">
+        <div class="blog-post-image" style="background-image: url('/images/5 Innovative Application Cases What Can Be Done After Converting MIDI to JSON.jpg');">
+          <div class="blog-post-image-overlay"></div>
+        </div>
+        <div class="blog-post-content">
+          <h3 class="blog-post-title">5 Innovative Application Cases</h3>
+          <div class="blog-post-meta">
+            <p class="blog-post-date">January 20, 2025</p>
+            <a href="/blog/innovative-application-cases.html" class="blog-post-link">Read More <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="view-all-blogs">
+      <a href="/blog/index.html" class="view-all-link">View All Articles <i class="fas fa-long-arrow-alt-right"></i></a>
+    </div>
+  </div>
+</section>

@@ -14,6 +14,7 @@ window.ja = {
     
     // Features section
     "whyChooseTitle": "MidiEasy を選ぶ理由",
+    "whyChooseSubtitle": "強力なバッチ変換、高速出力、そしてブラウザ内で完結するプライベート処理。",
     "featureBatchTitle": "バッチ処理パワー",
     "featureBatchDescription": "強力なバッチ処理エンジンで複数の MIDI ファイルを同時に変換。コレクション全体を一度にアップロードし、小さなプロジェクトから大規模なライブラリまでをMidiEasy に任せることで、何時間もの面倒な作業を節約できます。",
     "featureSpeedTitle": "超高速変換",

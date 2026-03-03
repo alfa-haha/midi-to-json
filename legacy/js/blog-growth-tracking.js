@@ -42,6 +42,45 @@
         return file.replace(/\.html$/, "") || "unknown-article";
     }
 
+    function getHrefTarget(anchor) {
+        var href = anchor.getAttribute("href") || "";
+        if (!href || href.indexOf("javascript:") === 0 || href.indexOf("mailto:") === 0 || href.indexOf("tel:") === 0) {
+            return { valid: false, href: href };
+        }
+        try {
+            var parsed = new URL(href, window.location.href);
+            return { valid: true, href: href, url: parsed };
+        } catch (err) {
+            return { valid: false, href: href };
+        }
+    }
+
+    function shouldInterceptNavigation(event, anchor, parsedUrl) {
+        if (!parsedUrl) {
+            return false;
+        }
+
+        var isNewTab = event.metaKey || event.ctrlKey || event.shiftKey || event.button === 1 || anchor.target === "_blank";
+        if (isNewTab || anchor.hasAttribute("download")) {
+            return false;
+        }
+
+        if (parsedUrl.origin !== window.location.origin) {
+            return false;
+        }
+
+        // Same-page hash jumps do not unload the page, so no interception needed.
+        if (
+            parsedUrl.pathname === window.location.pathname &&
+            parsedUrl.search === window.location.search &&
+            parsedUrl.hash
+        ) {
+            return false;
+        }
+
+        return true;
+    }
+
     function pushAnalyticsEvent(name, params) {
         if (!name) {
             return;
@@ -82,7 +121,7 @@
         var articleSlug = getArticleSlug();
 
         document.addEventListener("click", function (event) {
-            var target = event.target.closest("[data-track], [data-track-event]");
+            var target = event.target.closest("a[data-track], a[data-track-event]");
             if (!target) {
                 return;
             }
@@ -117,8 +156,30 @@
                 payload.index = idx;
             }
 
+            var hrefInfo = getHrefTarget(target);
+            if (!hrefInfo.valid || !shouldInterceptNavigation(event, target, hrefInfo.url)) {
+                pushAnalyticsEvent(eventName, payload);
+                return;
+            }
+
+            event.preventDefault();
+
+            var navigated = false;
+            var go = function () {
+                if (navigated) {
+                    return;
+                }
+                navigated = true;
+                window.location.href = hrefInfo.href;
+            };
+
+            payload.eventCallback = go;
+            payload.eventTimeout = 1000;
             pushAnalyticsEvent(eventName, payload);
-        });
+
+            // Backup redirect in case GTM callback never runs.
+            window.setTimeout(go, 1200);
+        }, true);
 
         var relatedContainer = document.getElementById("related-articles-list");
         if (relatedContainer) {

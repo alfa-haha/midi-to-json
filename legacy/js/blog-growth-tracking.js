@@ -14,12 +14,24 @@
         related: true
     };
     var ALLOWED_TARGETS = {
+        tool_json: true,
         tool_csv: true,
         inspector: true,
-        pro: true
+        pro: true,
+        related: true
     };
 
     function getArticleSlug() {
+        var fromBody = document.body && document.body.getAttribute("data-article-slug");
+        if (fromBody) {
+            return fromBody;
+        }
+
+        var fromHtml = document.documentElement && document.documentElement.getAttribute("data-article-slug");
+        if (fromHtml) {
+            return fromHtml;
+        }
+
         var meta = document.querySelector('meta[name="article-slug"]');
         if (meta && meta.content) {
             return meta.content;
@@ -35,14 +47,8 @@
             return;
         }
 
-        var payload = params || {};
-        if (typeof window.gtag === "function") {
-            window.gtag("event", name, payload);
-            return;
-        }
-
         window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push(Object.assign({ event: name }, payload));
+        window.dataLayer.push(Object.assign({ event: name }, params || {}));
     }
 
     function escapeHtml(text) {
@@ -76,12 +82,12 @@
         var articleSlug = getArticleSlug();
 
         document.addEventListener("click", function (event) {
-            var target = event.target.closest("[data-track-event]");
+            var target = event.target.closest("[data-track], [data-track-event]");
             if (!target) {
                 return;
             }
 
-            var eventName = target.getAttribute("data-track-event");
+            var eventName = target.getAttribute("data-track") || target.getAttribute("data-track-event");
             var pos = target.getAttribute("data-pos") || "unknown";
             var targetType = target.getAttribute("data-target");
             var relatedSlug = target.getAttribute("data-related-slug");
@@ -92,23 +98,22 @@
                 return;
             }
 
-            if (targetType && !ALLOWED_TARGETS[targetType]) {
+            if (!targetType || !ALLOWED_TARGETS[targetType]) {
                 return;
             }
 
             var payload = {
                 article_slug: articleSlug,
                 pos: pos,
+                target: targetType,
                 ref: REF
             };
 
-            if (targetType) {
-                payload.target = targetType;
-            }
-            if (relatedSlug) {
+            if (eventName === "related_click") {
+                if (!relatedSlug || idx === null || isNaN(idx) || idx < 1) {
+                    return;
+                }
                 payload.related_slug = relatedSlug;
-            }
-            if (idx !== null && !isNaN(idx)) {
                 payload.index = idx;
             }
 
@@ -149,7 +154,7 @@
                 relatedContainer.innerHTML = related.map(function (item, index) {
                     return (
                         '<article class="related-article-card">' +
-                            '<a class="related-article-link" href="' + escapeHtml(item.url || "#") + '" data-track-event="related_click" data-pos="related" data-related-slug="' + escapeHtml(item.slug) + '" data-index="' + (index + 1) + '">' +
+                            '<a class="related-article-link" href="' + escapeHtml(item.url || "#") + '" data-track="related_click" data-pos="related" data-target="related" data-related-slug="' + escapeHtml(item.slug) + '" data-index="' + (index + 1) + '">' +
                                 '<img class="related-article-image" loading="lazy" src="' + escapeHtml(item.image || defaultImage) + '" alt="' + escapeHtml(item.title || "Related article") + '">' +
                                 '<div class="related-article-body">' +
                                     '<h3>' + escapeHtml(item.title || "Related article") + '</h3>' +

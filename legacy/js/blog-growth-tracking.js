@@ -169,12 +169,11 @@
 
         var sentinel = document.getElementById("scroll-sentinel-75");
         if (sentinel) {
-            var hasTrackedScroll = false;
             var trackScroll75 = function () {
-                if (hasTrackedScroll) {
+                if (window.__scroll75Fired) {
                     return;
                 }
-                hasTrackedScroll = true;
+                window.__scroll75Fired = true;
                 pushAnalyticsEvent("scroll_75", {
                     article_slug: articleSlug,
                     percent: 75,

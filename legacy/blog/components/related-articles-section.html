@@ -1,0 +1,15 @@
+<!--
+Reusable Related Articles section component for legacy blog detail pages.
+Usage:
+1) Place this section below .blog-container and above footer.
+2) Keep #related-articles-list id for blog-growth-tracking.js dynamic fallback.
+3) Replace static cards as needed per article, or let JS overwrite with BLOG_ARTICLE_DATA.
+-->
+<section class="article-related-section" aria-labelledby="related-articles-heading">
+    <div class="article-related-inner">
+        <h2 id="related-articles-heading">Related articles</h2>
+        <div id="related-articles-list" class="related-articles-grid">
+            {{RELATED_ARTICLE_CARDS_HTML}}
+        </div>
+    </div>
+</section>

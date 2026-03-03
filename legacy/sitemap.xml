@@ -4,12 +4,12 @@
   <!-- Homepage -->
   <url>
     <loc>https://midieasy.com/</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://midieasy.com/en/"/>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://midieasy.com/zh/"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://midieasy.com/ja/"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://midieasy.com/es/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://midieasy.com/de/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://midieasy.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://midieasy.com/en"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://midieasy.com/zh"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://midieasy.com/ja"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://midieasy.com/es"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://midieasy.com/de"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://midieasy.com/en"/>
     <lastmod>2023-06-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
@@ -17,65 +17,65 @@
   
   <!-- Language specific homepages -->
   <url>
-    <loc>https://midieasy.com/en/</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://midieasy.com/en/"/>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://midieasy.com/zh/"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://midieasy.com/ja/"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://midieasy.com/es/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://midieasy.com/de/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://midieasy.com/en/"/>
+    <loc>https://midieasy.com/en</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://midieasy.com/en"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://midieasy.com/zh"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://midieasy.com/ja"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://midieasy.com/es"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://midieasy.com/de"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://midieasy.com/en"/>
     <lastmod>2023-06-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   
   <url>
-    <loc>https://midieasy.com/zh/</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://midieasy.com/en/"/>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://midieasy.com/zh/"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://midieasy.com/ja/"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://midieasy.com/es/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://midieasy.com/de/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://midieasy.com/en/"/>
+    <loc>https://midieasy.com/zh</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://midieasy.com/en"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://midieasy.com/zh"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://midieasy.com/ja"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://midieasy.com/es"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://midieasy.com/de"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://midieasy.com/en"/>
     <lastmod>2023-06-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   
   <url>
-    <loc>https://midieasy.com/ja/</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://midieasy.com/en/"/>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://midieasy.com/zh/"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://midieasy.com/ja/"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://midieasy.com/es/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://midieasy.com/de/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://midieasy.com/en/"/>
+    <loc>https://midieasy.com/ja</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://midieasy.com/en"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://midieasy.com/zh"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://midieasy.com/ja"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://midieasy.com/es"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://midieasy.com/de"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://midieasy.com/en"/>
     <lastmod>2023-06-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   
   <url>
-    <loc>https://midieasy.com/es/</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://midieasy.com/en/"/>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://midieasy.com/zh/"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://midieasy.com/ja/"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://midieasy.com/es/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://midieasy.com/de/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://midieasy.com/en/"/>
+    <loc>https://midieasy.com/es</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://midieasy.com/en"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://midieasy.com/zh"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://midieasy.com/ja"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://midieasy.com/es"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://midieasy.com/de"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://midieasy.com/en"/>
     <lastmod>2023-06-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   
   <url>
-    <loc>https://midieasy.com/de/</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://midieasy.com/en/"/>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://midieasy.com/zh/"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://midieasy.com/ja/"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://midieasy.com/es/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://midieasy.com/de/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://midieasy.com/en/"/>
+    <loc>https://midieasy.com/de</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://midieasy.com/en"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://midieasy.com/zh"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://midieasy.com/ja"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://midieasy.com/es"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://midieasy.com/de"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://midieasy.com/en"/>
     <lastmod>2023-06-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
@@ -83,78 +83,78 @@
   
   <!-- Blog index pages -->
   <url>
-    <loc>https://midieasy.com/blog/</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://midieasy.com/en/blog/"/>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://midieasy.com/zh/blog/"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://midieasy.com/ja/blog/"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://midieasy.com/es/blog/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://midieasy.com/de/blog/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://midieasy.com/en/blog/"/>
+    <loc>https://midieasy.com/blog</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://midieasy.com/en/blog"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://midieasy.com/zh/blog"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://midieasy.com/ja/blog"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://midieasy.com/es/blog"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://midieasy.com/de/blog"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://midieasy.com/en/blog"/>
     <lastmod>2023-06-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>https://midieasy.com/en/blog/</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://midieasy.com/en/blog/"/>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://midieasy.com/zh/blog/"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://midieasy.com/ja/blog/"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://midieasy.com/es/blog/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://midieasy.com/de/blog/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://midieasy.com/en/blog/"/>
+    <loc>https://midieasy.com/en/blog</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://midieasy.com/en/blog"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://midieasy.com/zh/blog"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://midieasy.com/ja/blog"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://midieasy.com/es/blog"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://midieasy.com/de/blog"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://midieasy.com/en/blog"/>
     <lastmod>2023-06-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>https://midieasy.com/zh/blog/</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://midieasy.com/en/blog/"/>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://midieasy.com/zh/blog/"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://midieasy.com/ja/blog/"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://midieasy.com/es/blog/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://midieasy.com/de/blog/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://midieasy.com/en/blog/"/>
+    <loc>https://midieasy.com/zh/blog</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://midieasy.com/en/blog"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://midieasy.com/zh/blog"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://midieasy.com/ja/blog"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://midieasy.com/es/blog"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://midieasy.com/de/blog"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://midieasy.com/en/blog"/>
     <lastmod>2023-06-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>https://midieasy.com/ja/blog/</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://midieasy.com/en/blog/"/>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://midieasy.com/zh/blog/"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://midieasy.com/ja/blog/"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://midieasy.com/es/blog/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://midieasy.com/de/blog/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://midieasy.com/en/blog/"/>
+    <loc>https://midieasy.com/ja/blog</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://midieasy.com/en/blog"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://midieasy.com/zh/blog"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://midieasy.com/ja/blog"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://midieasy.com/es/blog"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://midieasy.com/de/blog"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://midieasy.com/en/blog"/>
     <lastmod>2023-06-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>https://midieasy.com/es/blog/</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://midieasy.com/en/blog/"/>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://midieasy.com/zh/blog/"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://midieasy.com/ja/blog/"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://midieasy.com/es/blog/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://midieasy.com/de/blog/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://midieasy.com/en/blog/"/>
+    <loc>https://midieasy.com/es/blog</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://midieasy.com/en/blog"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://midieasy.com/zh/blog"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://midieasy.com/ja/blog"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://midieasy.com/es/blog"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://midieasy.com/de/blog"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://midieasy.com/en/blog"/>
     <lastmod>2023-06-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>https://midieasy.com/de/blog/</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://midieasy.com/en/blog/"/>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://midieasy.com/zh/blog/"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://midieasy.com/ja/blog/"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://midieasy.com/es/blog/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://midieasy.com/de/blog/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://midieasy.com/en/blog/"/>
+    <loc>https://midieasy.com/de/blog</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://midieasy.com/en/blog"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://midieasy.com/zh/blog"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://midieasy.com/ja/blog"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://midieasy.com/es/blog"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://midieasy.com/de/blog"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://midieasy.com/en/blog"/>
     <lastmod>2023-06-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -162,13 +162,13 @@
   
   <!-- Terms of Service pages -->
   <url>
-    <loc>https://midieasy.com/terms.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://midieasy.com/en/terms.html"/>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://midieasy.com/zh/terms.html"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://midieasy.com/ja/terms.html"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://midieasy.com/es/terms.html"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://midieasy.com/de/terms.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://midieasy.com/en/terms.html"/>
+    <loc>https://midieasy.com/terms</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://midieasy.com/en/terms"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://midieasy.com/zh/terms"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://midieasy.com/ja/terms"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://midieasy.com/es/terms"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://midieasy.com/de/terms"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://midieasy.com/en/terms"/>
     <lastmod>2023-06-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -176,13 +176,13 @@
   
   <!-- Privacy Policy pages -->
   <url>
-    <loc>https://midieasy.com/privacy-policy.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://midieasy.com/en/privacy-policy.html"/>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://midieasy.com/zh/privacy-policy.html"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://midieasy.com/ja/privacy-policy.html"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://midieasy.com/es/privacy-policy.html"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://midieasy.com/de/privacy-policy.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://midieasy.com/en/privacy-policy.html"/>
+    <loc>https://midieasy.com/privacy-policy</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://midieasy.com/en/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://midieasy.com/zh/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://midieasy.com/ja/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://midieasy.com/es/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://midieasy.com/de/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://midieasy.com/en/privacy-policy"/>
     <lastmod>2023-06-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -190,52 +190,52 @@
   
   <!-- Blog Articles -->
   <url>
-    <loc>https://midieasy.com/blog/midi-to-csv-examples-common-issues.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://midieasy.com/en/blog/midi-to-csv-examples-common-issues.html"/>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://midieasy.com/zh/blog/midi-to-csv-examples-common-issues.html"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://midieasy.com/ja/blog/midi-to-csv-examples-common-issues.html"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://midieasy.com/es/blog/midi-to-csv-examples-common-issues.html"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://midieasy.com/de/blog/midi-to-csv-examples-common-issues.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://midieasy.com/en/blog/midi-to-csv-examples-common-issues.html"/>
+    <loc>https://midieasy.com/blog/midi-to-csv-examples-common-issues</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://midieasy.com/en/blog/midi-to-csv-examples-common-issues"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://midieasy.com/zh/blog/midi-to-csv-examples-common-issues"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://midieasy.com/ja/blog/midi-to-csv-examples-common-issues"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://midieasy.com/es/blog/midi-to-csv-examples-common-issues"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://midieasy.com/de/blog/midi-to-csv-examples-common-issues"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://midieasy.com/en/blog/midi-to-csv-examples-common-issues"/>
     <lastmod>2026-03-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://midieasy.com/blog/midi-to-json-conversion-guide.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://midieasy.com/en/blog/midi-to-json-conversion-guide.html"/>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://midieasy.com/zh/blog/midi-to-json-conversion-guide.html"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://midieasy.com/ja/blog/midi-to-json-conversion-guide.html"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://midieasy.com/es/blog/midi-to-json-conversion-guide.html"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://midieasy.com/de/blog/midi-to-json-conversion-guide.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://midieasy.com/en/blog/midi-to-json-conversion-guide.html"/>
+    <loc>https://midieasy.com/blog/midi-to-json-conversion-guide</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://midieasy.com/en/blog/midi-to-json-conversion-guide"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://midieasy.com/zh/blog/midi-to-json-conversion-guide"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://midieasy.com/ja/blog/midi-to-json-conversion-guide"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://midieasy.com/es/blog/midi-to-json-conversion-guide"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://midieasy.com/de/blog/midi-to-json-conversion-guide"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://midieasy.com/en/blog/midi-to-json-conversion-guide"/>
     <lastmod>2023-06-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
-    <loc>https://midieasy.com/blog/web-music-application-development.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://midieasy.com/en/blog/web-music-application-development.html"/>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://midieasy.com/zh/blog/web-music-application-development.html"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://midieasy.com/ja/blog/web-music-application-development.html"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://midieasy.com/es/blog/web-music-application-development.html"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://midieasy.com/de/blog/web-music-application-development.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://midieasy.com/en/blog/web-music-application-development.html"/>
+    <loc>https://midieasy.com/blog/web-music-application-development</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://midieasy.com/en/blog/web-music-application-development"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://midieasy.com/zh/blog/web-music-application-development"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://midieasy.com/ja/blog/web-music-application-development"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://midieasy.com/es/blog/web-music-application-development"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://midieasy.com/de/blog/web-music-application-development"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://midieasy.com/en/blog/web-music-application-development"/>
     <lastmod>2023-06-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
-    <loc>https://midieasy.com/blog/innovative-application-cases.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://midieasy.com/en/blog/innovative-application-cases.html"/>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://midieasy.com/zh/blog/innovative-application-cases.html"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://midieasy.com/ja/blog/innovative-application-cases.html"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://midieasy.com/es/blog/innovative-application-cases.html"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://midieasy.com/de/blog/innovative-application-cases.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://midieasy.com/en/blog/innovative-application-cases.html"/>
+    <loc>https://midieasy.com/blog/innovative-application-cases</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://midieasy.com/en/blog/innovative-application-cases"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://midieasy.com/zh/blog/innovative-application-cases"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://midieasy.com/ja/blog/innovative-application-cases"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://midieasy.com/es/blog/innovative-application-cases"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://midieasy.com/de/blog/innovative-application-cases"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://midieasy.com/en/blog/innovative-application-cases"/>
     <lastmod>2023-06-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -243,13 +243,13 @@
   
   <!-- Language specific blog articles that exist -->
   <url>
-    <loc>https://midieasy.com/zh/blog/innovative-application-cases.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://midieasy.com/en/blog/innovative-application-cases.html"/>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://midieasy.com/zh/blog/innovative-application-cases.html"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://midieasy.com/ja/blog/innovative-application-cases.html"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://midieasy.com/es/blog/innovative-application-cases.html"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://midieasy.com/de/blog/innovative-application-cases.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://midieasy.com/en/blog/innovative-application-cases.html"/>
+    <loc>https://midieasy.com/zh/blog/innovative-application-cases</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://midieasy.com/en/blog/innovative-application-cases"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://midieasy.com/zh/blog/innovative-application-cases"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://midieasy.com/ja/blog/innovative-application-cases"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://midieasy.com/es/blog/innovative-application-cases"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://midieasy.com/de/blog/innovative-application-cases"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://midieasy.com/en/blog/innovative-application-cases"/>
     <lastmod>2023-06-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

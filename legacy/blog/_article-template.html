@@ -3,12 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="article-slug" content="{{ARTICLE_SLUG}}">
     <meta name="description" content="{{META_DESCRIPTION}}">
+    <link rel="canonical" href="{{CANONICAL_URL}}">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="{{PAGE_TITLE}}">
+    <meta property="og:description" content="{{META_DESCRIPTION}}">
+    <meta property="og:url" content="{{CANONICAL_URL}}">
+    <meta property="og:image" content="{{OG_IMAGE}}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{PAGE_TITLE}}">
+    <meta name="twitter:description" content="{{META_DESCRIPTION}}">
+    <meta name="twitter:image" content="{{OG_IMAGE}}">
     <title>{{PAGE_TITLE}} | MidiEasy</title>
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/blog-image.css">
     <link rel="stylesheet" href="../css/blog-article.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    {{JSON_LD}}
 </head>
 <body>
     <!-- Reuse header from existing blog pages -->
@@ -16,10 +28,13 @@
 
     <main>
         <div class="blog-container">
+            {{BREADCRUMB}}
+
             <div class="blog-header">
                 <h1 class="blog-title">{{ARTICLE_TITLE}}</h1>
                 <div class="blog-meta">
-                    <span><i class="far fa-calendar"></i> {{DATE}}</span>
+                    <span><i class="far fa-user"></i> {{AUTHOR_NAME}}</span>
+                    <span style="margin-left: 1rem;"><i class="far fa-calendar"></i> Updated {{UPDATED_DATE}}</span>
                     <span style="margin-left: 1rem;"><i class="far fa-clock"></i> {{READ_TIME}}</span>
                 </div>
             </div>
@@ -34,15 +49,18 @@
                     >
                 </div>
 
+                {{INTRO_HTML}}
+                {{HERO_CTA_HTML}}
                 {{TABLE_OF_CONTENTS}}
                 {{ARTICLE_BODY_HTML}}
-            </div>
-
-            <div class="blog-navigation">
-                <a href="{{PREV_URL}}" class="nav-link"><i class="fas fa-arrow-left"></i> Previous Article</a>
-                <a href="{{NEXT_URL}}" class="nav-link">Next Article <i class="fas fa-arrow-right"></i></a>
+                {{RELATED_TOOLS_HTML}}
+                {{FOOTER_CTA_HTML}}
+                <div id="scroll-sentinel-75" aria-hidden="true"></div>
             </div>
         </div>
+
+        <!-- Reuse structure from legacy/blog/components/related-articles-section.html -->
+        {{RELATED_ARTICLES_SECTION_HTML}}
     </main>
 
     <!-- Reuse footer from existing blog pages -->
@@ -53,5 +71,7 @@
     <script src="common.js"></script>
     <script src="../js/language-switcher.js"></script>
     <script src="../js/lazy-loading.js"></script>
+    {{RELATED_DATA_SCRIPT}}
+    <script src="../js/blog-growth-tracking.js"></script>
 </body>
 </html>

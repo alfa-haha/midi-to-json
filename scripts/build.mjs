@@ -7,6 +7,10 @@ const ROOT = process.cwd();
 const LEGACY_DIR = path.join(ROOT, "legacy");
 const OUT_DIR = path.join(ROOT, "_site");
 const SRC_PAGES_DIR = path.join(ROOT, "src", "pages");
+const NON_PAGE_HTML_OUTPUTS = [
+  path.join("blog", "_article-template.html"),
+  path.join("blog", "components", "related-articles-section.html")
+];
 
 const PRO_PANEL_SNIPPET_PATH = path.join(ROOT, "src", "_includes", "snippets", "pro-panel.html");
 const FOOTER_SNIPPET_PATH = path.join(ROOT, "src", "_includes", "snippets", "footer-standard.html");
@@ -322,8 +326,8 @@ async function injectGtmIntoOutDir(outDir) {
 function transformEnHomeToDe(enHtml) {
   let out = enHtml;
   out = out.replace('<html lang="en">', '<html lang="de">');
-  out = out.replace('rel="canonical" href="https://midieasy.com/en/"', 'rel="canonical" href="https://midieasy.com/de/"');
-  out = out.replace('hreflang="de" href="https://midieasy.com/de/"', 'hreflang="de" href="https://midieasy.com/de/"');
+  out = out.replace(/rel="canonical" href="https:\/\/midieasy\.com\/en\/?"/, 'rel="canonical" href="https://midieasy.com/de"');
+  out = out.replace(/hreflang="de" href="https:\/\/midieasy\.com\/de\/?"/, 'hreflang="de" href="https://midieasy.com/de"');
 
   // Remove unused language hreflang lines (MVP: en/zh/de only).
   out = out
@@ -352,6 +356,13 @@ function transformEnHomeToDe(enHtml) {
   out = out.replace('<script src="../js/i18n/en.js"></script>', '<script src="../js/i18n/de.js"></script>');
 
   return out;
+}
+
+async function removeNonPageHtmlFromOutDir(outDir) {
+  for (const relativePath of NON_PAGE_HTML_OUTPUTS) {
+    const fullPath = path.join(outDir, relativePath);
+    await fs.rm(fullPath, { force: true });
+  }
 }
 
 async function generateDeHomeIntoOutDir() {
@@ -409,6 +420,7 @@ async function main() {
   // 2) Generate German homepage deterministically from legacy english homepage.
   //    This avoids maintaining a hand-copied de/index.html in the repo.
   await generateDeHomeIntoOutDir();
+  await removeNonPageHtmlFromOutDir(OUT_DIR);
 
   // 2.5) Rewrite legacy footers to the shared standard footer module.
   const footerTemplate = await fs.readFile(FOOTER_SNIPPET_PATH, "utf8");
@@ -435,6 +447,7 @@ async function main() {
 
 	// 4) Generate new pages (tools/pro) into the same output directory.
 	await runEleventy();
+  await removeNonPageHtmlFromOutDir(OUT_DIR);
 
   // 5) Inject GTM into *all* output HTML (legacy + new pages).
   await injectGtmIntoOutDir(OUT_DIR);

@@ -1,7 +1,7 @@
 {# Expected inputs:
   - toolTitle
   - toolSubtitle
-  - copy: { dropTitle, dropOr, selectFiles, limitInfo, convert, downloadZip, downloadReport, clear, retryAllFailed }
+  - copy: { dropTitle, dropOr, selectFiles, limitInfo, convert, downloadZip, downloadReport, clear, retryAllFailed, zipHintTitle, zipHintBody, zipHintUpgrade, zipHintSeeFeatures, zipHintBuyHref, zipHintFeaturesHref, zipHintCloseAriaLabel }
 #}
 
 {% if toolTitle %}<h2>{{ toolTitle }}</h2>{% endif %}
@@ -23,6 +23,38 @@
 <div class="action-buttons">
   <button class="btn primary-btn" id="csv-convert-btn" disabled><i class="fas fa-wand-magic-sparkles"></i> {{ copy.convert }}</button>
   <button class="btn secondary-btn" id="csv-download-zip-btn" disabled><i class="fas fa-file-zipper"></i> {{ copy.downloadZip }}</button>
+</div>
+
+<div class="pro-hint-banner" id="csv-zip-pro-hint" style="display:none; margin:0.4rem 0 1rem;" aria-live="polite">
+  <div class="pro-hint-banner__text">
+    <div style="font-weight:700; margin-bottom:0.2rem;">{{ copy.zipHintTitle or "Batch workflow? Pro makes ZIP faster & safer." }}</div>
+    <div>{{ copy.zipHintBody or "3× workers + retry failed + report.json for audits. Higher limits (soft warning at 200 files / 1GB)." }}</div>
+  </div>
+  <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
+    <a
+      class="btn primary-btn btn-sm pro-hint-banner__action"
+      id="csv-zip-pro-buy-btn"
+      href="{{ copy.zipHintBuyHref or 'https://buy.stripe.com/dRmfZgeSMboZdxKcomgYU00' }}"
+      target="_blank"
+      rel="noopener"
+    >
+      {{ copy.zipHintUpgrade or "Upgrade to Pro ($9.90 lifetime)" }}
+    </a>
+    <a
+      class="btn secondary-btn btn-sm pro-hint-banner__action"
+      id="csv-zip-pro-features-btn"
+      href="{{ copy.zipHintFeaturesHref or '/pro/' }}"
+    >
+      {{ copy.zipHintSeeFeatures or "See Pro features" }}
+    </a>
+    <button
+      class="btn btn-sm"
+      id="csv-zip-pro-close-btn"
+      type="button"
+      aria-label="{{ copy.zipHintCloseAriaLabel or 'Close Pro hint' }}"
+      style="padding:0.3rem 0.55rem; line-height:1;"
+    >×</button>
+  </div>
 </div>
 
 <div class="batch-status" id="csv-batch-status" style="display:none;">

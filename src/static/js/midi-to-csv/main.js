@@ -603,6 +603,10 @@ function wireMidiToCsvPage() {
   const reportBtn = document.querySelector("#csv-download-report-btn");
   const retryAllBtn = document.querySelector("#csv-retry-all-btn");
   const clearBtn = document.querySelector("#csv-clear-btn");
+  const zipProHintEl = document.querySelector("#csv-zip-pro-hint");
+  const zipProBuyBtn = document.querySelector("#csv-zip-pro-buy-btn");
+  const zipProFeaturesBtn = document.querySelector("#csv-zip-pro-features-btn");
+  const zipProCloseBtn = document.querySelector("#csv-zip-pro-close-btn");
   const batchBox = document.querySelector("#csv-batch-status");
   const fileList = document.querySelector("#csv-file-list");
   const processedCountEl = document.querySelector("#csv-processed-count");
@@ -618,6 +622,8 @@ function wireMidiToCsvPage() {
 
   const SOFT_MAX_FILES = 200;
   const SOFT_MAX_BYTES = 1024 * 1024 * 1024;
+  const ZIP_HINT_SESSION_KEY = "midieasy_csv_zip_hint_shown";
+  const ZIP_HINT_AUTO_HIDE_MS = 8000;
 
   const state = {
     isPro: getIsPro(),
@@ -629,6 +635,87 @@ function wireMidiToCsvPage() {
     failed: 0,
     maxConcurrency: 1,
   };
+  let zipHintHideTimer = 0;
+
+  function pushDataLayerEvent(eventName, params = {}) {
+    const payload = {
+      event: eventName,
+      tool_page: "midi_to_csv",
+      user_tier: state.isPro ? "pro" : "free",
+      file_count: state.jobs.length,
+      ...params,
+    };
+    try {
+      globalThis.dataLayer = globalThis.dataLayer || [];
+      globalThis.dataLayer.push(payload);
+    } catch {
+      // no-op
+    }
+  }
+
+  function hasSeenZipHintThisSession() {
+    try {
+      return sessionStorage.getItem(ZIP_HINT_SESSION_KEY) === "1";
+    } catch {
+      return false;
+    }
+  }
+
+  function markZipHintSeenThisSession() {
+    try {
+      sessionStorage.setItem(ZIP_HINT_SESSION_KEY, "1");
+    } catch {
+      // no-op
+    }
+  }
+
+  function clearZipHintHideTimer() {
+    if (!zipHintHideTimer) return;
+    clearTimeout(zipHintHideTimer);
+    zipHintHideTimer = 0;
+  }
+
+  function hideZipProHint() {
+    if (!zipProHintEl) return;
+    clearZipHintHideTimer();
+    zipProHintEl.style.display = "none";
+  }
+
+  function showZipProHint() {
+    if (!zipProHintEl) return;
+    clearZipHintHideTimer();
+    zipProHintEl.style.display = "flex";
+    zipHintHideTimer = setTimeout(() => {
+      zipProHintEl.style.display = "none";
+      zipHintHideTimer = 0;
+    }, ZIP_HINT_AUTO_HIDE_MS);
+  }
+
+  function maybeShowZipProHint() {
+    if (!zipProHintEl) return;
+    if (state.isPro) return;
+    if (hasSeenZipHintThisSession()) return;
+    markZipHintSeenThisSession();
+    showZipProHint();
+    pushDataLayerEvent("zip_hint_view", { trigger_source: "zip_download" });
+  }
+
+  function navigateWithTrackedEvent(event, { eventName, href, extraParams = {} }) {
+    if (!href) return;
+    event.preventDefault();
+    let navigated = false;
+    const go = () => {
+      if (navigated) return;
+      navigated = true;
+      globalThis.location.href = href;
+    };
+    pushDataLayerEvent(eventName, {
+      ...extraParams,
+      eventCallback: go,
+      eventTimeout: 1000,
+    });
+    setTimeout(go, 150);
+  }
 
   function isMidiFile(file) {
     const name = (file && file.name) ? String(file.name).toLowerCase() : "";
@@ -1066,6 +1153,7 @@ function wireMidiToCsvPage() {
     setStatus(statusEl, "Generating ZIP…", { color: "#666" });
     const blob = await zip.generateAsync({ type: "blob" });
     downloadBlob(blob, "midi-to-csv.zip");
+    pushDataLayerEvent("zip_download_success", { trigger_source: "zip_download" });
     setStatus(statusEl, "ZIP downloaded.", { color: "#27ae60" });
   }
 
@@ -1082,6 +1170,7 @@ function wireMidiToCsvPage() {
 
   function clearResults() {
     if (state.running) return;
+    hideZipProHint();
     state.jobs = [];
     state.totalBytes = 0;
     recomputeSummary();
@@ -1160,8 +1249,39 @@ function wireMidiToCsvPage() {
   });
 
   zipBtn.addEventListener("click", async () => {
+    pushDataLayerEvent("zip_download_click", { trigger_source: "zip_download" });
+    maybeShowZipProHint();
     await downloadZip();
   });
+
+  if (zipProBuyBtn) {
+    zipProBuyBtn.addEventListener("click", (e) => {
+      const href = zipProBuyBtn.getAttribute("href") || "";
+      navigateWithTrackedEvent(e, {
+        eventName: "zip_hint_pro_click",
+        href,
+        extraParams: { cta: "buy_pro", trigger_source: "zip_download" },
+      });
+    });
+  }
+
+  if (zipProFeaturesBtn) {
+    zipProFeaturesBtn.addEventListener("click", (e) => {
+      const href = zipProFeaturesBtn.getAttribute("href") || "/pro/";
+      navigateWithTrackedEvent(e, {
+        eventName: "zip_hint_pro_click",
+        href,
+        extraParams: { cta: "see_pro", trigger_source: "zip_download" },
+      });
+    });
+  }
+
+  if (zipProCloseBtn) {
+    zipProCloseBtn.addEventListener("click", () => {
+      hideZipProHint();
+      pushDataLayerEvent("zip_hint_dismiss", { trigger_source: "zip_download" });
+    });
+  }
 
   if (reportBtn) reportBtn.addEventListener("click", downloadReport);
   if (retryAllBtn) retryAllBtn.addEventListener("click", retryAllFailed);
@@ -1190,6 +1310,7 @@ function wireMidiToCsvPage() {
     applyProToUi();
     updateTopUi();
     renderList();
+    if (state.isPro) hideZipProHint();
   });
 
   // Initial render

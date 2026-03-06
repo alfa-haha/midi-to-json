@@ -3838,7 +3838,7 @@
       const files = state.jobs.map((j) => j.file);
       validateLimits(files, { totalBytes: state.totalBytes });
       convertBtn.disabled = state.running || !hasProcessableJobs();
-      zipBtn.disabled = state.running || state.success === 0 || !allJobsProcessed();
+      zipBtn.disabled = state.running || state.success === 0;
       if (reportBtn) reportBtn.disabled = !state.isPro || state.running || state.jobs.length === 0;
       if (retryAllBtn) retryAllBtn.disabled = !state.isPro || state.running || !state.jobs.some((j) => j.status === "failed");
     }
@@ -3924,30 +3924,19 @@
       updateTopUi();
       renderList();
       setStatus(statusEl, state.isPro ? "Processing (Pro)…" : "Processing (Free)…", { color: "#666" });
-      let inflight = 0;
       let cursor = 0;
-      const launchNext = async () => {
-        if (cursor >= pending.length) return;
-        const job = pending[cursor++];
-        inflight += 1;
-        try {
+      const workerCount = Math.max(1, Math.min(state.maxConcurrency, pending.length));
+      const workers = Array.from({ length: workerCount }, () => (async () => {
+        while (true) {
+          const idx = cursor;
+          cursor += 1;
+          if (idx >= pending.length) return;
+          const job = pending[idx];
           await processJob(job);
-        } finally {
-          inflight -= 1;
-          await yieldToMainThread();
-          await maybeLaunch();
-        }
-      };
-      const maybeLaunch = async () => {
-        while (inflight < state.maxConcurrency && cursor < pending.length) {
-          void launchNext();
           await yieldToMainThread();
         }
-      };
-      await maybeLaunch();
-      while (inflight > 0) {
-        await new Promise((r) => setTimeout(r, 50));
-      }
+      })());
+      await Promise.all(workers);
       state.running = false;
       applyProToUi();
       updateTopUi();

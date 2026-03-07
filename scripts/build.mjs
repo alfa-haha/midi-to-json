@@ -31,6 +31,13 @@ const GTM_BODY_SNIPPET = `<!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=${GTM_CONTAINER_ID}"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->`;
+const FAVICON_HEAD_SNIPPET = `<!-- Favicon -->
+<link rel="apple-touch-icon" sizes="180x180" href="/favicon_io/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon_io/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon_io/favicon-16x16.png">
+<link rel="icon" href="/favicon_io/favicon.ico" sizes="any">
+<link rel="shortcut icon" href="/favicon_io/favicon.ico">
+<link rel="manifest" href="/favicon_io/site.webmanifest">`;
 
 async function listFilesRecursive(dir) {
   const out = [];
@@ -167,6 +174,12 @@ function injectGtmIntoHtml(html) {
   out = out.replace(/<body(\s[^>]*)?>/i, (m) => `${m}\n    ${GTM_BODY_SNIPPET}\n`);
 
   return out;
+}
+
+function injectFaviconIntoHtml(html) {
+  if (!html || typeof html !== "string") return html;
+  if (html.includes('/favicon_io/favicon.ico') || html.includes("/favicon_io/favicon.ico")) return html;
+  return html.replace(/<head(\s[^>]*)?>/i, (m) => `${m}\n    ${FAVICON_HEAD_SNIPPET}\n`);
 }
 
 async function injectProIntoFile(outFilePath, proPanelHtml) {
@@ -312,7 +325,8 @@ async function injectGtmIntoOutDir(outDir) {
         await walk(full);
       } else if (entry.isFile() && entry.name.endsWith(".html")) {
         const html = await fs.readFile(full, "utf8");
-        const next = injectGtmIntoHtml(html);
+        const withGtm = injectGtmIntoHtml(html);
+        const next = injectFaviconIntoHtml(withGtm);
         if (next !== html) {
           await fs.writeFile(full, next, "utf8");
         }

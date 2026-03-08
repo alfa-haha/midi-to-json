@@ -53,6 +53,135 @@ async function listFilesRecursive(dir) {
   return out;
 }
 
+function escapeXml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&apos;");
+}
+
+function normalizePublicUrl(raw, { baseUrl }) {
+  if (!raw) return "";
+  try {
+    const u = new URL(String(raw).trim());
+    const base = new URL(baseUrl);
+    if (u.origin !== base.origin) return "";
+    u.search = "";
+    u.hash = "";
+    if (u.pathname !== "/" && u.pathname.endsWith("/")) {
+      u.pathname = u.pathname.replace(/\/+$/, "");
+    }
+    return u.toString();
+  } catch {
+    return "";
+  }
+}
+
+function extractCanonicalHref(html) {
+  const m = String(html || "").match(/<link\s+rel=["']canonical["']\s+href=["']([^"']+)["'][^>]*>/i);
+  return m ? String(m[1]).trim() : "";
+}
+
+function extractAlternateLinks(html) {
+  const out = [];
+  const re = /<link\s+rel=["']alternate["'][^>]*>/gi;
+  const s = String(html || "");
+  let m;
+  while ((m = re.exec(s)) !== null) {
+    const tag = m[0];
+    const hreflangMatch = tag.match(/hreflang=["']([^"']+)["']/i);
+    const hrefMatch = tag.match(/href=["']([^"']+)["']/i);
+    if (!hreflangMatch || !hrefMatch) continue;
+    out.push({
+      lang: String(hreflangMatch[1]).trim(),
+      href: String(hrefMatch[1]).trim()
+    });
+  }
+  return out;
+}
+
+function sortHreflangEntries(entries) {
+  return entries.sort((a, b) => {
+    if (a.lang === "x-default" && b.lang !== "x-default") return 1;
+    if (a.lang !== "x-default" && b.lang === "x-default") return -1;
+    return a.lang.localeCompare(b.lang);
+  });
+}
+
+async function generateSitemapXmlFromOutDir(outDir, { baseUrl }) {
+  const files = await listFilesRecursive(outDir);
+  const htmlFiles = files.filter((f) => f.endsWith(".html"));
+
+  const byCanonical = new Map();
+  for (const filePath of htmlFiles) {
+    const html = await fs.readFile(filePath, "utf8");
+    const canonicalRaw = extractCanonicalHref(html);
+    const canonical = normalizePublicUrl(canonicalRaw, { baseUrl });
+    if (!canonical) continue;
+
+    let row = byCanonical.get(canonical);
+    if (!row) {
+      row = { loc: canonical, alternates: new Map() };
+      byCanonical.set(canonical, row);
+    }
+
+    const alternates = extractAlternateLinks(html);
+    for (const alt of alternates) {
+      const href = normalizePublicUrl(alt.href, { baseUrl });
+      if (!href) continue;
+      row.alternates.set(alt.lang, href);
+    }
+  }
+
+  const canonicalSet = new Set(byCanonical.keys());
+  for (const row of byCanonical.values()) {
+    for (const [lang, href] of Array.from(row.alternates.entries())) {
+      if (!canonicalSet.has(href)) {
+        row.alternates.delete(lang);
+      }
+    }
+  }
+
+  const entries = Array.from(byCanonical.values()).sort((a, b) => a.loc.localeCompare(b.loc));
+  const hasAlternates = entries.some((e) => e.alternates.size > 0);
+  const xmlns = hasAlternates
+    ? '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">'
+    : '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+
+  const lines = ['<?xml version="1.0" encoding="UTF-8"?>', xmlns];
+  for (const entry of entries) {
+    lines.push("  <url>");
+    lines.push(`    <loc>${escapeXml(entry.loc)}</loc>`);
+    const alternates = sortHreflangEntries(
+      Array.from(entry.alternates.entries()).map(([lang, href]) => ({ lang, href }))
+    );
+    for (const alt of alternates) {
+      lines.push(`    <xhtml:link rel="alternate" hreflang="${escapeXml(alt.lang)}" href="${escapeXml(alt.href)}" />`);
+    }
+    lines.push("  </url>");
+  }
+  lines.push("</urlset>");
+
+  await fs.writeFile(path.join(outDir, "sitemap.xml"), `${lines.join("\n")}\n`, "utf8");
+}
+
+async function generateRobotsTxt(outDir, { baseUrl }) {
+  const robots = [
+    "User-agent: *",
+    "Allow: /",
+    "",
+    "Disallow: /.git/",
+    "Disallow: /.vscode/",
+    "Disallow: /node_modules/",
+    "",
+    `Sitemap: ${baseUrl.replace(/\/+$/, "")}/sitemap.xml`,
+    ""
+  ].join("\n");
+  await fs.writeFile(path.join(outDir, "robots.txt"), robots, "utf8");
+}
+
 function extractFrontMatter(text) {
   const s = String(text || "");
   if (!s.startsWith("---")) return { frontMatter: "", body: s };
@@ -418,6 +547,8 @@ async function runBuildJs() {
 async function main() {
   const require = createRequire(import.meta.url);
   const proCopy = require("./../src/_data/proCopy.js");
+  const siteData = require("./../src/_data/site.js");
+  const baseUrl = (siteData && siteData.baseUrl) ? String(siteData.baseUrl) : "https://midieasy.com";
   validateProCopy(proCopy);
   await validateToolPagesHaveToolId({ proCopy });
 
@@ -465,6 +596,10 @@ async function main() {
 
   // 5) Inject GTM into *all* output HTML (legacy + new pages).
   await injectGtmIntoOutDir(OUT_DIR);
+
+  // 6) Regenerate crawl files from final output (canonical-aware, no stale URLs).
+  await generateSitemapXmlFromOutDir(OUT_DIR, { baseUrl });
+  await generateRobotsTxt(OUT_DIR, { baseUrl });
 }
 
 await main();

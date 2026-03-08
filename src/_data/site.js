@@ -1,6 +1,6 @@
 module.exports = {
   name: "MidiEasy",
-  baseUrl: "https://midieasy.com",
+  baseUrl: "https://www.midieasy.com",
   supportEmail: "support@midieasy.com",
   stripePaymentUrl: "https://buy.stripe.com/dRmfZgeSMboZdxKcomgYU00",
   languages: [
@@ -9,4 +9,3 @@ module.exports = {
     { code: "de", label: "Deutsch", prefix: "/de" }
   ]
 };
-

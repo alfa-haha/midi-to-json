@@ -11,6 +11,14 @@ const NON_PAGE_HTML_OUTPUTS = [
   path.join("blog", "_article-template.html"),
   path.join("blog", "components", "related-articles-section.html")
 ];
+const HOST_REWRITE_TEXT_EXTENSIONS = new Set([
+  ".html",
+  ".xml",
+  ".txt",
+  ".json",
+  ".js",
+  ".css"
+]);
 
 const PRO_PANEL_SNIPPET_PATH = path.join(ROOT, "src", "_includes", "snippets", "pro-panel.html");
 const FOOTER_SNIPPET_PATH = path.join(ROOT, "src", "_includes", "snippets", "footer-standard.html");
@@ -466,11 +474,48 @@ async function injectGtmIntoOutDir(outDir) {
   await walk(outDir);
 }
 
+async function normalizeSiteOriginInOutDir(outDir, { baseUrl }) {
+  const canonical = new URL(baseUrl);
+  const rootHost = canonical.hostname.replace(/^www\./, "");
+  const canonicalOrigin = canonical.origin;
+  const candidateOrigins = [
+    `https://${rootHost}`,
+    `https://www.${rootHost}`,
+    `http://${rootHost}`,
+    `http://www.${rootHost}`
+  ];
+  const fromOrigins = candidateOrigins.filter((origin) => origin !== canonicalOrigin);
+  if (!fromOrigins.length) return;
+
+  const files = await listFilesRecursive(outDir);
+  for (const filePath of files) {
+    if (!HOST_REWRITE_TEXT_EXTENSIONS.has(path.extname(filePath).toLowerCase())) continue;
+
+    const current = await fs.readFile(filePath, "utf8");
+    let next = current;
+    for (const fromOrigin of fromOrigins) {
+      if (next.includes(fromOrigin)) {
+        next = next.replaceAll(fromOrigin, canonicalOrigin);
+      }
+    }
+
+    if (next !== current) {
+      await fs.writeFile(filePath, next, "utf8");
+    }
+  }
+}
+
 function transformEnHomeToDe(enHtml) {
   let out = enHtml;
   out = out.replace('<html lang="en">', '<html lang="de">');
-  out = out.replace(/rel="canonical" href="https:\/\/midieasy\.com\/en\/?"/, 'rel="canonical" href="https://midieasy.com/de"');
-  out = out.replace(/hreflang="de" href="https:\/\/midieasy\.com\/de\/?"/, 'hreflang="de" href="https://midieasy.com/de"');
+  out = out.replace(
+    /rel="canonical" href="https:\/\/(?:www\.)?midieasy\.com\/en\/?"/,
+    'rel="canonical" href="https://www.midieasy.com/de"'
+  );
+  out = out.replace(
+    /hreflang="de" href="https:\/\/(?:www\.)?midieasy\.com\/de\/?"/,
+    'hreflang="de" href="https://www.midieasy.com/de"'
+  );
 
   // Remove unused language hreflang lines (MVP: en/zh/de only).
   out = out
@@ -548,7 +593,7 @@ async function main() {
   const require = createRequire(import.meta.url);
   const proCopy = require("./../src/_data/proCopy.js");
   const siteData = require("./../src/_data/site.js");
-  const baseUrl = (siteData && siteData.baseUrl) ? String(siteData.baseUrl) : "https://midieasy.com";
+  const baseUrl = (siteData && siteData.baseUrl) ? String(siteData.baseUrl) : "https://www.midieasy.com";
   validateProCopy(proCopy);
   await validateToolPagesHaveToolId({ proCopy });
 
@@ -597,7 +642,10 @@ async function main() {
   // 5) Inject GTM into *all* output HTML (legacy + new pages).
   await injectGtmIntoOutDir(OUT_DIR);
 
-  // 6) Regenerate crawl files from final output (canonical-aware, no stale URLs).
+  // 6) Normalize absolute site URLs to a single origin in final output.
+  await normalizeSiteOriginInOutDir(OUT_DIR, { baseUrl });
+
+  // 7) Regenerate crawl files from final output (canonical-aware, no stale URLs).
   await generateSitemapXmlFromOutDir(OUT_DIR, { baseUrl });
   await generateRobotsTxt(OUT_DIR, { baseUrl });
 }

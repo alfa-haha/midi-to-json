@@ -37,16 +37,26 @@ headExtra: |
       height: 100%;
       display: flex;
       flex-direction: column;
+      min-width: 0;
+      max-width: 100%;
+    }
+    .csv-feature-privacy-section .feature-card > * {
+      min-width: 0;
+      max-width: 100%;
     }
     .csv-feature-privacy-section .feature-card h3 {
       font-size: 1.25rem;
       margin-bottom: 0.7rem;
+      overflow-wrap: anywhere;
+      word-break: break-word;
     }
     .csv-feature-privacy-section .feature-card p {
       color: #555;
       font-size: 1rem;
       line-height: 1.65;
       margin-bottom: 0.65rem;
+      overflow-wrap: anywhere;
+      word-break: break-word;
     }
     .csv-feature-privacy-section code {
       font-size: 0.95em;
@@ -57,6 +67,7 @@ headExtra: |
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 0.45rem;
+      min-width: 0;
     }
     .csv-fields-chips span {
       display: inline-flex;
@@ -65,6 +76,8 @@ headExtra: |
       border: 1px solid #e5e9f3;
       border-radius: 8px;
       background: #fafbff;
+      min-width: 0;
+      max-width: 100%;
     }
     .csv-fields-note {
       margin-top: 0.72rem;
@@ -87,6 +100,8 @@ headExtra: |
       font-weight: 700;
       color: #2f4a8d;
       text-decoration: none;
+      overflow-wrap: anywhere;
+      word-break: break-word;
     }
     .csv-fields-link:hover,
     .csv-fields-link:focus-visible {
@@ -101,6 +116,7 @@ headExtra: |
       align-items: center;
       flex-wrap: wrap;
       margin-bottom: 0.35rem;
+      min-width: 0;
     }
     .csv-example-head h3 {
       margin: 0;
@@ -109,6 +125,8 @@ headExtra: |
       margin: 0.15rem 0 0.5rem;
       color: #555;
       font-size: 0.96rem;
+      overflow-wrap: anywhere;
+      word-break: break-word;
     }
 
     .csv-example {
@@ -117,6 +135,10 @@ headExtra: |
       border: 1px solid #e6eaf2;
       border-radius: 8px;
       background: #fafbff;
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      box-sizing: border-box;
       overflow-x: auto;
     }
     .csv-example code {
@@ -157,6 +179,7 @@ headExtra: |
       display: flex;
       flex-wrap: wrap;
       gap: 0.5rem;
+      min-width: 0;
     }
     .csv-trust-badges span {
       display: inline-flex;
@@ -168,6 +191,11 @@ headExtra: |
       color: #2f4a8d;
       font-size: 0.92rem;
       font-weight: 600;
+      min-width: 0;
+      max-width: 100%;
+      white-space: normal;
+      overflow-wrap: anywhere;
+      word-break: break-word;
     }
 
     .csv-use-cases {
@@ -205,11 +233,25 @@ headExtra: |
     }
     @media (max-width: 768px) {
       .csv-feature-privacy-section .features-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
         grid-template-areas:
           "fields"
           "local"
           "example";
+        width: 100%;
+        min-width: 0;
+      }
+      .csv-feature-privacy-section .feature-card {
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+      }
+      .csv-feature-privacy-section .csv-card-fields,
+      .csv-feature-privacy-section .csv-card-local,
+      .csv-feature-privacy-section .csv-card-example {
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
       }
       .csv-fields-chips {
         grid-template-columns: 1fr;

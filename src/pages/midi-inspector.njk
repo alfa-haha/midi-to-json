@@ -3,19 +3,629 @@ permalink: "midi-inspector/index.html"
 layout: "layouts/base.njk"
 lang: en
 toolId: midi-inspector
+afterMainTemplate: "sections/midi-inspector-after-main.njk"
 titleOverride: "MIDI Inspector"
-titleSubtitle: "Professional MIDI Inspector for Track, Event & Timing Debugging"
+titleSubtitle: "Inspect MIDI events, tracks, channels, tempo changes, and note issues locally in your browser — no uploads."
+titleTrustLine: "Works locally · No account required · Great for debugging timing, tracks, and controllers"
 meta:
-  title: "MIDI Inspector | MidiEasy"
-  description: "Inspect a MIDI file like DevTools: events, tracks, notes, tempo map, and export data — all in your browser."
+  title: "MIDI Inspector (Local & Free) — Inspect Events, Tracks, Notes & Tempo | MidiEasy"
+  description: "Inspect MIDI files like DevTools: events, tracks, channels, notes, tempo changes, and quality flags. 100% local in your browser, with no uploads."
+headExtra: |
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="MIDI Inspector (Local & Free) — Inspect Events, Tracks, Notes & Tempo | MidiEasy" />
+  <meta property="og:description" content="Inspect MIDI files like DevTools: events, tracks, channels, notes, tempo changes, and quality flags. 100% local in your browser, with no uploads." />
+  <meta property="og:url" content="https://midieasy.com/midi-inspector/" />
+  <meta property="og:image" content="https://midieasy.com/images/placeholder-midi-inspector-og.png" />
+  <meta property="og:image:width" content="1635" />
+  <meta property="og:image:height" content="1050" />
+  <meta property="og:image:alt" content="MIDI Inspector workspace with local MIDI upload and debugging tools for events, tracks, and notes." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="MIDI Inspector (Local & Free) — Inspect Events, Tracks, Notes & Tempo | MidiEasy" />
+  <meta name="twitter:description" content="Inspect MIDI files like DevTools: events, tracks, channels, notes, tempo changes, and quality flags. 100% local in your browser, with no uploads." />
+  <meta name="twitter:image" content="https://midieasy.com/images/placeholder-midi-inspector-og.png" />
+  <meta name="twitter:image:alt" content="MIDI Inspector workspace showing local inspection for MIDI events, tracks, and notes." />
+  <style>
+    .inspector-compact-subtitle {
+      margin: 0 auto 2rem;
+      max-width: 960px;
+      font-size: 1.04rem;
+    }
+    .inspector-checks-section .features-container {
+      max-width: 1040px;
+    }
+    .inspector-checks-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .inspector-check-item {
+      border: 1px solid #e6eaf2;
+      border-radius: 10px;
+      background: #fff;
+      padding: 1rem 1.05rem;
+      text-align: left;
+    }
+    .inspector-check-item h3 {
+      margin: 0 0 0.45rem;
+      font-size: 1.15rem;
+      color: #333;
+    }
+    .inspector-check-item p {
+      margin: 0;
+      color: #555;
+      line-height: 1.65;
+    }
+    .inspector-shot-grid {
+      margin-top: 1.2rem;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+    }
+    .inspector-shot-card {
+      border: 1px solid #e5e9f3;
+      border-radius: 10px;
+      background: #fff;
+      overflow: hidden;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    }
+    .inspector-shot-card img {
+      display: block;
+      width: auto;
+      max-width: 100%;
+      max-height: 100%;
+      height: auto;
+      object-fit: contain;
+    }
+    .inspector-shot-media {
+      padding: 0.6rem;
+      background: #f2f5fc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 340px;
+      border-bottom: 1px solid #ecf0f8;
+      position: relative;
+      cursor: zoom-in;
+      outline: none;
+    }
+    .inspector-shot-media:focus-visible {
+      box-shadow: inset 0 0 0 3px rgba(37, 117, 252, 0.35);
+    }
+    .inspector-shot-media::after {
+      content: "Click to enlarge";
+      position: absolute;
+      right: 0.6rem;
+      top: 0.6rem;
+      font-size: 0.76rem;
+      color: #2f4a8d;
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid #dce6fb;
+      border-radius: 999px;
+      padding: 0.2rem 0.48rem;
+      pointer-events: none;
+    }
+    .inspector-shot-caption {
+      margin: 0;
+      padding: 0.7rem 0.85rem;
+      color: #555;
+      font-size: 0.95rem;
+    }
+    .inspector-example-list {
+      margin: 1rem 0 0 1.1rem;
+      color: #555;
+      line-height: 1.6;
+    }
+    .inspector-example-list li {
+      margin: 0.35rem 0;
+    }
+    .inspector-debug-section .audience-grid {
+      margin-top: 1.2rem;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+    }
+    .inspector-debug-section .audience-card {
+      text-align: left;
+      padding: 1.1rem 1.1rem 1rem;
+    }
+    .inspector-debug-next {
+      margin-top: 0.7rem;
+      font-size: 0.95rem;
+    }
+    .inspector-debug-next a {
+      font-weight: 700;
+      text-decoration: none;
+      color: #2f4a8d;
+    }
+    .inspector-debug-next a:hover,
+    .inspector-debug-next a:focus-visible {
+      color: #1e3a8a;
+      text-decoration: underline;
+    }
+    .inspector-flags-list {
+      margin: 1rem 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.9rem;
+    }
+    .inspector-flags-list li {
+      border: 1px solid #e6eaf2;
+      border-radius: 10px;
+      background: #fff;
+      padding: 0.9rem 1rem;
+      color: #555;
+      line-height: 1.6;
+    }
+    .inspector-flags-list strong {
+      color: #333;
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+    .inspector-tool-table-wrap {
+      overflow-x: auto;
+      margin-top: 1.2rem;
+      border: 1px solid #e6eaf2;
+      border-radius: 10px;
+      background: #fff;
+    }
+    .inspector-tool-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 640px;
+    }
+    .inspector-tool-table th,
+    .inspector-tool-table td {
+      border-bottom: 1px solid #eef1f7;
+      padding: 0.7rem 0.8rem;
+      text-align: left;
+    }
+    .inspector-tool-table th {
+      background: #fafbfe;
+      font-weight: 800;
+      color: #333;
+    }
+    .inspector-tool-table td {
+      color: #555;
+    }
+    .inspector-tool-cta {
+      margin-top: 1rem;
+      display: flex;
+      gap: 0.7rem;
+      flex-wrap: wrap;
+    }
+    .inspector-tool-cta .btn {
+      min-width: 220px;
+    }
+    .inspector-faq-section .accordion {
+      max-width: 860px;
+      margin: 2.2rem auto 0;
+    }
+    .inspector-faq-section .accordion-header {
+      user-select: none;
+    }
+    .inspector-lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      background: rgba(12, 16, 27, 0.9);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .inspector-lightbox.is-open {
+      display: flex;
+    }
+    .inspector-lightbox__dialog {
+      width: min(1200px, 96vw);
+      max-height: 94vh;
+      background: #0f1524;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.48);
+      position: relative;
+      display: grid;
+      grid-template-rows: minmax(0, 1fr) auto;
+    }
+    .inspector-lightbox__stage {
+      padding: 0.8rem 0.8rem 0.35rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 320px;
+    }
+    .inspector-lightbox__img {
+      display: block;
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: calc(94vh - 130px);
+      border-radius: 8px;
+      background: #fff;
+      object-fit: contain;
+    }
+    .inspector-lightbox__footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.7rem;
+      padding: 0.75rem 0.9rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.16);
+      color: #e8edf7;
+      background: rgba(7, 10, 17, 0.65);
+    }
+    .inspector-lightbox__caption {
+      margin: 0;
+      font-size: 0.95rem;
+      line-height: 1.45;
+    }
+    .inspector-lightbox__count {
+      color: #b4c3de;
+      font-size: 0.9rem;
+      white-space: nowrap;
+    }
+    .inspector-lightbox__close,
+    .inspector-lightbox__nav {
+      position: absolute;
+      border: 1px solid rgba(255, 255, 255, 0.26);
+      background: rgba(4, 8, 18, 0.66);
+      color: #fff;
+      border-radius: 999px;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .inspector-lightbox__close {
+      top: 0.65rem;
+      right: 0.65rem;
+      width: 2rem;
+      height: 2rem;
+      font-size: 1rem;
+    }
+    .inspector-lightbox__nav {
+      top: 50%;
+      transform: translateY(-50%);
+      width: 2.2rem;
+      height: 2.2rem;
+      font-size: 1.25rem;
+    }
+    .inspector-lightbox__nav--prev {
+      left: 0.75rem;
+    }
+    .inspector-lightbox__nav--next {
+      right: 0.75rem;
+    }
+    .inspector-lightbox__close:hover,
+    .inspector-lightbox__nav:hover,
+    .inspector-lightbox__close:focus-visible,
+    .inspector-lightbox__nav:focus-visible {
+      background: rgba(37, 117, 252, 0.92);
+      border-color: rgba(255, 255, 255, 0.45);
+      outline: none;
+    }
+    @media (max-width: 768px) {
+      .inspector-checks-grid,
+      .inspector-shot-grid,
+      .inspector-debug-section .audience-grid,
+      .inspector-flags-list {
+        grid-template-columns: 1fr;
+      }
+      .inspector-shot-media {
+        height: 300px;
+      }
+      .inspector-shot-media::after {
+        content: "Tap to enlarge";
+      }
+      .inspector-lightbox__dialog {
+        width: 100%;
+        max-height: 95vh;
+      }
+      .inspector-lightbox__stage {
+        padding: 0.45rem 0.45rem 0.2rem;
+      }
+      .inspector-lightbox__img {
+        max-height: calc(95vh - 128px);
+      }
+      .inspector-lightbox__nav--prev {
+        left: 0.4rem;
+      }
+      .inspector-lightbox__nav--next {
+        right: 0.4rem;
+      }
+    }
+  </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What does this MIDI Inspector show?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "It shows MIDI events, tracks, channels, notes, tempo changes, time signatures, and quality indicators such as overlap or dangling notes."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does this upload my MIDI files?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. Inspection runs locally in your browser. Your MIDI files stay on your device."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why is track always 1?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Many MIDI files are single-track. In that case, channels and programs are often the best way to distinguish parts."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the difference between track and channel?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A track is part of the file structure. A channel is a MIDI routing layer often used for instruments or parts. One track can contain many channels."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I inspect tempo and time signature changes?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Open the Events view and look for tempo and timeSig rows."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What do overlap, dangling, and orphanOff mean?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "They are note integrity flags that help identify structural problems in note data."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "When should I use Inspector instead of MIDI to CSV?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Use Inspector when you need to debug structure or events. Use CSV when you want note-level analysis in spreadsheets."
+        }
+      }
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "MidiEasy MIDI Inspector",
+    "url": "https://midieasy.com/midi-inspector/",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Web",
+    "description": "Inspect MIDI events, tracks, channels, notes, tempo changes, and quality flags in your browser with local processing and no uploads.",
+    "offers": [
+      {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD",
+        "description": "Free tier"
+      },
+      {
+        "@type": "Offer",
+        "price": "9.90",
+        "priceCurrency": "USD",
+        "description": "Pro lifetime"
+      }
+    ],
+    "featureList": [
+      "Inspect MIDI events",
+      "Inspect tracks and channels",
+      "Tempo and time signature inspection",
+      "Quality flags for note integrity",
+      "Local processing with no uploads"
+    ]
+  }
+  </script>
 bodyScripts: |
   <script src="/js/midi-inspector.bundle.js" defer></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const pushDataLayerEvent = (eventName, params = {}) => {
+        if (!eventName) return;
+        try {
+          const payload = { event: eventName, tool: "midi-inspector", page_path: globalThis.location ? globalThis.location.pathname : "", ...params };
+          globalThis.dataLayer = globalThis.dataLayer || [];
+          globalThis.dataLayer.push(payload);
+        } catch {
+          // no-op
+        }
+      };
+
+      const faqRoot = document.getElementById("inspector-faq-accordion");
+      if (faqRoot) {
+        const faqItems = Array.from(faqRoot.querySelectorAll(".accordion-item"));
+        faqItems.forEach((item) => {
+          const header = item.querySelector(".accordion-header");
+          if (!header) return;
+
+          const syncExpanded = () => {
+            const expanded = item.classList.contains("active");
+            header.setAttribute("aria-expanded", expanded ? "true" : "false");
+          };
+
+          const toggle = () => {
+            const isActive = item.classList.contains("active");
+            faqItems.forEach((other) => {
+              other.classList.remove("active");
+              const otherHeader = other.querySelector(".accordion-header");
+              if (otherHeader) otherHeader.setAttribute("aria-expanded", "false");
+            });
+            if (!isActive) item.classList.add("active");
+            syncExpanded();
+          };
+
+          header.addEventListener("click", toggle);
+          header.addEventListener("keydown", (e) => {
+            if (e.key !== "Enter" && e.key !== " ") return;
+            e.preventDefault();
+            toggle();
+          });
+
+          syncExpanded();
+        });
+      }
+
+      const shotCards = Array.from(document.querySelectorAll(".inspector-shot-card"));
+      if (shotCards.length) {
+        const items = shotCards
+          .map((card, index) => {
+            const media = card.querySelector(".inspector-shot-media");
+            const img = card.querySelector("img");
+            const cap = card.querySelector(".inspector-shot-caption");
+            if (!media || !img || !img.getAttribute("src")) return null;
+            const caption = cap ? cap.textContent.trim() : `Image ${index + 1}`;
+            media.setAttribute("role", "button");
+            media.setAttribute("tabindex", "0");
+            media.setAttribute("aria-label", `Open image: ${caption}`);
+            return {
+              media,
+              src: img.getAttribute("src"),
+              alt: img.getAttribute("alt") || caption,
+              caption
+            };
+          })
+          .filter(Boolean);
+
+        if (items.length) {
+          const lightbox = document.createElement("div");
+          lightbox.className = "inspector-lightbox";
+          lightbox.setAttribute("aria-hidden", "true");
+          lightbox.innerHTML = `
+            <div class="inspector-lightbox__dialog" role="dialog" aria-modal="true" aria-label="Inspection image preview" tabindex="-1">
+              <button type="button" class="inspector-lightbox__close" aria-label="Close image preview">✕</button>
+              <button type="button" class="inspector-lightbox__nav inspector-lightbox__nav--prev" aria-label="Previous image">‹</button>
+              <button type="button" class="inspector-lightbox__nav inspector-lightbox__nav--next" aria-label="Next image">›</button>
+              <div class="inspector-lightbox__stage">
+                <img class="inspector-lightbox__img" src="" alt="" />
+              </div>
+              <div class="inspector-lightbox__footer">
+                <p class="inspector-lightbox__caption"></p>
+                <div class="inspector-lightbox__count"></div>
+              </div>
+            </div>
+          `;
+          document.body.appendChild(lightbox);
+
+          const dialog = lightbox.querySelector(".inspector-lightbox__dialog");
+          const closeBtn = lightbox.querySelector(".inspector-lightbox__close");
+          const prevBtn = lightbox.querySelector(".inspector-lightbox__nav--prev");
+          const nextBtn = lightbox.querySelector(".inspector-lightbox__nav--next");
+          const lightboxImg = lightbox.querySelector(".inspector-lightbox__img");
+          const captionEl = lightbox.querySelector(".inspector-lightbox__caption");
+          const countEl = lightbox.querySelector(".inspector-lightbox__count");
+
+          let currentIndex = 0;
+          let lastFocused = null;
+
+          const renderLightbox = () => {
+            const item = items[currentIndex];
+            if (!item || !lightboxImg || !captionEl || !countEl) return;
+            lightboxImg.setAttribute("src", item.src);
+            lightboxImg.setAttribute("alt", item.alt);
+            captionEl.textContent = item.caption;
+            countEl.textContent = `${currentIndex + 1} / ${items.length}`;
+          };
+
+          const openLightbox = (index, triggerEl) => {
+            currentIndex = index;
+            lastFocused = triggerEl || null;
+            renderLightbox();
+            lightbox.classList.add("is-open");
+            lightbox.setAttribute("aria-hidden", "false");
+            document.body.style.overflow = "hidden";
+            if (dialog) dialog.focus();
+          };
+
+          const closeLightbox = () => {
+            lightbox.classList.remove("is-open");
+            lightbox.setAttribute("aria-hidden", "true");
+            document.body.style.overflow = "";
+            if (lastFocused && typeof lastFocused.focus === "function") lastFocused.focus();
+          };
+
+          const moveLightbox = (delta) => {
+            currentIndex = (currentIndex + delta + items.length) % items.length;
+            renderLightbox();
+          };
+
+          items.forEach((item, index) => {
+            item.media.addEventListener("click", () => openLightbox(index, item.media));
+            item.media.addEventListener("keydown", (e) => {
+              if (e.key !== "Enter" && e.key !== " ") return;
+              e.preventDefault();
+              openLightbox(index, item.media);
+            });
+          });
+
+          if (closeBtn) closeBtn.addEventListener("click", closeLightbox);
+          if (prevBtn) prevBtn.addEventListener("click", () => moveLightbox(-1));
+          if (nextBtn) nextBtn.addEventListener("click", () => moveLightbox(1));
+          lightbox.addEventListener("click", (e) => {
+            if (e.target === lightbox) closeLightbox();
+          });
+
+          document.addEventListener("keydown", (e) => {
+            if (!lightbox.classList.contains("is-open")) return;
+            if (e.key === "Escape") {
+              e.preventDefault();
+              closeLightbox();
+              return;
+            }
+            if (e.key === "ArrowLeft") {
+              e.preventDefault();
+              moveLightbox(-1);
+              return;
+            }
+            if (e.key === "ArrowRight") {
+              e.preventDefault();
+              moveLightbox(1);
+            }
+          });
+        }
+      }
+
+      document.querySelectorAll("#inspector-tabs .inspector-tab[data-tab]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const tab = btn.getAttribute("data-tab") || "";
+          pushDataLayerEvent("inspector_tab_switch", { tab });
+        });
+      });
+
+      document.querySelectorAll("a[data-track-event]").forEach((link) => {
+        link.addEventListener("click", () => {
+          const eventName = link.getAttribute("data-track-event");
+          if (!eventName) return;
+          pushDataLayerEvent(eventName, {
+            target_path: link.getAttribute("href") || "",
+            cta: link.getAttribute("data-cta") || "",
+            section: link.getAttribute("data-section") || ""
+          });
+        });
+      });
+    });
+  </script>
 alts:
   en: "/midi-inspector"
   zh: "/zh/midi-inspector"
   de: "/de/midi-inspector"
 ---
-<section class="container">
+<section class="container" id="inspector-workspace">
   {% set toolTitle = "" %}
   {% set toolSubtitle = "" %}
   {% include "components/tool-midi-inspector.njk" %}

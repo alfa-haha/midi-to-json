@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="560" viewBox="0 0 960 560" role="img" aria-label="Placeholder tracks screenshot">
+  <rect width="960" height="560" fill="#f3f6ff" />
+  <rect x="24" y="24" width="912" height="58" rx="10" fill="#dfe8ff" />
+  <rect x="24" y="96" width="912" height="438" rx="12" fill="#ffffff" stroke="#d7deef" />
+  <rect x="40" y="118" width="880" height="34" fill="#f1f5ff" />
+  <g fill="#e6ecfb">
+    <rect x="40" y="170" width="880" height="28" />
+    <rect x="40" y="212" width="880" height="28" />
+    <rect x="40" y="254" width="880" height="28" />
+    <rect x="40" y="296" width="880" height="28" />
+  </g>
+  <text x="480" y="62" text-anchor="middle" fill="#2b3f74" font-family="Arial, sans-serif" font-size="30" font-weight="700">Placeholder: Tracks View Screenshot</text>
+</svg>

@@ -4,6 +4,9 @@
     {% if titleSubtitle %}
       <p class="site-subtitle">{{ titleSubtitle }}</p>
     {% endif %}
+    {% if titleTrustLine %}
+      <p class="site-trustline">{{ titleTrustLine }}</p>
+    {% endif %}
 
     {% set blogHref = "/blog/index.html" %}
     {% if lang == "zh" %}{% set blogHref = "/zh/blog/" %}{% endif %}

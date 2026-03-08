@@ -36,6 +36,12 @@ header .site-subtitle {
     margin-top: 0.35rem;
 }
 
+header .site-trustline {
+    margin-top: 0.45rem;
+    font-size: 0.95rem;
+    opacity: 0.9;
+}
+
 header p {
     font-size: 1.2rem;
     opacity: 0.9;
@@ -334,6 +340,12 @@ body > #pro-panel.container {
     border-radius: 10px;
 }
 
+.inspector-table-wrap--notes {
+    max-height: 520px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
 .inspector-table {
     width: 100%;
     border-collapse: collapse;
@@ -449,6 +461,10 @@ body > #pro-panel.container {
 @media (max-width: 768px) {
     .inspector-table {
         min-width: 680px;
+    }
+
+    .inspector-table-wrap--notes {
+        max-height: 420px;
     }
 }
 

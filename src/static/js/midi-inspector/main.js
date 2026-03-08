@@ -92,11 +92,38 @@ function escapeHtml(s) {
 function selectedToSet(selectEl) {
   if (!selectEl) return null;
   const set = new Set();
-  for (const opt of Array.from(selectEl.selectedOptions || [])) {
+  for (const opt of Array.from(selectEl.options || [])) {
+    if (!opt.selected) continue;
     const v = Number(opt.value);
     if (Number.isFinite(v)) set.add(v);
   }
   return set.size ? set : null;
+}
+
+function clearSelectSelection(selectEl) {
+  if (!selectEl) return;
+  for (const opt of Array.from(selectEl.options || [])) {
+    opt.selected = false;
+  }
+  try {
+    selectEl.selectedIndex = -1;
+  } catch {
+    // Some browsers ignore selectedIndex on multi-selects.
+  }
+}
+
+function applySetToSelect(selectEl, selectedSet) {
+  if (!selectEl) return;
+  clearSelectSelection(selectEl);
+  if (!(selectedSet instanceof Set) || !selectedSet.size) return;
+  for (const opt of Array.from(selectEl.options || [])) {
+    const v = Number(opt.value);
+    opt.selected = Number.isFinite(v) && selectedSet.has(v);
+  }
+}
+
+function cloneSet(set) {
+  return set instanceof Set ? new Set(set) : new Set();
 }
 
 function clampInt(n, lo, hi) {
@@ -410,6 +437,8 @@ function wireMidiInspectorPage() {
       const channels = Array.from(chSet).sort((a, b) => a - b);
       channelSelect.innerHTML = channels.map((c) => `<option value="${c}">${escapeHtml(String(c))}</option>`).join("");
     }
+
+    applyFiltersToUi();
   }
 
   function currentFilters({ forEvents } = {}) {
@@ -549,11 +578,9 @@ function wireMidiInspectorPage() {
       tr.addEventListener("click", () => {
         const v = Number(tr.getAttribute("data-track"));
         if (!Number.isFinite(v)) return;
-        if (!trackSelect) return;
-        for (const opt of Array.from(trackSelect.options)) opt.selected = false;
-        const match = Array.from(trackSelect.options).find((o) => Number(o.value) === v);
-        if (match) match.selected = true;
-        syncFiltersFromUi({ resetPages: true });
+        state.filters.trackSet = new Set([v]);
+        applyFiltersToUi();
+        commitFilters({ resetPages: true });
         setActiveTab("notes");
       });
     });
@@ -637,6 +664,73 @@ function wireMidiInspectorPage() {
     `;
   }
 
+  function applyFiltersToUi() {
+    applySetToSelect(trackSelect, state.filters.trackSet);
+    applySetToSelect(channelSelect, state.filters.channelSet);
+    if (pitchMinEl) pitchMinEl.value = state.filters.pitchMin === null ? "" : String(state.filters.pitchMin);
+    if (pitchMaxEl) pitchMaxEl.value = state.filters.pitchMax === null ? "" : String(state.filters.pitchMax);
+    if (tickStartEl) tickStartEl.value = state.filters.tickStart === null ? "" : String(state.filters.tickStart);
+    if (tickEndEl) tickEndEl.value = state.filters.tickEnd === null ? "" : String(state.filters.tickEnd);
+    if (flagOverlapEl) flagOverlapEl.checked = !!(state.filters.flags && state.filters.flags.overlap);
+    if (flagDanglingEl) flagDanglingEl.checked = !!(state.filters.flags && state.filters.flags.dangling);
+    if (flagVelocity0El) flagVelocity0El.checked = !!(state.filters.flags && state.filters.flags.velocity0_noteoff);
+  }
+
+  function commitFilters({ resetPages } = {}) {
+    if (resetPages) {
+      state.eventsPage = 1;
+      state.notesPage = 1;
+    }
+    renderTabs();
+    renderExportMeta();
+  }
+
+  let scheduledFilterSyncToken = 0;
+  let suppressSelectChangeSyncUntil = 0;
+
+  function scheduleFilterSyncFromUi({ resetPages } = {}) {
+    const token = scheduledFilterSyncToken + 1;
+    scheduledFilterSyncToken = token;
+    setTimeout(() => {
+      if (scheduledFilterSyncToken !== token) return;
+      syncFiltersFromUi({ resetPages });
+    }, 0);
+  }
+
+  function setManagedMultiSelect(selectEl, nextSet, { resetPages } = {}) {
+    const normalized = nextSet instanceof Set && nextSet.size ? nextSet : null;
+    if (selectEl === trackSelect) state.filters.trackSet = normalized;
+    if (selectEl === channelSelect) state.filters.channelSet = normalized;
+    applyFiltersToUi();
+    commitFilters({ resetPages });
+    try {
+      selectEl.focus();
+    } catch {
+      // no-op
+    }
+  }
+
+  function bindManagedMultiSelect(selectEl, readSet) {
+    if (!selectEl) return;
+    selectEl.addEventListener("mousedown", (e) => {
+      const target = e.target;
+      if (!target || target.tagName !== "OPTION") return;
+      const value = Number(target.value);
+      if (!Number.isFinite(value)) return;
+      e.preventDefault();
+      suppressSelectChangeSyncUntil = Date.now() + 50;
+      let nextSet;
+      if (e.metaKey || e.ctrlKey) {
+        nextSet = cloneSet(readSet());
+        if (nextSet.has(value)) nextSet.delete(value);
+        else nextSet.add(value);
+      } else {
+        nextSet = new Set([value]);
+      }
+      setManagedMultiSelect(selectEl, nextSet, { resetPages: true });
+    });
+  }
+
   function syncFiltersFromUi({ resetPages } = {}) {
     state.filters.trackSet = selectedToSet(trackSelect);
     state.filters.channelSet = selectedToSet(channelSelect);
@@ -659,26 +753,19 @@ function wireMidiInspectorPage() {
       state.filters.tickEnd = null;
       state.filters.flags = null;
     }
-
-    if (resetPages) {
-      state.eventsPage = 1;
-      state.notesPage = 1;
-    }
-    renderTabs();
-    renderExportMeta();
+    commitFilters({ resetPages });
   }
 
   function resetFilters() {
-    if (trackSelect) for (const opt of Array.from(trackSelect.options)) opt.selected = false;
-    if (channelSelect) for (const opt of Array.from(channelSelect.options)) opt.selected = false;
-    if (pitchMinEl) pitchMinEl.value = "";
-    if (pitchMaxEl) pitchMaxEl.value = "";
-    if (tickStartEl) tickStartEl.value = "";
-    if (tickEndEl) tickEndEl.value = "";
-    if (flagOverlapEl) flagOverlapEl.checked = false;
-    if (flagDanglingEl) flagDanglingEl.checked = false;
-    if (flagVelocity0El) flagVelocity0El.checked = false;
-    syncFiltersFromUi({ resetPages: true });
+    state.filters.trackSet = null;
+    state.filters.channelSet = null;
+    state.filters.pitchMin = null;
+    state.filters.pitchMax = null;
+    state.filters.tickStart = null;
+    state.filters.tickEnd = null;
+    state.filters.flags = null;
+    applyFiltersToUi();
+    commitFilters({ resetPages: true });
   }
 
   function setActiveTab(tab) {
@@ -708,9 +795,8 @@ function wireMidiInspectorPage() {
       renderFilterOptions();
       renderSummary();
       renderFilters();
-      renderExportMeta();
       setActiveTab(state.activeTab);
-      syncFiltersFromUi({ resetPages: true });
+      commitFilters({ resetPages: true });
     } catch (e) {
       state.data = null;
       const code = e && e.code ? String(e.code) : "PARSE_FAILED";
@@ -955,7 +1041,23 @@ function wireMidiInspectorPage() {
   if (resetFiltersBtn) resetFiltersBtn.addEventListener("click", resetFilters);
 
   // Filters
-  [trackSelect, channelSelect, pitchMinEl, pitchMaxEl, tickStartEl, tickEndEl, flagOverlapEl, flagDanglingEl, flagVelocity0El].forEach((el) => {
+  bindManagedMultiSelect(trackSelect, () => state.filters.trackSet);
+  bindManagedMultiSelect(channelSelect, () => state.filters.channelSet);
+
+  [trackSelect, channelSelect].forEach((el) => {
+    if (!el) return;
+    el.addEventListener("change", () => {
+      if (Date.now() < suppressSelectChangeSyncUntil) return;
+      scheduleFilterSyncFromUi({ resetPages: true });
+    });
+  });
+
+  [flagOverlapEl, flagDanglingEl, flagVelocity0El].forEach((el) => {
+    if (!el) return;
+    el.addEventListener("change", () => syncFiltersFromUi({ resetPages: true }));
+  });
+
+  [pitchMinEl, pitchMaxEl, tickStartEl, tickEndEl].forEach((el) => {
     if (!el) return;
     el.addEventListener("change", () => syncFiltersFromUi({ resetPages: true }));
     el.addEventListener("input", () => syncFiltersFromUi({ resetPages: true }));

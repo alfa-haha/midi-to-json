@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="560" viewBox="0 0 960 560" role="img" aria-label="Placeholder summary cards screenshot">
+  <rect width="960" height="560" fill="#eff3ff" />
+  <rect x="32" y="32" width="896" height="72" rx="10" fill="#dce8ff" />
+  <rect x="32" y="132" width="280" height="180" rx="12" fill="#ffffff" stroke="#d7deef" />
+  <rect x="340" y="132" width="280" height="180" rx="12" fill="#ffffff" stroke="#d7deef" />
+  <rect x="648" y="132" width="280" height="180" rx="12" fill="#ffffff" stroke="#d7deef" />
+  <rect x="32" y="336" width="280" height="180" rx="12" fill="#ffffff" stroke="#d7deef" />
+  <rect x="340" y="336" width="280" height="180" rx="12" fill="#ffffff" stroke="#d7deef" />
+  <rect x="648" y="336" width="280" height="180" rx="12" fill="#ffffff" stroke="#d7deef" />
+  <text x="480" y="84" text-anchor="middle" fill="#2b3f74" font-family="Arial, sans-serif" font-size="32" font-weight="700">Placeholder: Summary Cards Screenshot</text>
+</svg>

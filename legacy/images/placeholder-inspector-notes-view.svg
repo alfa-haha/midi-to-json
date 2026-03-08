@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="560" viewBox="0 0 960 560" role="img" aria-label="Placeholder notes screenshot">
+  <rect width="960" height="560" fill="#f4f7ff" />
+  <rect x="24" y="24" width="912" height="58" rx="10" fill="#dfe8ff" />
+  <rect x="24" y="96" width="912" height="438" rx="12" fill="#ffffff" stroke="#d7deef" />
+  <rect x="40" y="118" width="880" height="34" fill="#f1f5ff" />
+  <g fill="#e6ecfb">
+    <rect x="40" y="168" width="880" height="20" />
+    <rect x="40" y="198" width="880" height="20" />
+    <rect x="40" y="228" width="880" height="20" />
+    <rect x="40" y="258" width="880" height="20" />
+    <rect x="40" y="288" width="880" height="20" />
+    <rect x="40" y="318" width="880" height="20" />
+    <rect x="40" y="348" width="880" height="20" />
+  </g>
+  <text x="480" y="62" text-anchor="middle" fill="#2b3f74" font-family="Arial, sans-serif" font-size="30" font-weight="700">Placeholder: Notes View Screenshot (with rows)</text>
+</svg>

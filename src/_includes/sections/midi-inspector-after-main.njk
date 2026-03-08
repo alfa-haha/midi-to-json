@@ -1,0 +1,368 @@
+<section class="features-section inspector-checks-section">
+  <div class="container features-container">
+    <h2 class="section-title">What this MIDI Inspector checks</h2>
+    <p class="section-subtitle inspector-compact-subtitle">This MIDI Inspector helps you understand how a MIDI file is structured before you export or edit anything.</p>
+
+    <div class="inspector-checks-grid">
+      <article class="inspector-check-item">
+        <h3>Events &amp; controllers</h3>
+        <p>Tempo, time signature, program changes, control changes, noteOn/noteOff, and CC64 sustain events.</p>
+      </article>
+      <article class="inspector-check-item">
+        <h3>Tracks &amp; channels</h3>
+        <p>See whether a file is single-track or multi-track, and how channels/programs are distributed.</p>
+      </article>
+      <article class="inspector-check-item">
+        <h3>Tempo &amp; timing structure</h3>
+        <p>Inspect PPQ, ticks, seconds, tempo events, and time signature changes to debug timing mismatches.</p>
+      </article>
+      <article class="inspector-check-item">
+        <h3>Note integrity &amp; quality flags</h3>
+        <p>Spot overlap, dangling notes, orphan note-offs, and other issues that can break playback or analysis.</p>
+      </article>
+    </div>
+
+    <p class="no-registration-note">If you need to debug MIDI before exporting it to CSV or JSON, this is the fastest place to start.</p>
+  </div>
+</section>
+
+<section class="how-it-works-section">
+  <div class="container how-it-works-container">
+    <h2 class="section-title">Example inspection output</h2>
+    <p class="section-subtitle inspector-compact-subtitle">Here is what a real MIDI file can look like inside the inspector. Example file: <strong>Catch A Fire</strong>.</p>
+
+    <div class="inspector-shot-grid">
+      <figure class="inspector-shot-card">
+        <div class="inspector-shot-media">
+          <img
+            src="/images/placeholder-inspector-summary-cards.png"
+            alt="MIDI Inspector summary cards showing duration, PPQ, tracks, notes, tempo events, and quality metrics."
+            loading="lazy"
+            decoding="async"
+            width="821"
+            height="249"
+          />
+        </div>
+        <figcaption class="inspector-shot-caption">Summary cards</figcaption>
+      </figure>
+      <figure class="inspector-shot-card">
+        <div class="inspector-shot-media">
+          <img
+            src="/images/placeholder-inspector-events-view.png"
+            alt="MIDI Inspector Events tab listing tempo, time signature, and program rows for timing and structure debugging."
+            loading="lazy"
+            decoding="async"
+            width="835"
+            height="1056"
+          />
+        </div>
+        <figcaption class="inspector-shot-caption">Events view</figcaption>
+      </figure>
+      <figure class="inspector-shot-card">
+        <div class="inspector-shot-media">
+          <img
+            src="/images/placeholder-inspector-tracks-view.png"
+            alt="MIDI Inspector Tracks tab showing track endTick, note count, channels, and programs."
+            loading="lazy"
+            decoding="async"
+            width="821"
+            height="402"
+          />
+        </div>
+        <figcaption class="inspector-shot-caption">Tracks view</figcaption>
+      </figure>
+      <figure class="inspector-shot-card">
+        <div class="inspector-shot-media">
+          <img
+            src="/images/placeholder-inspector-notes-view.png"
+            alt="MIDI Inspector Notes tab with note-level rows including channel, program, pitch, start tick, duration, and velocity."
+            loading="lazy"
+            decoding="async"
+            width="829"
+            height="841"
+          />
+        </div>
+        <figcaption class="inspector-shot-caption">Notes view (with note rows)</figcaption>
+      </figure>
+    </div>
+
+    <ul class="inspector-example-list">
+      <li>The file has <strong>1 track</strong>, but multiple channels and programs.</li>
+      <li>It contains <strong>tempo</strong> and <strong>time signature</strong> events.</li>
+      <li>You can switch between <strong>Events</strong>, <strong>Tracks</strong>, and <strong>Notes</strong> depending on what you need to debug.</li>
+      <li>A MIDI file can be <strong>single-track</strong> and still contain many channels and instruments.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="how-to-inspect-midi" class="how-it-works-section">
+  <div class="container how-it-works-container">
+    <h2 class="section-title">How to inspect a MIDI file</h2>
+    <p class="section-subtitle inspector-compact-subtitle">Load one file, inspect multiple views, then filter to isolate timing, structure, and note issues.</p>
+
+    <div class="steps-container">
+      <div class="step-row">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h3 class="step-title">Load your MIDI file</h3>
+          <p class="step-description">Drop a MIDI file into the inspector to see its structure instantly. Processing runs locally in your browser.</p>
+        </div>
+      </div>
+
+      <div class="step-row">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h3 class="step-title">Switch views</h3>
+          <p class="step-description">Use <strong>Events</strong>, <strong>Tracks</strong>, and <strong>Notes</strong> to inspect different layers of the file.</p>
+        </div>
+      </div>
+
+      <div class="step-row">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h3 class="step-title">Filter what matters</h3>
+          <p class="step-description">Filter by track, channel, pitch, controller type, or quality flags to narrow down timing, note, or controller issues.</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="no-registration-note">Start with <strong>Events</strong> for tempo/program changes, use <strong>Tracks</strong> for structure, and use <strong>Notes</strong> for note-level detail.</p>
+  </div>
+</section>
+
+<section class="perfect-for-section inspector-debug-section">
+  <div class="container perfect-for-container">
+    <h2 class="section-title">Common MIDI debugging scenarios</h2>
+    <p class="section-subtitle inspector-compact-subtitle">Problem-first checks for the most common MIDI inspection questions.</p>
+
+    <div class="audience-grid">
+      <article class="audience-card">
+        <h3 class="audience-title">Why is track always 1?</h3>
+        <p class="audience-description">Many MIDI files are single-track. In that case, <code>track</code> stays 1 even when multiple channels and programs exist.</p>
+        <p class="inspector-debug-next">Next step: <a href="/midi-to-csv/" data-track-event="inspector_to_csv_click" data-cta="export_notes_csv" data-section="debug_track">Export notes to CSV</a></p>
+      </article>
+
+      <article class="audience-card">
+        <h3 class="audience-title">Why does timing look wrong?</h3>
+        <p class="audience-description">Timing mismatches often come from tempo events, time signature changes, or mixing up ticks and seconds.</p>
+        <p class="inspector-debug-next">Next step: <a href="/blog/midi-to-csv-examples-common-issues.html" data-track-event="inspector_timing_guide_click" data-cta="timing_guide" data-section="debug_timing">Read the timing guide</a></p>
+      </article>
+
+      <article class="audience-card">
+        <h3 class="audience-title">Why do I see so many channels?</h3>
+        <p class="audience-description">A single track can still contain many channels. Use track + channel + program together to map parts and instruments.</p>
+        <p class="inspector-debug-next">Next step: <a href="/midi-to-csv/" data-track-event="inspector_to_csv_click" data-cta="convert_csv" data-section="debug_channels">Convert inspected MIDI to CSV</a></p>
+      </article>
+
+      <article class="audience-card">
+        <h3 class="audience-title">How do I inspect sustain pedal events?</h3>
+        <p class="audience-description">Sustain is usually stored as <strong>CC64</strong>. Use the event filters and keep CC64 rows visible when debugging playback feel.</p>
+        <p class="inspector-debug-next">Next step: <a href="#inspector-workspace" data-track-event="inspector_workspace_jump" data-cta="inspect_cc64" data-section="debug_cc64">Inspect controller events</a></p>
+      </article>
+
+      <article class="audience-card">
+        <h3 class="audience-title">What do overlap and dangling notes mean?</h3>
+        <p class="audience-description">These flags identify note integrity issues that can affect playback, visualization, or downstream export.</p>
+        <p class="inspector-debug-next">Next step: <a href="/pro/" data-track-event="inspector_pro_click" data-cta="advanced_note_filtering" data-section="debug_flags">Upgrade for advanced note filtering</a></p>
+      </article>
+
+      <article class="audience-card">
+        <h3 class="audience-title">What are unknown events?</h3>
+        <p class="audience-description">Some files include uncommon or device-specific events. Review quality summary + event list before exporting.</p>
+        <p class="inspector-debug-next">Next step: <a href="#inspector-workspace" data-track-event="inspector_workspace_jump" data-cta="inspect_events" data-section="debug_unknown">Inspect events</a></p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="features-section">
+  <div class="container features-container">
+    <h2 class="section-title">Quality flags explained</h2>
+    <p class="section-subtitle inspector-compact-subtitle">Quality flags help you find structural issues in note data before exporting or editing a MIDI file.</p>
+
+    <ul class="inspector-flags-list">
+      <li><strong>Overlap</strong> Two notes of the same pitch/channel overlap in time. This can cause duplicate note behavior or analysis errors.</li>
+      <li><strong>Dangling</strong> A note starts but does not close cleanly. Use this to catch incomplete note pairs.</li>
+      <li><strong>orphanOff</strong> A note-off appears without a matching note-on. This usually indicates broken or unusual note structure.</li>
+      <li><strong>Unknown events</strong> Events present in the file but not mapped into the current structured view. Not always errors, but worth checking.</li>
+      <li><strong>CC64 / sustain pedal</strong> Controller rows can explain why playback feels different from what note rows suggest.</li>
+    </ul>
+
+    <p class="no-registration-note">If you are debugging playback, note integrity, or export quality, flags are often the fastest place to look.</p>
+  </div>
+</section>
+
+<section class="how-it-works-section">
+  <div class="container how-it-works-container">
+    <h2 class="section-title">When to use Inspector vs CSV vs JSON</h2>
+    <p class="section-subtitle inspector-compact-subtitle">Pick the right tool based on whether you are debugging structure, analyzing notes, or building with structured output.</p>
+
+    <div class="inspector-tool-table-wrap">
+      <table class="inspector-tool-table">
+        <thead>
+          <tr>
+            <th>Need</th>
+            <th>Best tool</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Debug tracks, channels, tempo, events, or note issues</td>
+            <td><strong>MIDI Inspector</strong></td>
+          </tr>
+          <tr>
+            <td>Analyze notes in Sheets / Excel</td>
+            <td><strong>MIDI to CSV</strong></td>
+          </tr>
+          <tr>
+            <td>Work with structured output in code</td>
+            <td><strong>MIDI to JSON</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="inspector-compact-subtitle" style="margin-top:1rem;">Use <strong>Inspector</strong> first when something looks wrong. Use <strong>CSV</strong> for spreadsheet analysis, and use <strong>JSON</strong> for scripts, web apps, or pipelines.</p>
+    <div class="inspector-tool-cta">
+      <a class="btn primary-btn btn-sm" href="/midi-to-csv/" data-track-event="inspector_to_csv_click" data-cta="table_export_csv" data-section="tool_compare">Export inspected notes to CSV</a>
+      <a class="btn secondary-btn btn-sm" href="/" data-track-event="inspector_to_json_click" data-cta="table_convert_json" data-section="tool_compare">Convert inspected MIDI to JSON</a>
+    </div>
+  </div>
+</section>
+
+<section class="faq-section inspector-faq-section" id="faq">
+  <div class="container faq-container">
+    <h2 class="section-title">Frequently asked questions</h2>
+    <p class="section-subtitle inspector-compact-subtitle">Quick answers for event inspection, track/channel logic, timing checks, and quality flags.</p>
+
+    <div class="accordion" id="inspector-faq-accordion">
+      <div class="accordion-item">
+        <div class="accordion-header" role="button" tabindex="0" aria-expanded="false">
+          <h3>What does this MIDI Inspector show?</h3>
+          <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+        </div>
+        <div class="accordion-content">
+          <p>It shows MIDI events, tracks, channels, notes, tempo changes, time signatures, and quality indicators such as overlap or dangling notes.</p>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <div class="accordion-header" role="button" tabindex="0" aria-expanded="false">
+          <h3>Does this upload my MIDI files?</h3>
+          <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+        </div>
+        <div class="accordion-content">
+          <p>No. Inspection runs locally in your browser. Your MIDI files stay on your device.</p>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <div class="accordion-header" role="button" tabindex="0" aria-expanded="false">
+          <h3>Why is track always 1?</h3>
+          <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+        </div>
+        <div class="accordion-content">
+          <p>Many MIDI files are single-track. In that case, channels and programs are often the best way to distinguish parts.</p>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <div class="accordion-header" role="button" tabindex="0" aria-expanded="false">
+          <h3>What is the difference between track and channel?</h3>
+          <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+        </div>
+        <div class="accordion-content">
+          <p>A track is part of the file structure. A channel is a MIDI routing layer often used for instruments or parts. One track can contain many channels.</p>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <div class="accordion-header" role="button" tabindex="0" aria-expanded="false">
+          <h3>How do I inspect tempo and time signature changes?</h3>
+          <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+        </div>
+        <div class="accordion-content">
+          <p>Open the Events view and look for tempo and timeSig rows.</p>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <div class="accordion-header" role="button" tabindex="0" aria-expanded="false">
+          <h3>What do overlap, dangling, and orphanOff mean?</h3>
+          <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+        </div>
+        <div class="accordion-content">
+          <p>They are note integrity flags that help identify structural problems in note data.</p>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <div class="accordion-header" role="button" tabindex="0" aria-expanded="false">
+          <h3>When should I use Inspector instead of MIDI to CSV?</h3>
+          <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+        </div>
+        <div class="accordion-content">
+          <p>Use Inspector when you need to debug structure or events. Use CSV when you want note-level analysis in spreadsheets.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="recent-blogs" class="recent-blogs-section">
+  <div class="container recent-blogs-container">
+    <h2 class="section-title">Latest guides</h2>
+    <p class="section-subtitle inspector-compact-subtitle">Learn how to inspect, export, and debug MIDI data more effectively.</p>
+
+    <div class="recent-blogs-row">
+      <div class="blog-post-card">
+        <div class="blog-post-image" style="background-image: url('/images/midi-to-csv-examples-common-issues-cover.png');">
+          <div class="blog-post-image-overlay"></div>
+        </div>
+        <div class="blog-post-content">
+          <h3 class="blog-post-title">How to Convert MIDI to CSV (Examples + Common Issues)</h3>
+          <div class="blog-post-meta">
+            <p class="blog-post-date">March 2, 2026</p>
+            <a href="/blog/midi-to-csv-examples-common-issues.html" class="blog-post-link">Read More <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="blog-post-card">
+        <div
+          class="blog-post-image"
+          style="background-image: url('/img/blog-thumbnails/midi-to-json-conversion-guide.jpg');"
+          role="img"
+          aria-label="MIDI to JSON Conversion Guide cover thumbnail"
+          data-cover-image="/images/How to Efficiently Convert MIDI Files to JSON Format Detailed Steps.jpg"
+        >
+          <div class="blog-post-image-overlay"></div>
+        </div>
+        <div class="blog-post-content">
+          <h3 class="blog-post-title">MIDI to JSON Conversion Guide</h3>
+          <div class="blog-post-meta">
+            <p class="blog-post-date">March 15, 2025</p>
+            <a href="/blog/midi-to-json-conversion-guide.html" class="blog-post-link">Read More <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="blog-post-card">
+        <div class="blog-post-image" style="background-image: url('/images/Web Music Application Development Why MIDI-to-JSON Is a Key Technology.jpg');">
+          <div class="blog-post-image-overlay"></div>
+        </div>
+        <div class="blog-post-content">
+          <h3 class="blog-post-title">Web Music Application Development</h3>
+          <div class="blog-post-meta">
+            <p class="blog-post-date">February 28, 2025</p>
+            <a href="/blog/web-music-application-development.html" class="blog-post-link">Read More <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="view-all-blogs">
+      <a href="/blog/index.html" class="view-all-link">View All Articles <i class="fas fa-long-arrow-alt-right"></i></a>
+    </div>
+  </div>
+</section>
